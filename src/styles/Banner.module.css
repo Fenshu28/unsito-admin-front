@@ -1,0 +1,22 @@
+/*Imagen*/
+.banner {
+    position: relative;
+    background-image: url('../../src/images/unsis.jpg');
+    background-size: cover;
+    height: 100%;
+  }
+  
+  /* Efecto borroso para la imagen*/
+  .banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(10px); 
+    z-index: 1;
+  }
+  
+  /* El texto o contenido */
+  .banner > div {
+    z-index: 2;
+  }
+  
