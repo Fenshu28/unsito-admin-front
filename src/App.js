@@ -1,18 +1,20 @@
-import './App.css';
-import Login from './pages/auth/Login';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PublicRouter from "./router/PublicRouter";
+import Maincomponent from "./pages/Maincomponent";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Login />} />
+        {/* Rutas públicas */}
+        <Route path="/*" element={<PublicRouter />} />
 
-
+        {/* Rutas privadas */}
+        <Route path="/app/*" element={<Maincomponent />}>
+          
+        </Route>
       </Routes>
-
     </Router>
-
   );
 }
 
