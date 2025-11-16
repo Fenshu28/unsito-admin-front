@@ -1,6 +1,6 @@
 // PrivateRoutes.jsx
 import { Navigate, Routes, Route } from "react-router-dom";
-import Inicio from "../pages/view/Inicio";
+import Inicio from "../pages/view/Inicio/Inicio";
 
 const PrivateRoutes = () => {
   const isAuth = localStorage.getItem("token");

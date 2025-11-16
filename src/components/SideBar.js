@@ -8,7 +8,7 @@ const Sidebar = () => {
 
       <ul className="nav nav-pills flex-column">
         <li className="nav-item mb-2">
-          <Link to="/app/inicio" className="nav-link text-white fw-semibold">
+          <Link to="/App/inicio" className="nav-link text-white fw-semibold">
             Inicio
           </Link>
         </li>
