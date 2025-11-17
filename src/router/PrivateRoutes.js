@@ -1,6 +1,7 @@
 // PrivateRoutes.jsx
 import { Navigate, Routes, Route } from "react-router-dom";
-import Inicio from "../pages/view/Inicio/Inicio";
+import Inicio from "../pages/Inicio";
+import Noticias from "../pages/Noticias";
 
 const PrivateRoutes = () => {
   const isAuth = localStorage.getItem("token");
@@ -10,6 +11,7 @@ const PrivateRoutes = () => {
   return (
     <Routes>
       <Route path="inicio" element={<Inicio />} />
+      <Route path="noticias" element={<Noticias />} />
     </Routes>
   );
 };

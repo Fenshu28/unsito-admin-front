@@ -13,7 +13,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li className="nav-item mb-2">
-          <Link to="/app/noticias" className="nav-link text-white fw-semibold">
+          <Link to="/App/noticias" className="nav-link text-white fw-semibold">
             Noticias
           </Link>
         </li>

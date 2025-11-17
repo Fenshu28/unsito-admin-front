@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Filtros from "./Filtros";
-import TarjetaPanel from "./TarjetaPanel";
+import Filtros from "./view/Inicio/Filtros";
+import TarjetaPanel from "./view/Inicio/TarjetaPanel";
 
 const paneles = [
   { tipo: "Noticias", titulo: "Noticia 1", descripcion: "Lorem ipsum dolor sit amet.", imagen: "/images/noticias.jpg" },
