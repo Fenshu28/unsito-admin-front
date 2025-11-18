@@ -6,13 +6,14 @@ const NavBar = () => {
       <div className="container-fluid d-flex align-items-center">
         {/* Espacio para la imagen */}
         <img
-          src="/logo.png" // aquí pones la ruta de tu imagen
+          src="https://assets-unsito.flaisgrafics.com/logo.png" 
           alt="Logo"
-          style={{ height: "40px", marginRight: "10px" }}
+          style={{ height: "80px", marginRight: "10px" }}
         />
 
         {/* Texto junto a la imagen */}
-        <span className="navbar-brand mb-0 h1">Mi Aplicación</span>
+        <span className="navbar-brand mb-0 h1" >Unsito Digital</span>
+        
       </div>
     </nav>
   );

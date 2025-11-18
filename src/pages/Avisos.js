@@ -16,9 +16,10 @@ const Avisos = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Administrar Avisos</h2>
-      <FormularioAviso agregarAviso={agregarAviso} categorias={categorias} />
       <ListaAvisos avisos={avisos} eliminarAviso={eliminarAviso} />
+      <h2>Administrar Avisos</h2>
+
+      <FormularioAviso agregarAviso={agregarAviso} categorias={categorias} />
     </div>
   );
 };

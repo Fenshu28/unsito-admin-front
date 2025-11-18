@@ -14,6 +14,8 @@ const PrivateRoutes = () => {
       <Route path="noticias" element={<Noticias />} />
       
       <Route path="avisos" element={<Avisos />} />
+     
+
     </Routes>
   );
 };

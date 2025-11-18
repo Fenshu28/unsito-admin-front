@@ -11,9 +11,10 @@ const Noticias = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Administrar Noticias</h2>
-      <FormularioNoticia agregarNoticia={agregarNoticia} />
       <ListaNoticias listaNoticias={listaNoticias} />
+      <h2>Administrar Noticias</h2>
+
+      <FormularioNoticia agregarNoticia={agregarNoticia} />
     </div>
   );
 };
