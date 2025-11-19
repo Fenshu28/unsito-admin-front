@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase/config';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 
 const LoginForm = () => {
@@ -9,10 +11,18 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Datos ficticios
-  const fakeUser = {
-    email: 'jose@gmail.com',
-    password: '123456',
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
+      navigate("/App/inicio");
+    } catch (error) {
+      console.error("Error during Google login:", error);
+      alert("Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.");
+    }
   };
 
   const handleSubmit = (e) => {
@@ -82,7 +92,7 @@ const LoginForm = () => {
           </div>
           <hr className="my-4" />
           <div className="d-grid">
-            <button type="button" className="btn btn-danger">
+            <button type="button" className="btn btn-danger" onClick={handleGoogleLogin}>
               <Icon icon="mdi:google" className="me-2" />
               Iniciar sesión con Google
             </button>
