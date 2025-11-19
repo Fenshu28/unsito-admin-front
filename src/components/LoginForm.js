@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/config';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail, signOut, signInWithEmailAndPassword } from 'firebase/auth';
 
 
 const LoginForm = () => {
@@ -15,28 +15,46 @@ const LoginForm = () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
+      const methods = await fetchSignInMethodsForEmail(auth, result.user.email);
 
-      const token = await result.user.getIdToken();
-      localStorage.setItem("token", token);
-      navigate("/App/inicio");
+      if (methods.length === 0) {
+        await signOut(auth);
+        alert("Tu cuenta de Google no está registrada. Por favor, contacta al administrador.");
+      } else {
+        const token = await result.user.getIdToken();
+        localStorage.setItem("token", token);
+        navigate("/App/inicio");
+      }
     } catch (error) {
       console.error("Error during Google login:", error);
       alert("Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.");
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Comprobación simple con datos ficticios
-    if (email === fakeUser.email && password === fakeUser.password) {
-      // Guardar token en localStorage
-      localStorage.setItem("token", "faketoken123");
-  
-      // Redirigir a la ruta privada
-      navigate("/App/inicio"); 
-    } else {
-      alert("Usuario o contraseña incorrectos");
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const token = await userCredential.user.getIdToken();
+      localStorage.setItem("token", token);
+      navigate("/App/inicio");
+    } catch (error) {
+      console.error("Error during email/password login:", error.code);
+      let message = "Error al iniciar sesión. Por favor, inténtalo de nuevo.";
+      switch (error.code) {
+        case "auth/user-not-found":
+          message = "Usuario no encontrado. Por favor, verifica tu correo electrónico.";
+          break;
+        case "auth/wrong-password":
+          message = "Contraseña incorrecta. Por favor, inténtalo de nuevo.";
+          break;
+        case "auth/invalid-email":
+          message = "El formato del correo electrónico no es válido.";
+          break;
+        default:
+          break;
+      }
+      alert(message);
     }
   };
   
