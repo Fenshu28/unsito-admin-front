@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import EventoForm from "../pages/view/Eventos/FormularioEventos";
-
+import EventoTabla from "../pages/view/Eventos/ListaEventos";
 const Eventos = () => {
   const [eventos, setEventos] = useState([]);
-
   const [formData, setFormData] = useState({
     titulo: "",
     organizador: "",
@@ -52,7 +51,7 @@ const Eventos = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
       />
-
+      <EventoTabla eventos={eventos} />
     </div>
   );
 };
