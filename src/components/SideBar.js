@@ -4,6 +4,12 @@ import BtnCerrar from "./BtnCerrar";
 import Can from "./Can"; // Import the Can component
 
 const Sidebar = () => {
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
   return (
     <div className="d-flex flex-column bg-dark text-white p-3 shadow vh-100 border-end border-secondary">
       <h4 className="text-info fw-bold text-center mb-4">Menú</h4>
@@ -56,9 +62,10 @@ const Sidebar = () => {
             </li>
         </Can>
       </ul>
-    <BtnCerrar />
+    <BtnCerrar onClick={handleLogout} />
     </div>
   );
 };
 
 export default Sidebar;
+
