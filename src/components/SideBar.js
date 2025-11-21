@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import BtnCerrar from "./BtnCerrar";
+import Can from "./Can"; // Import the Can component
 
 const Sidebar = () => {
   return (
@@ -39,12 +40,21 @@ const Sidebar = () => {
             Convocatorias
           </Link>
         </li>
-        <li className="nav-item mb-2">
-          <Link to="/App/categorias" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h14v2H7zm0 8v-2h14v2zM4 4.5A1.5 1.5 0 0 1 5.5 6A1.5 1.5 0 0 1 4 7.5A1.5 1.5 0 0 1 2.5 6A1.5 1.5 0 0 1 4 4.5m0 6A1.5 1.5 0 0 1 5.5 12A1.5 1.5 0 0 1 4 13.5A1.5 1.5 0 0 1 2.5 12A1.5 1.5 0 0 1 4 10.5M7 19v-2h14v2zm-3-2.5A1.5 1.5 0 0 1 5.5 18A1.5 1.5 0 0 1 4 19.5A1.5 1.5 0 0 1 2.5 18A1.5 1.5 0 0 1 4 16.5"></path></svg>
-            Categorías
-          </Link>
-        </li>
+        {/* Admin-only sections */}
+        <Can hasRole="admin">
+            <li className="nav-item mb-2">
+              <Link to="/App/categorias" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h14v2H7zm0 8v-2h14v2zM4 4.5A1.5 1.5 0 0 1 5.5 6A1.5 1.5 0 0 1 4 7.5A1.5 1.5 0 0 1 2.5 6A1.5 1.5 0 0 1 4 4.5m0 6A1.5 1.5 0 0 1 5.5 12A1.5 1.5 0 0 1 4 13.5A1.5 1.5 0 0 1 2.5 12A1.5 1.5 0 0 1 4 10.5M7 19v-2h14v2zm-3-2.5A1.5 1.5 0 0 1 5.5 18A1.5 1.5 0 0 1 4 19.5A1.5 1.5 0 0 1 2.5 18A1.5 1.5 0 0 1 4 16.5"></path></svg>
+                Categorías
+              </Link>
+            </li>
+            <li className="nav-item mb-2">
+                <Link to="/App/usuarios" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"></path></svg>
+                    Usuarios
+                </Link>
+            </li>
+        </Can>
       </ul>
     <BtnCerrar />
     </div>
