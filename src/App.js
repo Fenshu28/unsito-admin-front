@@ -10,7 +10,7 @@ function App() {
         <Route path="/*" element={<PublicRouter />} />
 
         {/* Rutas privadas */}
-        <Route path="/app/*" element={<Maincomponent />}>
+        <Route path="/App/*" element={<Maincomponent />}>
           
         </Route>
       </Routes>
