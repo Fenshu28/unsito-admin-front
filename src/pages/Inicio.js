@@ -2,11 +2,11 @@ import React from "react";
 import AccesoTarjeta from "./view/Inicio/AccesoTarjeta";
 
 const accesos = [
-  { titulo: "Noticias", descripcion: "Gestión de noticias", ruta: "/app/noticias" },
-  { titulo: "Avisos", descripcion: "Administración de avisos", ruta: "/app/avisos" },
-  { titulo: "Eventos", descripcion: "Control de eventos", ruta: "/app/eventos" },
-  { titulo: "Convocatorias", descripcion: "Gestión de convocatorias", ruta: "/app/convocatorias" },
-  { titulo: "Categorías", descripcion: "Administrar categorías", ruta: "/app/categorias" },
+  { titulo: "Noticias", descripcion: "Gestión de noticias", ruta: "/App/noticias" },
+  { titulo: "Avisos", descripcion: "Administración de avisos", ruta: "/App/avisos" },
+  { titulo: "Eventos", descripcion: "Control de eventos", ruta: "/App/eventos" },
+  { titulo: "Convocatorias", descripcion: "Gestión de convocatorias", ruta: "/App/convocatorias" },
+  { titulo: "Categorías", descripcion: "Administrar categorías", ruta: "/App/categorias" },
 ];
 
 const Inicio = () => {

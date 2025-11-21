@@ -4,16 +4,27 @@ import { Link } from "react-router-dom";
 const AccesoTarjeta = ({ titulo, descripcion, ruta }) => {
   return (
     <div className="col-md-4">
-      <div className="card shadow-sm h-100">
-        <div className="card-body text-center">
+      <div
+        className="card h-100 border-0 shadow"
+        style={{ minHeight: "260px" }}   // <-- Aumento del tamaño
+      >
 
-          <h5 className="card-title fw-bold">{titulo}</h5>
+        {/* Línea decorativa arriba */}
+        <div className="card-header bg-primary text-white py-3 text-center fw-semibold fs-5">
+          {titulo}
+        </div>
 
-          <p className="card-text">{descripcion}</p>
+        <div className="card-body d-flex flex-column text-center px-4">
 
-          <Link to={ruta} className="btn btn-primary w-100">
-            Ir a {titulo}
-          </Link>
+          <p className="text-muted mb-4 fs-6">
+            {descripcion}
+          </p>
+
+          <div className="mt-auto">
+            <Link to={ruta} className="btn btn-outline-primary w-100 py-2 fs-6 fw-semibold">
+              Abrir {titulo}
+            </Link>
+          </div>
 
         </div>
       </div>
