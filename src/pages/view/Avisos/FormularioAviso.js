@@ -36,7 +36,7 @@ const FormularioAviso = ({ agregarAviso, categorias }) => {
   return (
     <form onSubmit={handleSubmit} className="mb-4">
       <div className="mb-3">
-        <label className="form-label">Título del Aviso</label>
+        <label className="form-label fw-bold">Título del Aviso</label>
         <input
           type="text"
           className="form-control"
@@ -49,7 +49,7 @@ const FormularioAviso = ({ agregarAviso, categorias }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Autor</label>
+        <label className="form-label fw-bold">Autor</label>
         <input
           type="text"
           className="form-control"
@@ -62,7 +62,7 @@ const FormularioAviso = ({ agregarAviso, categorias }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Descripción</label>
+        <label className="form-label fw-bold">Descripción</label>
         <textarea
           className="form-control"
           name="descripcion"
@@ -75,7 +75,7 @@ const FormularioAviso = ({ agregarAviso, categorias }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Categoría</label>
+        <label className="form-label fw-bold">Categoría</label>
         <select
           className="form-select"
           name="categoria"
@@ -91,7 +91,7 @@ const FormularioAviso = ({ agregarAviso, categorias }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Fecha de Publicación</label>
+        <label className="form-label fw-bold">Fecha de Publicación</label>
         <input
           type="date"
           className="form-control"
@@ -103,7 +103,7 @@ const FormularioAviso = ({ agregarAviso, categorias }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Subir Archivo</label>
+        <label className="form-label fw-bold">Subir Archivo</label>
         <input
           type="file"
           className="form-control"
@@ -120,10 +120,10 @@ const FormularioAviso = ({ agregarAviso, categorias }) => {
           checked={formData.destacado}
           onChange={handleChange}
         />
-        <label className="form-check-label">Aviso prioritario</label>
+        <label className="form-check-label fw-bold">Aviso prioritario</label>
       </div>
 
-      <button type="submit" className="btn btn-primary">Agregar aviso</button>
+      <button type="submit" className="btn btn-primary fw-bold">Agregar aviso</button>
     </form>
   );
 };

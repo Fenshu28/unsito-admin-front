@@ -4,7 +4,7 @@ const FormularioNoticia = () => {
   return (
     <form>
       <div className="mb-3">
-        <label className="form-label">Título de la noticia</label>
+        <label className="form-label fw-bold">Título de la noticia</label>
         <input
           type="text"
           className="form-control"
@@ -13,7 +13,7 @@ const FormularioNoticia = () => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Autor</label>
+        <label className="form-label fw-bold">Autor</label>
         <input
           type="text"
           className="form-control"
@@ -22,7 +22,7 @@ const FormularioNoticia = () => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Fecha de publicación</label>
+        <label className="form-label fw-bold">Fecha de publicación</label>
         <input
           type="date"
           className="form-control"
@@ -30,7 +30,7 @@ const FormularioNoticia = () => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Categoría</label>
+        <label className="form-label fw-bold">Categoría</label>
         <select className="form-select">
           <option value="">Seleccione una categoría</option>
           <option>Ciencia</option>
@@ -42,7 +42,7 @@ const FormularioNoticia = () => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Descripción / Contenido</label>
+        <label className="form-label fw-bold">Descripción / Contenido</label>
         <textarea
           className="form-control"
           rows="4"

@@ -4,7 +4,7 @@ const EventoForm = ({ formData, handleChange, handleSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-3">
-        <label className="form-label">Título*</label>
+        <label className="form-label fw-bold">Título*</label>
         <input
           type="text"
           className="form-control"
@@ -15,7 +15,7 @@ const EventoForm = ({ formData, handleChange, handleSubmit }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Organizador</label>
+        <label className="form-label fw-bold">Organizador</label>
         <input
           type="text"
           className="form-control"
@@ -26,7 +26,7 @@ const EventoForm = ({ formData, handleChange, handleSubmit }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Fecha*</label>
+        <label className="form-label fw-bold">Fecha*</label>
         <input
           type="date"
           className="form-control"
@@ -37,7 +37,7 @@ const EventoForm = ({ formData, handleChange, handleSubmit }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Categoría</label>
+        <label className="form-label fw-bold">Categoría</label>
         <input
           type="text"
           className="form-control"
@@ -48,7 +48,7 @@ const EventoForm = ({ formData, handleChange, handleSubmit }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Descripción</label>
+        <label className="form-label fw-bold">Descripción</label>
         <textarea
           className="form-control"
           name="descripcion"
@@ -58,7 +58,7 @@ const EventoForm = ({ formData, handleChange, handleSubmit }) => {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Imagen</label>
+        <label className="form-label fw-bold">Imagen</label>
         <input
           type="file"
           className="form-control"

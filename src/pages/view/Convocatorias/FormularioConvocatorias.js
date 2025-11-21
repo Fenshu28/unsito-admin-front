@@ -7,18 +7,18 @@ const FormularioConvocatorias = ({ formData, handleChange, agregarConvocatoria }
 
       <div className="row g-3">
         <div className="col-md-6">
-          <label className="form-label">Título de la Convocatoria</label>
+          <label className="form-label fw-bold">Título de la Convocatoria</label>
           <input
             className="form-control"
             name="titulo"
             value={formData.titulo}
             onChange={handleChange}
-            placeholder="Ej. Beca de Investigación"
+            placeholder="Ej. Beca de Investigación fw-bold"
           />
         </div>
 
         <div className="col-12">
-          <label className="form-label">Descripción / Detalles</label>
+          <label className="form-label fw-bold">Descripción / Detalles</label>
           <textarea
             className="form-control"
             name="descripcion"
@@ -29,7 +29,7 @@ const FormularioConvocatorias = ({ formData, handleChange, agregarConvocatoria }
         </div>
 
         <div className="col-md-3">
-          <label className="form-label">Fecha Inicio</label>
+          <label className="form-label fw-bold">Fecha Inicio</label>
           <input
             className="form-control"
             type="date"
@@ -40,7 +40,7 @@ const FormularioConvocatorias = ({ formData, handleChange, agregarConvocatoria }
         </div>
 
         <div className="col-md-3">
-          <label className="form-label">Fecha Fin</label>
+          <label className="form-label fw-bold">Fecha Fin</label>
           <input
             className="form-control"
             type="date"
@@ -51,7 +51,7 @@ const FormularioConvocatorias = ({ formData, handleChange, agregarConvocatoria }
         </div>
 
         <div className="col-md-4">
-          <label className="form-label">Categoría</label>
+          <label className="form-label fw-bold">Categoría</label>
           <input
             className="form-control"
             name="categoria"
@@ -62,7 +62,7 @@ const FormularioConvocatorias = ({ formData, handleChange, agregarConvocatoria }
         </div>
 
         <div className="col-md-6">
-          <label className="form-label">Enlace Externo (Opcional)</label>
+          <label className="form-label fw-bold">Enlace Externo (Opcional)</label>
           <input
             className="form-control"
             name="enlace"
