@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/config';
-import { GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail, signOut, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 
 const LoginForm = () => {
@@ -10,26 +10,6 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const methods = await fetchSignInMethodsForEmail(auth, result.user.email);
-
-      if (methods.length === 0) {
-        await signOut(auth);
-        alert("Tu cuenta de Google no está registrada. Por favor, contacta al administrador.");
-      } else {
-        const token = await result.user.getIdToken();
-        localStorage.setItem("token", token);
-        navigate("/App/inicio");
-      }
-    } catch (error) {
-      console.error("Error during Google login:", error);
-      alert("Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.");
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,13 +86,6 @@ const LoginForm = () => {
             <button type="submit" className={`btn btn-primary`}>
               <Icon icon="mdi:login" className="me-2" />
               Ingresar
-            </button>
-          </div>
-          <hr className="my-4" />
-          <div className="d-grid">
-            <button type="button" className="btn btn-danger" onClick={handleGoogleLogin}>
-              <Icon icon="mdi:google" className="me-2" />
-              Iniciar sesión con Google
             </button>
           </div>
         </form>
