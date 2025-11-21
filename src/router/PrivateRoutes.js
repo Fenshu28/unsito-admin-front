@@ -4,6 +4,7 @@ import Noticias from "../pages/Noticias";
 import Avisos from "../pages/Avisos";
 import Convocatorias from "../pages/Convocatorias";
 import Eventos from "../pages/Eventos";
+import Usuarios from "../pages/Usuarios";
 import Categorias from "../pages/Categorias";
 const PrivateRoutes = () => {
   const isAuth = localStorage.getItem("token");
@@ -17,6 +18,7 @@ const PrivateRoutes = () => {
       
       <Route path="avisos" element={<Avisos />} />
       <Route path="convocatorias" element={<Convocatorias />} />
+      <Route path="usuarios" element={<Usuarios />} />
       <Route path="Eventos" element={<Eventos />} />
       <Route path="Categorias" element={<Categorias />} />
 
