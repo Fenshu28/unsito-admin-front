@@ -1,12 +1,32 @@
 import React, { useState } from "react";
+import { crearCategoria } from "../../../services/categoriaService";
 
 const FormularioCategorias = () => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  const handleCrear = () => {
-    setMensaje("Sin funcionamiento (demo)");
+  const handleCrear = async () => {
+    if (!nombre.trim()) {
+      setMensaje("El nombre es obligatorio");
+      return;
+    }
+    
+    try {
+      const nuevaCategoria = await crearCategoria({
+        nombre,
+        descripcion,
+      });
+
+      setMensaje("Categoría creada correctamente");
+
+      setNombre("");
+      setDescripcion("");
+
+      console.log("Categoría creada:", nuevaCategoria);
+    } catch (error) {
+      setMensaje("Error al crear la categoría");
+    }
   };
 
   return (

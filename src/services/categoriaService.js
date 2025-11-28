@@ -12,4 +12,12 @@ export const obtenerCategorias = async () =>{
 }
 
 
-
+export const crearCategoria = async (categoriaData) => {
+  try {
+    const response = await apiClient.post('/categorias', categoriaData);
+    return response.data; 
+  } catch (error) {
+    console.error('Error al crear la categoría:', error.response?.data || error.message);
+    throw error;
+  }
+};
