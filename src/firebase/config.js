@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-
 // Firebase configuration
 // For Firebase JS SDK v7.20.0 and later.
 const firebaseConfig = {
