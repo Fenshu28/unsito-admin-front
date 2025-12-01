@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
+import CarouselImageManager from "./CarouselImageManager";
+import { subirArchivo, eliminarArchivo } from "../../../services/publicacionesService";
 
 const FormularioPublicacion = ({ 
   publicacionActual, 
   categorias, 
   tipos, 
-  onSubmit
+  onSubmit,
+  onImageUploaded // Callback para recargar datos después de subir imagen
 }) => {
   const [formData, setFormData] = useState({
     titulo: "",
@@ -74,6 +77,31 @@ const FormularioPublicacion = ({
       setFormData(originalData);
     }
     setIsDirty(false);
+  };
+
+  // Handlers para imágenes del carrusel (LiveEdit - no activa isDirty)
+  const handleImageAdded = async (file) => {
+    if (!publicacionActual?._id) {
+      throw new Error("Debe guardar la publicación antes de agregar imágenes");
+    }
+
+    await subirArchivo(publicacionActual._id, file, "carousel");
+    
+    // Recargar datos de la publicación
+    if (onImageUploaded) {
+      await onImageUploaded();
+    }
+  };
+
+  const handleImageRemoved = async (imageId) => {
+    if (!publicacionActual?._id) return;
+
+    await eliminarArchivo(publicacionActual._id, imageId, "carousel");
+    
+    // Recargar datos de la publicación
+    if (onImageUploaded) {
+      await onImageUploaded();
+    }
   };
 
   const getStatusColor = (status) => {
@@ -214,6 +242,20 @@ const FormularioPublicacion = ({
               <p className="text-black dark:text-white">Publicación destacada</p>
             </label>
           </div>
+
+          {/* Carrusel de Imágenes */}
+          {publicacionActual && (
+            <div className="mb-6">
+              <CarouselImageManager
+                publicacionId={publicacionActual._id}
+                images={publicacionActual.carousel || []}
+                onImageAdded={handleImageAdded}
+                onImageRemoved={handleImageRemoved}
+                isDraft={formData.status === "Draft"}
+                maxImages={5}
+              />
+            </div>
+          )}
 
           {/* Botones - Solo aparecen cuando hay cambios */}
           {isDirty && (
