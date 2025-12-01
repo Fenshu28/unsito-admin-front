@@ -95,8 +95,8 @@ const PublicacionDetalle = () => {
 
   return (
     <div className="p-4 md:p-6">
-      {/* Header simple con botón volver y eliminar */}
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      {/* Header simple con botón volver */}
+      <div className="mb-6">
         <button
           onClick={handleVolver}
           className="inline-flex items-center text-sm text-primary hover:underline"
@@ -119,13 +119,6 @@ const PublicacionDetalle = () => {
           </svg>
           Volver a Publicaciones
         </button>
-        
-        <button
-          onClick={handleEliminar}
-          className="inline-flex items-center justify-center rounded-md bg-red-600 px-6 py-3 text-center font-medium text-white hover:bg-opacity-90"
-        >
-          Eliminar
-        </button>
       </div>
 
       {/* Error Message */}
@@ -141,6 +134,7 @@ const PublicacionDetalle = () => {
         categorias={categorias}
         tipos={tipos}
         onSubmit={handleActualizar}
+        onImageUploaded={cargarDatos}
       />
     </div>
   );
