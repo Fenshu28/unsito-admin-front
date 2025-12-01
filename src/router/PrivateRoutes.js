@@ -1,11 +1,11 @@
 import { Navigate, Routes, Route } from "react-router-dom";
 import Inicio from "../pages/Inicio";
-import Noticias from "../pages/Noticias";
-import Avisos from "../pages/Avisos";
-import Convocatorias from "../pages/Convocatorias";
-import Eventos from "../pages/Eventos";
+import PublicacionesList from "../pages/PublicacionesList";
+import PublicacionDetalle from "../pages/PublicacionDetalle";
+import PublicacionNueva from "../pages/PublicacionNueva";
 import Usuarios from "../pages/Usuarios";
 import Categorias from "../pages/Categorias";
+
 const PrivateRoutes = () => {
   const isAuth = localStorage.getItem("token");
 
@@ -14,17 +14,15 @@ const PrivateRoutes = () => {
   return (
     <Routes>
       <Route path="inicio" element={<Inicio />} />
-      <Route path="noticias" element={<Noticias />} />
-      
-      <Route path="avisos" element={<Avisos />} />
-      <Route path="convocatorias" element={<Convocatorias />} />
+      <Route path="publicaciones" element={<PublicacionesList />} />
+      <Route path="publicaciones/nueva" element={<PublicacionNueva />} />
+      <Route path="publicaciones/:id" element={<PublicacionDetalle />} />
       <Route path="usuarios" element={<Usuarios />} />
-      <Route path="Eventos" element={<Eventos />} />
-      <Route path="Categorias" element={<Categorias />} />
-
-
+      <Route path="categorias" element={<Categorias />} />
     </Routes>
   );
 };
 
 export default PrivateRoutes;
+
+
