@@ -26,27 +26,9 @@ const Sidebar = () => {
         </li>
 
         <li className="nav-item mb-2">
-          <Link to="/App/noticias" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
+          <Link to="/App/publicaciones" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
           <Icon icon="mdi:newspaper-variant-multiple-outline" width="24" height="24" />
-            Noticias
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/App/avisos" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
-          <Icon icon="mdi:loudspeaker" width="24" height="24" />
-            Avisos
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/App/eventos" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
-          <Icon icon="mdi:calendar-multiple" width="24" height="24" />
-            Eventos
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/App/convocatorias" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
-          <Icon icon="mdi:people-group" width="24" height="24" />
-            Convocatorias
+            Publicaciones
           </Link>
         </li>
         {/* Admin-only sections */}
