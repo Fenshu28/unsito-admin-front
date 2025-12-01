@@ -67,9 +67,21 @@ const FormularioPublicacion = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    
+    // Filtrar campos vacíos para evitar errores de ObjectId
+    const cleanData = { ...formData };
+    
+    // Remover categoria y tipo si están vacíos
+    if (!cleanData.categoria || cleanData.categoria === "") {
+      delete cleanData.categoria;
+    }
+    if (!cleanData.tipo || cleanData.tipo === "") {
+      delete cleanData.tipo;
+    }
+    
+    onSubmit(cleanData);
     setIsDirty(false);
-    setOriginalData(formData);
+    setOriginalData(cleanData);
   };
 
   const handleReset = () => {
