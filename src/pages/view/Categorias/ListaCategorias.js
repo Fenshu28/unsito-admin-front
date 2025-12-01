@@ -43,7 +43,7 @@ const ListaCategorias = () => {
             </tr>
           ) : (
             categorias.map((cat) => (
-              <tr key={cat.id}>
+              <tr key={cat._id}>
                 <td>{cat.nombre}</td>
                 <td>{cat.descripcion || "—"}</td>
                 <td>
