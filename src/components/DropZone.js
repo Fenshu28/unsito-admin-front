@@ -56,7 +56,7 @@ const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5 }) => {
     if (files.length > 0) {
       processFile(files[0]);
     }
-  }, [onFileSelect]);
+  }, [processFile]);
 
   const handleFileInput = (e) => {
     const files = e.target.files;
