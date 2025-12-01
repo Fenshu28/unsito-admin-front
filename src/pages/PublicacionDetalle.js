@@ -49,20 +49,6 @@ const PublicacionDetalle = () => {
     }
   };
 
-  const handleEliminar = async () => {
-    if (!window.confirm("¿Está seguro de eliminar esta publicación?")) return;
-    
-    setLoading(true);
-    try {
-      await eliminarPublicacion(id);
-      navigate("/App/publicaciones");
-    } catch (err) {
-      setError("Error al eliminar la publicación: " + (err.response?.data?.message || err.message));
-      console.error(err);
-      setLoading(false);
-    }
-  };
-
   const handleVolver = () => {
     navigate("/App/publicaciones");
   };
