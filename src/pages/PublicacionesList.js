@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import TablaPublicaciones from "./view/Publicaciones/TablaPublicaciones";
-import { obtenerPublicaciones } from "../services/publicacionesService";
+import { obtenerPublicaciones, crearPublicacion } from "../services/publicacionesService";
 
 const PublicacionesList = () => {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -28,8 +28,22 @@ const PublicacionesList = () => {
     cargarPublicaciones();
   }, [cargarPublicaciones]);
 
-  const handleNueva = () => {
-    navigate("/App/publicaciones/nueva");
+  const handleNueva = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Crear publicación vacía con solo título por defecto
+      const nuevaPublicacion = await crearPublicacion({
+        titulo: "Nueva Publicación"
+      });
+      
+      // Redirigir inmediatamente al detalle para editar
+      navigate(`/App/publicaciones/${nuevaPublicacion._id}`);
+    } catch (err) {
+      setError("Error al crear la publicación: " + (err.response?.data?.message || err.message));
+      console.error(err);
+      setLoading(false);
+    }
   };
 
   const handleVer = (id) => {
@@ -45,7 +59,8 @@ const PublicacionesList = () => {
         </h2>
         <button
           onClick={handleNueva}
-          className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-center font-medium text-white hover:bg-opacity-90"
+          disabled={loading}
+          className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-center font-medium text-white hover:bg-opacity-90 disabled:opacity-50"
         >
           <svg
             className="mr-2 fill-current"
@@ -60,7 +75,7 @@ const PublicacionesList = () => {
               fill=""
             />
           </svg>
-          Nueva Publicación
+          {loading ? "Creando..." : "Nueva Publicación"}
         </button>
       </div>
 
