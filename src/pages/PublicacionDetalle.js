@@ -3,8 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import FormularioPublicacion from "./view/Publicaciones/FormularioPublicacion";
 import {
   obtenerPublicacionPorId,
-  actualizarPublicacion,
-  eliminarPublicacion
+  actualizarPublicacion
 } from "../services/publicacionesService";
 import { useTaxonomy } from "../context/TaxonomyContext";
 

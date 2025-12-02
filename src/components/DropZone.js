@@ -34,7 +34,7 @@ const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5 }) => {
     return true;
   };
 
-  const processFile = (file) => {
+  const processFile = useCallback((file) => {
     if (!validateFile(file)) return;
 
     // Crear preview
@@ -46,7 +46,7 @@ const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5 }) => {
 
     // Notificar al padre
     onFileSelect(file);
-  };
+  }, [onFileSelect]);
 
   const handleDrop = useCallback((e) => {
     e.preventDefault();
