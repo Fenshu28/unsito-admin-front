@@ -48,6 +48,21 @@ const PublicacionDetalle = () => {
     }
   };
 
+  const handleStatusChange = async (statusData) => {
+    setLoading(true);
+    setError(null);
+    try {
+      await actualizarPublicacion(id, statusData);
+      await cargarDatos();
+    } catch (err) {
+      setError("Error al cambiar el estado: " + (err.response?.data?.message || err.message));
+      console.error(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleVolver = () => {
     navigate("/App/publicaciones");
   };
@@ -120,6 +135,7 @@ const PublicacionDetalle = () => {
         tipos={tipos}
         onSubmit={handleActualizar}
         onImageUploaded={cargarDatos}
+        onStatusChanged={handleStatusChange}
       />
     </div>
   );
