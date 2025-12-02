@@ -101,7 +101,6 @@ const PublicacionesList = () => {
               <option value="">Todos</option>
               <option value="Draft">Borrador</option>
               <option value="Published">Publicado</option>
-              <option value="Trash">Papelera</option>
             </select>
           </div>
         </div>
