@@ -35,7 +35,7 @@ apiClient.interceptors.response.use(
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             // Redirigir al login inmediatamente
-            window.location.href = '/login';
+            window.location.href = '/';
         }
         return Promise.reject(error);
     }
