@@ -20,9 +20,26 @@ apiClient.interceptors.request.use(
         return config;
     },
     (error) => {
-        // Do something with request error
+        return Promise.reject(error);
+    }
+);
+
+// Add a response interceptor to handle 401 errors (token expired)
+apiClient.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        // Si el token expiró (401), limpiar localStorage y redirigir al login
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            // Redirigir al login inmediatamente
+            window.location.href = '/login';
+        }
         return Promise.reject(error);
     }
 );
 
 export default apiClient;
+
