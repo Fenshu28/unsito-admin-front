@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import CarouselImageManager from "./CarouselImageManager";
+import LinksManager from "./LinksManager";
+import AttachmentsManager from "./AttachmentsManager";
 import ConfirmModal from "../../../components/ConfirmModal";
+import Switch from "../../../components/Switch";
+import DatePicker from "../../../components/DatePicker";
+import TextField from "../../../components/TextField";
+import TextAreaField from "../../../components/TextAreaField";
+import SelectField from "../../../components/SelectField";
 import { subirArchivo, eliminarArchivo } from "../../../services/publicacionesService";
 import { useToast } from "../../../context/ToastContext";
 
@@ -11,7 +18,7 @@ const FormularioPublicacion = ({
   tipos, 
   onSubmit,
   onImageUploaded,
-  onStatusChanged // Nuevo callback para cambio de status LiveEdit
+  onStatusChanged
 }) => {
   const [formData, setFormData] = useState({
     titulo: "",
@@ -20,7 +27,9 @@ const FormularioPublicacion = ({
     tipo: "",
     fecha: new Date().toISOString().split('T')[0],
     isFeatured: false,
-    status: "Draft"
+    status: "Draft",
+    enlaces: [],
+    autor: ""
   });
 
   const [originalData, setOriginalData] = useState(null);
@@ -40,7 +49,9 @@ const FormularioPublicacion = ({
         tipo: publicacionActual.tipo?._id || "",
         fecha: publicacionActual.fecha ? publicacionActual.fecha.split('T')[0] : new Date().toISOString().split('T')[0],
         isFeatured: publicacionActual.isFeatured || false,
-        status: publicacionActual.status || "Draft"
+        status: publicacionActual.status || "Draft",
+        enlaces: publicacionActual.enlaces || [],
+        autor: publicacionActual.autor?._id || ""
       };
       setFormData(data);
       setOriginalData(data);
@@ -53,7 +64,9 @@ const FormularioPublicacion = ({
         tipo: "",
         fecha: new Date().toISOString().split('T')[0],
         isFeatured: false,
-        status: "Draft"
+        status: "Draft",
+        enlaces: [],
+        autor: ""
       };
       setFormData(data);
       setOriginalData(data);
@@ -89,6 +102,9 @@ const FormularioPublicacion = ({
       }
       if (!cleanData.tipo || cleanData.tipo === "") {
         delete cleanData.tipo;
+      }
+      if (!cleanData.autor || cleanData.autor === "") {
+        delete cleanData.autor;
       }
       
       await onSubmit(cleanData);
@@ -183,6 +199,52 @@ const FormularioPublicacion = ({
     }
   };
 
+  // Handlers para archivos adjuntos (LiveEdit)
+  const handleAttachmentAdded = async (file) => {
+    if (!publicacionActual?._id) {
+      toast.error("Debe guardar la publicación antes de agregar archivos");
+      throw new Error("Debe guardar la publicación antes de agregar archivos");
+    }
+
+    try {
+      await subirArchivo(publicacionActual._id, file, "attachments");
+      
+      if (onImageUploaded) {
+        await onImageUploaded();
+      }
+      
+      toast.success('Archivo agregado correctamente');
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Error al subir el archivo';
+      toast.error(errorMessage);
+      throw error;
+    }
+  };
+
+  const handleAttachmentRemoved = async (attachmentId) => {
+    if (!publicacionActual?._id) return;
+
+    try {
+      await eliminarArchivo(publicacionActual._id, attachmentId, "attachments");
+      
+      if (onImageUploaded) {
+        await onImageUploaded();
+      }
+      
+      toast.success('Archivo eliminado correctamente');
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Error al eliminar el archivo';
+      toast.error(errorMessage);
+      throw error;
+    }
+  };
+
+  // Handler para enlaces (se guardan con el formulario, no LiveEdit)
+  const handleLinksChange = (newLinks) => {
+    setFormData(prev => ({ ...prev, enlaces: newLinks }));
+    setIsDirty(true);
+  };
+
   const getStatusConfig = (status) => {
     return status === "Published" 
       ? {
@@ -205,7 +267,20 @@ const FormularioPublicacion = ({
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark flex items-center justify-end">
+        {/* Header with Featured Switch and Status */}
+        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark flex items-center justify-between">
+          {/* Featured Switch */}
+          <Switch
+            id="isFeatured"
+            checked={formData.isFeatured}
+            onChange={(e) => handleChange({ target: { name: 'isFeatured', type: 'checkbox', checked: e.target.checked } })}
+            disabled={isPublished}
+            label="Destacada"
+          />
+
+          {/* Separator */}
+          <div className="h-8 w-px bg-stroke dark:bg-strokedark mx-4"></div>
+
           {/* Status dropdown */}
           <div className="relative">
             <button
@@ -223,7 +298,7 @@ const FormularioPublicacion = ({
                 <button
                   type="button"
                   onClick={() => handleStatusClick("Published")}
-                  className={`flex items-center gap-3 w-full px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-meta-4 last:rounded-b-lg ${
+                  className={`flex items-center gap-3 w-full px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-meta-4 first:rounded-t-lg ${
                     formData.status === "Published" ? "bg-gray-50 dark:bg-meta-4" : ""
                   }`}
                 >
@@ -233,7 +308,7 @@ const FormularioPublicacion = ({
                 <button
                   type="button"
                   onClick={() => handleStatusClick("Draft")}
-                  className={`flex items-center gap-3 w-full px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-meta-4 first:rounded-t-lg ${
+                  className={`flex items-center gap-3 w-full px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-meta-4 last:rounded-b-lg ${
                     formData.status === "Draft" ? "bg-gray-50 dark:bg-meta-4" : ""
                   }`}
                 >
@@ -250,123 +325,123 @@ const FormularioPublicacion = ({
             {/* Título y Tipo en la misma fila */}
             <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
               <div className="w-full xl:w-2/3">
-                <label className="mb-2.5 block text-black dark:text-white">
-                  Título <span className="text-meta-1">*</span>
-                </label>
-                <input
-                  type="text"
+                <TextField
+                  id="titulo"
                   name="titulo"
+                  label="Título"
                   value={formData.titulo}
                   onChange={handleChange}
                   placeholder="Ingrese el título de la publicación"
                   required
                   disabled={isPublished}
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:disabled:bg-form-input"
                 />
               </div>
 
               <div className="w-full xl:w-1/3">
-                <label className="mb-2.5 block text-black dark:text-white">
-                  Tipo
-                </label>
-                <div className="relative">
-                  <select
-                    name="tipo"
-                    value={formData.tipo}
-                    onChange={handleChange}
-                    disabled={isPublished}
-                    className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary dark:disabled:bg-form-input"
-                  >
-                    <option value="">Seleccione un tipo</option>
-                    {tipos.map((tipo) => (
-                      <option key={tipo._id} value={tipo._id}>
-                        {tipo.nombre}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
-                    <Icon icon="mdi:chevron-down" width="20" />
-                  </span>
-                </div>
+                <SelectField
+                  id="tipo"
+                  name="tipo"
+                  label="Tipo"
+                  value={formData.tipo}
+                  onChange={handleChange}
+                  options={tipos}
+                  placeholder="Seleccione un tipo"
+                  disabled={isPublished}
+                />
               </div>
             </div>
 
             {/* Descripción */}
             <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Descripción
-              </label>
-              <textarea
+              <TextAreaField
+                id="descripcion"
                 name="descripcion"
+                label="Descripción"
                 value={formData.descripcion}
                 onChange={handleChange}
-                rows={6}
                 placeholder="Ingrese la descripción de la publicación"
                 disabled={isPublished}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:disabled:bg-form-input"
-              ></textarea>
+                rows={6}
+              />
             </div>
 
-            {/* Categoría y Destacado en la misma fila */}
-            <div className="mb-4.5 flex flex-col gap-6 xl:flex-row xl:items-end">
-              <div className="w-full xl:w-2/3">
-                <label className="mb-2.5 block text-black dark:text-white">
-                  Categoría
-                </label>
-                <div className="relative">
-                  <select
-                    name="categoria"
-                    value={formData.categoria}
-                    onChange={handleChange}
-                    disabled={isPublished}
-                    className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary dark:disabled:bg-form-input"
-                  >
-                    <option value="">Seleccione una categoría</option>
-                    {categorias.map((cat) => (
-                      <option key={cat._id} value={cat._id}>
-                        {cat.nombre}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
-                    <Icon icon="mdi:chevron-down" width="20" />
-                  </span>
+            {/* Categoría y Autor en la misma fila */}
+            <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+              <div className="w-full xl:w-1/2">
+                <SelectField
+                  id="categoria"
+                  name="categoria"
+                  label="Categoría"
+                  value={formData.categoria}
+                  onChange={handleChange}
+                  options={categorias}
+                  placeholder="Seleccione una categoría"
+                  disabled={isPublished}
+                />
+              </div>
+
+              {/* Autor - Placeholder, no integrado con API */}
+              <div className="w-full xl:w-1/2">
+                <SelectField
+                  id="autor"
+                  name="autor"
+                  label="Autor"
+                  value={formData.autor}
+                  onChange={handleChange}
+                  options={[]} // TODO: Integrar con API de autores
+                  placeholder="Seleccione un autor"
+                  disabled={isPublished}
+                />
+              </div>
+            </div>
+
+            {/* Fecha de Publicación */}
+            <div className="mb-6">
+              <DatePicker
+                id="fecha"
+                label="Fecha de Publicación"
+                value={formData.fecha}
+                onChange={(e) => handleChange({ target: { name: 'fecha', value: e.target.value } })}
+                disabled={isPublished}
+                required
+              />
+            </div>
+
+            {/* Carrusel de Imágenes y Enlaces en grid 2:1 */}
+            {publicacionActual && (
+              <div className="mb-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Carrusel de Imágenes - 2/3 del ancho */}
+                <div className="lg:col-span-2">
+                  <CarouselImageManager
+                    publicacionId={publicacionActual._id}
+                    images={publicacionActual.carousel || []}
+                    onImageAdded={handleImageAdded}
+                    onImageRemoved={handleImageRemoved}
+                    isDraft={!isPublished}
+                    maxImages={5}
+                  />
+                </div>
+
+                {/* Enlaces - 1/3 del ancho */}
+                <div className="lg:col-span-1">
+                  <LinksManager
+                    links={formData.enlaces}
+                    onLinksChange={handleLinksChange}
+                    isDraft={!isPublished}
+                  />
                 </div>
               </div>
+            )}
 
-              {/* Destacado */}
-              <div className="w-full xl:w-1/3">
-                <label className={`flex cursor-pointer select-none items-center justify-center rounded border border-stroke bg-gray-2 py-3 px-5 dark:border-strokedark dark:bg-meta-4 hover:bg-opacity-80 transition-colors ${isPublished ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                  <div className="relative mr-3">
-                    <input
-                      type="checkbox"
-                      name="isFeatured"
-                      checked={formData.isFeatured}
-                      onChange={handleChange}
-                      disabled={isPublished}
-                      className="sr-only"
-                    />
-                    <div className={`box flex h-5 w-5 items-center justify-center rounded border ${formData.isFeatured ? 'border-primary bg-primary' : 'border-body'}`}>
-                      <span className={`text-white ${formData.isFeatured ? 'opacity-100' : 'opacity-0'}`}>
-                        <Icon icon="mdi:check" width="14" />
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-black dark:text-white font-medium">Destacada</p>
-                </label>
-              </div>
-            </div>
-
-            {/* Carrusel de Imágenes */}
+            {/* Archivos Adjuntos - Ancho completo */}
             {publicacionActual && (
               <div className="mb-6">
-                <CarouselImageManager
+                <AttachmentsManager
                   publicacionId={publicacionActual._id}
-                  images={publicacionActual.carousel || []}
-                  onImageAdded={handleImageAdded}
-                  onImageRemoved={handleImageRemoved}
+                  attachments={publicacionActual.attachments || []}
+                  onAttachmentAdded={handleAttachmentAdded}
+                  onAttachmentRemoved={handleAttachmentRemoved}
                   isDraft={!isPublished}
-                  maxImages={5}
                 />
               </div>
             )}
