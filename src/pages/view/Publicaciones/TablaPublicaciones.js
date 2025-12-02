@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import React from "react";
 
 const TablaPublicaciones = ({ publicaciones, onVer }) => {
@@ -47,13 +48,10 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
                 Tipo
               </th>
               <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
-                Fecha
+                Publicado
               </th>
               <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
                 Estado
-              </th>
-              <th className="px-4 py-4 font-medium text-black dark:text-white">
-                Destacado
               </th>
             </tr>
           </thead>
@@ -72,8 +70,14 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
                   className="cursor-pointer border-b border-[#eee] hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 >
                   <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
-                    <h5 className="font-medium text-black dark:text-white">
+                    <h5 className="font-medium text-black dark:text-white flex items-center gap-2">
                       {pub.titulo}
+                      {pub.isFeatured && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-warning bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-warning">
+                          <Icon icon="mdi:star" width="14" />
+                          Destacado
+                        </span>
+                      )}                      
                     </h5>
                   </td>
                   <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
@@ -88,16 +92,11 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
                   </td>
                   <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {formatDate(pub.fecha)}
+                      {formatDate(pub.updatedAt)}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                     {getStatusBadge(pub.status)}
-                  </td>
-                  <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {pub.isFeatured ? "Sí" : "No"}
-                    </p>
                   </td>
                 </tr>
               ))
