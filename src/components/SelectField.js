@@ -17,7 +17,7 @@ const SelectField = ({
   return (
     <div className="w-full">
       {label && (
-        <label htmlFor={id} className="mb-2.5 block text-black dark:text-white">
+        <label htmlFor={id} className="mb-2.5 block text-black dark:text-white font-semibold">
           {label} {required && <span className="text-meta-1">*</span>}
         </label>
       )}
