@@ -6,15 +6,20 @@ import {
   actualizarPublicacion
 } from "../services/publicacionesService";
 import { useTaxonomy } from "../context/TaxonomyContext";
+import { useToast } from "../context/ToastContext";
+import { Icon } from "@iconify/react";
+import ConfirmModal from "../components/ConfirmModal";
 
 const PublicacionDetalle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { categorias, tipos } = useTaxonomy();
+  const toast = useToast();
   
   const [publicacion, setPublicacion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const cargarDatos = useCallback(async () => {
     setLoading(true);
@@ -64,6 +69,22 @@ const PublicacionDetalle = () => {
     }
   };
 
+  const handleDelete = async () => {
+    setLoading(true);
+    try {
+      await actualizarPublicacion(id, { status: "Trash" });
+      toast.success('Publicación movida a la papelera');
+      navigate("/App/publicaciones");
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Error al eliminar la publicación';
+      toast.error(errorMessage);
+      console.error(err);
+    } finally {
+      setLoading(false);
+      setShowDeleteModal(false);
+    }
+  };
+
   const handleVolver = () => {
     navigate("/App/publicaciones");
   };
@@ -96,8 +117,8 @@ const PublicacionDetalle = () => {
 
   return (
     <div className="p-4 md:p-6">
-      {/* Header simple con botón volver */}
-      <div className="mb-6">
+      {/* Header con botón volver y eliminar */}
+      <div className="mb-6 flex items-center justify-between">
         <button
           onClick={handleVolver}
           className="inline-flex items-center text-sm text-primary hover:underline"
@@ -120,6 +141,16 @@ const PublicacionDetalle = () => {
           </svg>
           Volver a Publicaciones
         </button>
+
+        {publicacion && publicacion.status !== "Trash" && (
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="inline-flex items-center gap-2 rounded bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
+          >
+            <Icon icon="mdi:delete" width="18" />
+            Eliminar
+          </button>
+        )}
       </div>
 
       {/* Error Message - Solo para errores críticos (404, etc) */}
@@ -137,6 +168,18 @@ const PublicacionDetalle = () => {
         onSubmit={handleActualizar}
         onImageUploaded={cargarDatos}
         onStatusChanged={handleStatusChange}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        title="Eliminar Publicación"
+        message="¿Está seguro de que desea eliminar esta publicación? Se moverá a la papelera."
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        type="danger"
       />
     </div>
   );
