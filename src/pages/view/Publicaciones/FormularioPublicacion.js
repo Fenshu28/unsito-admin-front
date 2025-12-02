@@ -365,9 +365,9 @@ const FormularioPublicacion = ({
               />
             </div>
 
-            {/* Categoría y Autor en la misma fila */}
-            <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-              <div className="w-full xl:w-1/2">
+            {/* Categoría, Autor y Fecha en la misma fila - 3 columnas */}
+            <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+              <div>
                 <SelectField
                   id="categoria"
                   name="categoria"
@@ -381,7 +381,7 @@ const FormularioPublicacion = ({
               </div>
 
               {/* Autor - Placeholder, no integrado con API */}
-              <div className="w-full xl:w-1/2">
+              <div>
                 <SelectField
                   id="autor"
                   name="autor"
@@ -393,25 +393,25 @@ const FormularioPublicacion = ({
                   disabled={isPublished}
                 />
               </div>
+
+              {/* Fecha de Publicación */}
+              <div>
+                <DatePicker
+                  id="fecha"
+                  label="Fecha de Publicación"
+                  value={formData.fecha}
+                  onChange={(e) => handleChange({ target: { name: 'fecha', value: e.target.value } })}
+                  disabled={isPublished}
+                  required
+                />
+              </div>
             </div>
 
-            {/* Fecha de Publicación */}
-            <div className="mb-6">
-              <DatePicker
-                id="fecha"
-                label="Fecha de Publicación"
-                value={formData.fecha}
-                onChange={(e) => handleChange({ target: { name: 'fecha', value: e.target.value } })}
-                disabled={isPublished}
-                required
-              />
-            </div>
-
-            {/* Carrusel de Imágenes y linksExternos en grid 2:1 */}
+            {/* Carrusel, Enlaces y Archivos en la misma fila - 3 columnas */}
             {publicacionActual && (
-              <div className="mb-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Carrusel de Imágenes - 2/3 del ancho */}
-                <div className="lg:col-span-2">
+              <div className="mb-20 grid grid-cols-1 gap-6 lg:grid-cols-3">
+                {/* Carrusel de Imágenes */}
+                <div>
                   <CarouselImageManager
                     publicacionId={publicacionActual._id}
                     images={publicacionActual.carousel || []}
@@ -422,52 +422,53 @@ const FormularioPublicacion = ({
                   />
                 </div>
 
-                {/* linksExternos - 1/3 del ancho */}
-                <div className="lg:col-span-1">
+                {/* Enlaces */}
+                <div>
                   <LinksManager
                     links={formData.linksExternos}
                     onLinksChange={handleLinksChange}
                     isDraft={!isPublished}
                   />
                 </div>
-              </div>
-            )}
 
-            {/* Archivos Adjuntos - Ancho completo */}
-            {publicacionActual && (
-              <div className="mb-6">
-                <AttachmentsManager
-                  publicacionId={publicacionActual._id}
-                  attachments={publicacionActual.attachments || []}
-                  onAttachmentAdded={handleAttachmentAdded}
-                  onAttachmentRemoved={handleAttachmentRemoved}
-                  isDraft={!isPublished}
-                />
-              </div>
-            )}
-
-            {/* Botones - Solo aparecen cuando hay cambios */}
-            {isDirty && (
-              <div className="flex gap-4 border-t border-stroke pt-6 dark:border-strokedark">
-                <button
-                  type="submit"
-                  className="flex items-center justify-center gap-2 rounded bg-primary px-6 py-3 font-medium text-white hover:bg-opacity-90 transition-all"
-                >
-                  <Icon icon="mdi:content-save" width="20" />
-                  Guardar Cambios
-                </button>
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="flex items-center justify-center gap-2 rounded border border-stroke px-6 py-3 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white transition-all"
-                >
-                  <Icon icon="mdi:close" width="20" />
-                  Cancelar
-                </button>
+                {/* Archivos Adjuntos */}
+                <div>
+                  <AttachmentsManager
+                    publicacionId={publicacionActual._id}
+                    attachments={publicacionActual.attachments || []}
+                    onAttachmentAdded={handleAttachmentAdded}
+                    onAttachmentRemoved={handleAttachmentRemoved}
+                    isDraft={!isPublished}
+                  />
+                </div>
               </div>
             )}
           </div>
         </form>
+
+        {/* Botones flotantes centrados en el bottom */}
+        {isDirty && (
+          <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center p-4 bg-white/80 dark:bg-boxdark/80 backdrop-blur-sm border-t border-stroke dark:border-strokedark">
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="flex items-center justify-center gap-2 rounded bg-primary px-8 py-3 font-medium text-white hover:bg-opacity-90 transition-all shadow-lg"
+              >
+                <Icon icon="mdi:content-save" width="20" />
+                Guardar Cambios
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="flex items-center justify-center gap-2 rounded border border-stroke px-8 py-3 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white transition-all bg-white dark:bg-boxdark"
+              >
+                <Icon icon="mdi:close" width="20" />
+                Cancelar
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Confirmation Modal for Status Change */}
