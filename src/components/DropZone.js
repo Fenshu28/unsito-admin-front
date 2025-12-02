@@ -65,12 +65,6 @@ const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5 }) => {
     }
   };
 
-  const handleRemove = () => {
-    setPreview(null);
-    setError(null);
-    onFileSelect(null);
-  };
-
   return (
     <div className="w-full">
       {!preview ? (
@@ -110,13 +104,6 @@ const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5 }) => {
             alt="Preview"
             className="w-full h-64 object-contain rounded-lg bg-gray-50 dark:bg-boxdark-2"
           />
-          <button
-            type="button"
-            onClick={handleRemove}
-            className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
-          >
-            <Icon icon="mdi:close" width="20" />
-          </button>
         </div>
       )}
 
