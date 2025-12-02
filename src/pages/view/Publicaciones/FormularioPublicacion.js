@@ -200,6 +200,7 @@ const FormularioPublicacion = ({
   };
 
   const currentStatusConfig = getStatusConfig(formData.status);
+  const isPublished = formData.status === "Published";
 
   return (
     <>
@@ -259,7 +260,8 @@ const FormularioPublicacion = ({
                   onChange={handleChange}
                   placeholder="Ingrese el título de la publicación"
                   required
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  disabled={isPublished}
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:disabled:bg-form-input"
                 />
               </div>
 
@@ -272,7 +274,8 @@ const FormularioPublicacion = ({
                     name="tipo"
                     value={formData.tipo}
                     onChange={handleChange}
-                    className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    disabled={isPublished}
+                    className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary dark:disabled:bg-form-input"
                   >
                     <option value="">Seleccione un tipo</option>
                     {tipos.map((tipo) => (
@@ -299,7 +302,8 @@ const FormularioPublicacion = ({
                 onChange={handleChange}
                 rows={6}
                 placeholder="Ingrese la descripción de la publicación"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                disabled={isPublished}
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:disabled:bg-form-input"
               ></textarea>
             </div>
 
@@ -314,7 +318,8 @@ const FormularioPublicacion = ({
                     name="categoria"
                     value={formData.categoria}
                     onChange={handleChange}
-                    className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    disabled={isPublished}
+                    className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary dark:disabled:bg-form-input"
                   >
                     <option value="">Seleccione una categoría</option>
                     {categorias.map((cat) => (
@@ -331,13 +336,14 @@ const FormularioPublicacion = ({
 
               {/* Destacado */}
               <div className="w-full xl:w-1/3">
-                <label className="flex cursor-pointer select-none items-center justify-center rounded border border-stroke bg-gray-2 py-3 px-5 dark:border-strokedark dark:bg-meta-4 hover:bg-opacity-80 transition-colors">
+                <label className={`flex cursor-pointer select-none items-center justify-center rounded border border-stroke bg-gray-2 py-3 px-5 dark:border-strokedark dark:bg-meta-4 hover:bg-opacity-80 transition-colors ${isPublished ? 'opacity-50 cursor-not-allowed' : ''}`}>
                   <div className="relative mr-3">
                     <input
                       type="checkbox"
                       name="isFeatured"
                       checked={formData.isFeatured}
                       onChange={handleChange}
+                      disabled={isPublished}
                       className="sr-only"
                     />
                     <div className={`box flex h-5 w-5 items-center justify-center rounded border ${formData.isFeatured ? 'border-primary bg-primary' : 'border-body'}`}>
@@ -359,7 +365,7 @@ const FormularioPublicacion = ({
                   images={publicacionActual.carousel || []}
                   onImageAdded={handleImageAdded}
                   onImageRemoved={handleImageRemoved}
-                  isDraft={formData.status === "Draft"}
+                  isDraft={!isPublished}
                   maxImages={5}
                 />
               </div>
