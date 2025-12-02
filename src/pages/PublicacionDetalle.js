@@ -40,9 +40,12 @@ const PublicacionDetalle = () => {
     try {
       await actualizarPublicacion(id, formData);
       await cargarDatos();
+      // Success toast se muestra en FormularioPublicacion
     } catch (err) {
-      setError("Error al actualizar la publicación: " + (err.response?.data?.message || err.message));
+      const errorMessage = err.response?.data?.message || err.message;
+      setError("Error al actualizar la publicación: " + errorMessage);
       console.error(err);
+      throw err; // Re-throw para que FormularioPublicacion lo maneje
     } finally {
       setLoading(false);
     }
@@ -54,10 +57,12 @@ const PublicacionDetalle = () => {
     try {
       await actualizarPublicacion(id, statusData);
       await cargarDatos();
+      // Success toast se muestra en FormularioPublicacion
     } catch (err) {
-      setError("Error al cambiar el estado: " + (err.response?.data?.message || err.message));
+      const errorMessage = err.response?.data?.message || err.message;
+      setError("Error al cambiar el estado: " + errorMessage);
       console.error(err);
-      throw err;
+      throw err; // Re-throw para que FormularioPublicacion lo maneje
     } finally {
       setLoading(false);
     }

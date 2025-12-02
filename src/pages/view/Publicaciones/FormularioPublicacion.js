@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 import CarouselImageManager from "./CarouselImageManager";
 import ConfirmModal from "../../../components/ConfirmModal";
 import { subirArchivo, eliminarArchivo } from "../../../services/publicacionesService";
+import { useToast } from "../../../context/ToastContext";
 
 const FormularioPublicacion = ({ 
   publicacionActual, 
@@ -27,6 +28,8 @@ const FormularioPublicacion = ({
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [pendingStatus, setPendingStatus] = useState(null);
+  
+  const toast = useToast();
 
   useEffect(() => {
     if (publicacionActual) {
@@ -73,23 +76,30 @@ const FormularioPublicacion = ({
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Filtrar campos vacíos para evitar errores de ObjectId
-    const cleanData = { ...formData };
-    
-    // Remover categoria y tipo si están vacíos
-    if (!cleanData.categoria || cleanData.categoria === "") {
-      delete cleanData.categoria;
+    try {
+      // Filtrar campos vacíos para evitar errores de ObjectId
+      const cleanData = { ...formData };
+      
+      // Remover categoria y tipo si están vacíos
+      if (!cleanData.categoria || cleanData.categoria === "") {
+        delete cleanData.categoria;
+      }
+      if (!cleanData.tipo || cleanData.tipo === "") {
+        delete cleanData.tipo;
+      }
+      
+      await onSubmit(cleanData);
+      setIsDirty(false);
+      setOriginalData(cleanData);
+      toast.success('Publicación guardada correctamente');
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Error al guardar la publicación';
+      toast.error(errorMessage);
+      console.error(error);
     }
-    if (!cleanData.tipo || cleanData.tipo === "") {
-      delete cleanData.tipo;
-    }
-    
-    onSubmit(cleanData);
-    setIsDirty(false);
-    setOriginalData(cleanData);
   };
 
   const handleReset = () => {
@@ -97,6 +107,7 @@ const FormularioPublicacion = ({
       setFormData(originalData);
     }
     setIsDirty(false);
+    toast.info('Cambios descartados');
   };
 
   // Handler para cambio de status (LiveEdit con confirmación)
@@ -121,7 +132,11 @@ const FormularioPublicacion = ({
       // Actualizar estado local
       setFormData(prev => ({ ...prev, status: pendingStatus }));
       setOriginalData(prev => ({ ...prev, status: pendingStatus }));
+      
+      toast.success(`Estado cambiado a ${pendingStatus === "Published" ? "Publicado" : "Borrador"}`);
     } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Error al cambiar el estado';
+      toast.error(errorMessage);
       console.error('Error changing status:', error);
     }
   };
@@ -129,23 +144,40 @@ const FormularioPublicacion = ({
   // Handlers para imágenes del carrusel (LiveEdit - no activa isDirty)
   const handleImageAdded = async (file) => {
     if (!publicacionActual?._id) {
+      toast.error("Debe guardar la publicación antes de agregar imágenes");
       throw new Error("Debe guardar la publicación antes de agregar imágenes");
     }
 
-    await subirArchivo(publicacionActual._id, file, "carousel");
-    
-    if (onImageUploaded) {
-      await onImageUploaded();
+    try {
+      await subirArchivo(publicacionActual._id, file, "carousel");
+      
+      if (onImageUploaded) {
+        await onImageUploaded();
+      }
+      
+      toast.success('Imagen agregada al carrusel');
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Error al subir la imagen';
+      toast.error(errorMessage);
+      throw error;
     }
   };
 
   const handleImageRemoved = async (imageId) => {
     if (!publicacionActual?._id) return;
 
-    await eliminarArchivo(publicacionActual._id, imageId, "carousel");
-    
-    if (onImageUploaded) {
-      await onImageUploaded();
+    try {
+      await eliminarArchivo(publicacionActual._id, imageId, "carousel");
+      
+      if (onImageUploaded) {
+        await onImageUploaded();
+      }
+      
+      toast.success('Imagen eliminada del carrusel');
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Error al eliminar la imagen';
+      toast.error(errorMessage);
+      throw error;
     }
   };
 
