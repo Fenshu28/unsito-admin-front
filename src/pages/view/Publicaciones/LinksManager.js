@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 
 const LinksManager = ({ links = [], onLinksChange, isDraft = true }) => {
-  const [newLink, setNewLink] = useState({ titulo: '', url: '' });
+  const [newLink, setNewLink] = useState('');
   const [error, setError] = useState('');
 
   const validateUrl = (url) => {
@@ -15,33 +15,36 @@ const LinksManager = ({ links = [], onLinksChange, isDraft = true }) => {
   };
 
   const handleAdd = () => {
-    if (!newLink.titulo.trim()) {
-      setError('El título es requerido');
-      return;
-    }
-    if (!newLink.url.trim()) {
+    if (!newLink.trim()) {
       setError('La URL es requerida');
       return;
     }
-    if (!validateUrl(newLink.url)) {
+    if (!validateUrl(newLink)) {
       setError('URL inválida. Debe incluir http:// o https://');
       return;
     }
 
-    onLinksChange([...links, { ...newLink, _id: Date.now().toString() }]);
-    setNewLink({ titulo: '', url: '' });
+    onLinksChange([...links, newLink]);
+    setNewLink('');
     setError('');
   };
 
-  const handleRemove = (id) => {
-    onLinksChange(links.filter(link => link._id !== id));
+  const handleRemove = (index) => {
+    onLinksChange(links.filter((_, i) => i !== index));
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAdd();
+    }
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark h-full">
       <div className="border-b border-stroke px-6 py-4 dark:border-strokedark">
         <h4 className="text-lg font-semibold text-black dark:text-white">
-          Enlaces Relacionados
+          Enlaces Externos
         </h4>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           {links.length} enlace{links.length !== 1 ? 's' : ''}
@@ -52,29 +55,27 @@ const LinksManager = ({ links = [], onLinksChange, isDraft = true }) => {
         {/* Lista de enlaces */}
         {links.length > 0 ? (
           <ul className="mb-4 space-y-2">
-            {links.map((link) => (
+            {links.map((link, index) => (
               <li
-                key={link._id}
-                className="flex items-center justify-between rounded-lg border border-stroke p-3 dark:border-strokedark"
+                key={index}
+                className="flex items-center justify-between rounded-lg border border-stroke p-3 dark:border-strokedark group hover:bg-gray-50 dark:hover:bg-meta-4"
               >
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-black dark:text-white truncate">
-                    {link.titulo}
-                  </p>
+                <div className="flex-1 min-w-0 flex items-center gap-2">
+                  <Icon icon="mdi:link-variant" className="text-primary flex-shrink-0" width="18" />
                   <a
-                    href={link.url}
+                    href={link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-primary hover:underline truncate block"
+                    className="text-sm text-primary hover:underline truncate"
                   >
-                    {link.url}
+                    {link}
                   </a>
                 </div>
                 {isDraft && (
                   <button
                     type="button"
-                    onClick={() => handleRemove(link._id)}
-                    className="ml-3 text-red-600 hover:text-red-700"
+                    onClick={() => handleRemove(index)}
+                    className="ml-3 text-red-600 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <Icon icon="mdi:delete" width="20" />
                   </button>
@@ -83,7 +84,7 @@ const LinksManager = ({ links = [], onLinksChange, isDraft = true }) => {
             ))}
           </ul>
         ) : (
-          <p className="mb-4 text-center text-sm text-gray-500 dark:text-gray-400">
+          <p className="mb-4 text-center text-sm text-gray-500 dark:text-gray-400 py-8">
             No hay enlaces agregados
           </p>
         )}
@@ -93,19 +94,11 @@ const LinksManager = ({ links = [], onLinksChange, isDraft = true }) => {
           <div className="space-y-3">
             <div>
               <input
-                type="text"
-                placeholder="Título del enlace"
-                value={newLink.titulo}
-                onChange={(e) => setNewLink({ ...newLink, titulo: e.target.value })}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-4 text-sm text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white"
-              />
-            </div>
-            <div>
-              <input
                 type="url"
                 placeholder="https://ejemplo.com"
-                value={newLink.url}
-                onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
+                value={newLink}
+                onChange={(e) => setNewLink(e.target.value)}
+                onKeyPress={handleKeyPress}
                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-4 text-sm text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white"
               />
             </div>
@@ -115,7 +108,7 @@ const LinksManager = ({ links = [], onLinksChange, isDraft = true }) => {
             <button
               type="button"
               onClick={handleAdd}
-              className="flex items-center gap-2 rounded bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-opacity-90"
+              className="flex items-center gap-2 rounded bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-opacity-90 w-full justify-center"
             >
               <Icon icon="mdi:plus" width="16" />
               Agregar Enlace
