@@ -1,6 +1,3 @@
-import React from 'react';
-import { Icon } from '@iconify/react';
-
 const DatePicker = ({ id, value, onChange, disabled = false, label, required = false }) => {
   return (
     <div>
