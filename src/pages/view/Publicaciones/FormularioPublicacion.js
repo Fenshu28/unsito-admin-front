@@ -222,6 +222,16 @@ const FormularioPublicacion = ({
               <div className="absolute right-0 mt-2 w-48 rounded-lg border border-stroke bg-white shadow-lg dark:border-strokedark dark:bg-boxdark z-10">
                 <button
                   type="button"
+                  onClick={() => handleStatusClick("Published")}
+                  className={`flex items-center gap-3 w-full px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-meta-4 last:rounded-b-lg ${
+                    formData.status === "Published" ? "bg-gray-50 dark:bg-meta-4" : ""
+                  }`}
+                >
+                  <Icon icon="svg-spinners:pulse-2" width="20" className="text-green-600" />
+                  <span className="text-green-800 dark:text-green-400">Publicado</span>
+                </button>
+                <button
+                  type="button"
                   onClick={() => handleStatusClick("Draft")}
                   className={`flex items-center gap-3 w-full px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-meta-4 first:rounded-t-lg ${
                     formData.status === "Draft" ? "bg-gray-50 dark:bg-meta-4" : ""
@@ -229,16 +239,6 @@ const FormularioPublicacion = ({
                 >
                   <Icon icon="mdi:pencil-circle" width="20" className="text-yellow-600" />
                   <span className="text-yellow-800 dark:text-yellow-400">Borrador</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleStatusClick("Published")}
-                  className={`flex items-center gap-3 w-full px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-meta-4 last:rounded-b-lg ${
-                    formData.status === "Published" ? "bg-gray-50 dark:bg-meta-4" : ""
-                  }`}
-                >
-                  <Icon icon="mdi:check-circle" width="20" className="text-green-600" />
-                  <span className="text-green-800 dark:text-green-400">Publicado</span>
                 </button>
               </div>
             )}
