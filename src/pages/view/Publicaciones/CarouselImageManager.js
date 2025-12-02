@@ -165,7 +165,12 @@ const CarouselImageManager = ({
           </>
         }
       >
-        <DropZone onFileSelect={handleFileSelect} />
+        <DropZone 
+          onFileSelect={handleFileSelect}
+          accept="image/*"
+          fileType="image"
+          maxSize={5}
+        />
       </Modal>
     </div>
   );

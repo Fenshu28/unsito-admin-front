@@ -207,7 +207,8 @@ const AttachmentsManager = ({
       >
         <DropZone 
           onFileSelect={handleFileSelect}
-          accept="*/*"
+          accept="application/pdf"
+          fileType="pdf"
           maxSize={10}
         />
       </Modal>
