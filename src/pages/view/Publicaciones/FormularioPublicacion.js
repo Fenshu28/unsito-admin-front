@@ -92,6 +92,7 @@ const FormularioPublicacion = ({
       }
       
       await onSubmit(cleanData);
+      // Solo resetear isDirty si fue exitoso
       setIsDirty(false);
       setOriginalData(cleanData);
       toast.success('Publicación guardada correctamente');
@@ -99,6 +100,7 @@ const FormularioPublicacion = ({
       const errorMessage = error.response?.data?.message || 'Error al guardar la publicación';
       toast.error(errorMessage);
       console.error(error);
+      // NO resetear isDirty - mantener botón guardar visible
     }
   };
 
