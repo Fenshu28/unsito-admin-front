@@ -94,7 +94,7 @@ const CarouselImageManager = ({
               >
                 <img
                   src={image.url}
-                  alt={image.nombre || 'Carousel image'}
+                  alt={image.nombreOriginal || 'Carousel image'}
                   className="w-40 h-40 object-cover rounded-lg border border-stroke dark:border-strokedark"
                 />
                 
@@ -102,14 +102,14 @@ const CarouselImageManager = ({
                   <button
                     type="button"
                     onClick={() => handleRemove(image._id)}
-                    className="absolute -top-2 -right-2 p-1.5 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700"
+                    className="absolute top-2 right-2 p-1.5 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700 shadow-lg"
                   >
                     <Icon icon="mdi:close" width="16" />
                   </button>
                 )}
                 
-                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-2 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                  <p className="truncate">{image.nombre || 'Sin nombre'}</p>
+                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-xs p-2 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="truncate">{image.nombreOriginal || 'Sin nombre'}</p>
                 </div>
               </div>
             ))}
