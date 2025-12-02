@@ -28,7 +28,7 @@ const Switch = ({ id, checked, onChange, disabled = false, label }) => {
           ></div>
         </div>
         {label && (
-          <div className="ml-3 text-sm font-medium text-black dark:text-white">
+          <div className="ml-3 text-sm font-semibold text-black dark:text-white">
             {label}
           </div>
         )}

@@ -2,7 +2,7 @@ const DatePicker = ({ id, value, onChange, disabled = false, label, required = f
   return (
     <div>
       {label && (
-        <label htmlFor={id} className="mb-2.5 block text-black dark:text-white">
+        <label htmlFor={id} className="mb-2.5 block text-black dark:text-white font-semibold">
           {label} {required && <span className="text-meta-1">*</span>}
         </label>
       )}
