@@ -207,7 +207,7 @@ const FormularioPublicacion = ({
     }
 
     try {
-      await subirArchivo(publicacionActual._id, file, "attachments");
+      await subirArchivo(publicacionActual._id, file, "adjuntos");
       
       if (onImageUploaded) {
         await onImageUploaded();
@@ -225,7 +225,7 @@ const FormularioPublicacion = ({
     if (!publicacionActual?._id) return;
 
     try {
-      await eliminarArchivo(publicacionActual._id, attachmentId, "attachments");
+      await eliminarArchivo(publicacionActual._id, attachmentId, "adjuntos");
       
       if (onImageUploaded) {
         await onImageUploaded();
