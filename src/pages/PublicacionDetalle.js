@@ -36,16 +36,14 @@ const PublicacionDetalle = () => {
 
   const handleActualizar = async (formData) => {
     setLoading(true);
-    setError(null);
     try {
       await actualizarPublicacion(id, formData);
       await cargarDatos();
       // Success toast se muestra en FormularioPublicacion
     } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message;
-      setError("Error al actualizar la publicación: " + errorMessage);
       console.error(err);
-      throw err; // Re-throw para que FormularioPublicacion lo maneje
+      // Error toast se muestra en FormularioPublicacion
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -53,16 +51,14 @@ const PublicacionDetalle = () => {
 
   const handleStatusChange = async (statusData) => {
     setLoading(true);
-    setError(null);
     try {
       await actualizarPublicacion(id, statusData);
       await cargarDatos();
       // Success toast se muestra en FormularioPublicacion
     } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message;
-      setError("Error al cambiar el estado: " + errorMessage);
       console.error(err);
-      throw err; // Re-throw para que FormularioPublicacion lo maneje
+      // Error toast se muestra en FormularioPublicacion
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -126,7 +122,7 @@ const PublicacionDetalle = () => {
         </button>
       </div>
 
-      {/* Error Message */}
+      {/* Error Message - Solo para errores críticos (404, etc) */}
       {error && (
         <div className="mb-4 rounded-lg bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-400">
           <p>{error}</p>
