@@ -431,11 +431,10 @@ const FormularioPublicacion = ({
                   />
                 </div>
 
-                {/* Archivos Adjuntos */}
                 <div>
                   <AttachmentsManager
                     publicacionId={publicacionActual._id}
-                    attachments={publicacionActual.attachments || []}
+                    attachments={publicacionActual.adjuntos || []}
                     onAttachmentAdded={handleAttachmentAdded}
                     onAttachmentRemoved={handleAttachmentRemoved}
                     isDraft={!isPublished}
