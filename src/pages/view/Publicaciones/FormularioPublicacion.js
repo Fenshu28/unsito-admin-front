@@ -28,7 +28,7 @@ const FormularioPublicacion = ({
     fecha: new Date().toISOString().split('T')[0],
     isFeatured: false,
     status: "Draft",
-    enlaces: [],
+    linksExternos: [],
     autor: ""
   });
 
@@ -50,7 +50,7 @@ const FormularioPublicacion = ({
         fecha: publicacionActual.fecha ? publicacionActual.fecha.split('T')[0] : new Date().toISOString().split('T')[0],
         isFeatured: publicacionActual.isFeatured || false,
         status: publicacionActual.status || "Draft",
-        enlaces: publicacionActual.enlaces || [],
+        linksExternos: publicacionActual.linksExternos || [],
         autor: publicacionActual.autor?._id || ""
       };
       setFormData(data);
@@ -65,7 +65,7 @@ const FormularioPublicacion = ({
         fecha: new Date().toISOString().split('T')[0],
         isFeatured: false,
         status: "Draft",
-        enlaces: [],
+        linksExternos: [],
         autor: ""
       };
       setFormData(data);
@@ -239,9 +239,9 @@ const FormularioPublicacion = ({
     }
   };
 
-  // Handler para enlaces (se guardan con el formulario, no LiveEdit)
+  // Handler para linksExternos (se guardan con el formulario, no LiveEdit)
   const handleLinksChange = (newLinks) => {
-    setFormData(prev => ({ ...prev, enlaces: newLinks }));
+    setFormData(prev => ({ ...prev, linksExternos: newLinks }));
     setIsDirty(true);
   };
 
@@ -407,7 +407,7 @@ const FormularioPublicacion = ({
               />
             </div>
 
-            {/* Carrusel de Imágenes y Enlaces en grid 2:1 */}
+            {/* Carrusel de Imágenes y linksExternos en grid 2:1 */}
             {publicacionActual && (
               <div className="mb-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Carrusel de Imágenes - 2/3 del ancho */}
@@ -422,10 +422,10 @@ const FormularioPublicacion = ({
                   />
                 </div>
 
-                {/* Enlaces - 1/3 del ancho */}
+                {/* linksExternos - 1/3 del ancho */}
                 <div className="lg:col-span-1">
                   <LinksManager
-                    links={formData.enlaces}
+                    links={formData.linksExternos}
                     onLinksChange={handleLinksChange}
                     isDraft={!isPublished}
                   />
