@@ -49,19 +49,19 @@ const Sidebar = () => {
         to={item.path}
         className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out ${
           isActive(item.path)
-            ? "bg-graydark dark:bg-meta-4 text-white"
-            : "text-bodydark1 hover:bg-graydark dark:hover:bg-meta-4"
+            ? "bg-brand-500 text-white"
+            : "text-gray-700 hover:bg-gray-100"
         } ${!isExpanded && !isHovered ? "lg:justify-center" : ""}`}
       >
         <Icon
           icon={item.icon}
-          width="18"
+          width="20"
           className={`${
-            isActive(item.path) ? "text-white" : "text-bodydark1"
+            isActive(item.path) ? "text-white" : "text-gray-500"
           }`}
         />
         {(isExpanded || isHovered || isMobileOpen) && (
-          <span className="text-sm">{item.name}</span>
+          <span className="text-sm font-medium">{item.name}</span>
         )}
       </Link>
     </li>
@@ -79,7 +79,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen bg-white dark:bg-boxdark border-r border-stroke dark:border-strokedark flex flex-col shadow-2 transition-all duration-300 ease-in-out
+        className={`fixed top-0 left-0 z-50 h-screen bg-white border-r border-gray-200 flex flex-col shadow-sm transition-all duration-300 ease-in-out
           ${
             isExpanded || isMobileOpen
               ? "w-[290px]"
@@ -94,7 +94,7 @@ const Sidebar = () => {
       >
         {/* Logo / Título */}
         <div
-          className={`py-5.5 px-6 border-b border-stroke dark:border-strokedark flex ${
+          className={`py-5.5 px-6 border-b border-gray-200 flex ${
             !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
           }`}
         >
@@ -105,7 +105,7 @@ const Sidebar = () => {
                 alt="Logo"
                 className="h-10"
               />
-              <h2 className="text-title-md font-bold text-black dark:text-white">
+              <h2 className="text-xl font-bold text-gray-900">
                 Unsito
               </h2>
             </div>
@@ -124,7 +124,7 @@ const Sidebar = () => {
             {/* Sección MENU */}
             <div className="mb-6">
               <h3
-                className={`mb-4 text-xs uppercase text-bodydark2 flex ${
+                className={`mb-4 text-xs font-semibold uppercase text-gray-400 flex ${
                   !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "justify-start"
@@ -145,7 +145,7 @@ const Sidebar = () => {
             <Can hasRole="admin">
               <div>
                 <h3
-                  className={`mb-4 text-xs uppercase text-bodydark2 flex ${
+                  className={`mb-4 text-xs font-semibold uppercase text-gray-400 flex ${
                     !isExpanded && !isHovered
                       ? "lg:justify-center"
                       : "justify-start"
@@ -168,13 +168,16 @@ const Sidebar = () => {
         </div>
 
         {/* Botón Cerrar Sesión */}
-        <div className="px-4 py-4 border-t border-stroke dark:border-strokedark">
-          <BtnCerrar
+        <div className="px-4 py-4 border-t border-gray-200">
+          <button
             onClick={handleLogout}
-            className={`w-full flex items-center justify-center gap-2 bg-meta-1 hover:bg-opacity-90 text-white py-2.5 px-4 rounded-sm font-medium transition duration-300 ${
+            className={`w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2.5 px-4 rounded-lg font-medium transition duration-300 ${
               !isExpanded && !isHovered ? "lg:px-2" : ""
             }`}
-          />
+          >
+            <Icon icon="mdi:logout" width="20" />
+            {(isExpanded || isHovered || isMobileOpen) && <span>Cerrar Sesión</span>}
+          </button>
         </div>
       </aside>
     </>
