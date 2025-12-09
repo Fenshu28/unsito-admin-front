@@ -2,28 +2,29 @@ import React from "react";
 
 const NavBar = () => {
   return (
-    <nav className="navbar sticky-top navbar-light bg-light border-bottom">
-      <div className="container-fluid">
+    <nav className="sticky top-0 z-999 flex w-full bg-white dark:bg-boxdark border-b border-stroke dark:border-strokedark shadow-2">
+      <div className="flex flex-grow items-center justify-between px-4 py-4 md:px-6 2xl:px-11">
 
         {/* Logo + Texto */}
-        <div className="d-flex align-items-center">
+        <div className="flex items-center gap-2 sm:gap-4">
           <img
             src="https://assets-unsito.flaisgrafics.com/logo.png"
             alt="Logo"
-            className="me-2"
-            style={{ height: "70px" }} 
+            className="h-12 sm:h-16 md:h-18"
           />
-          <span className="navbar-brand mb-0 h1 fw-bold">Unsito Digital</span>
+          <span className="text-title-md font-bold text-black dark:text-white hidden sm:block">
+            Unsito Digital
+          </span>
         </div>
 
-        {/* Ícono alineado a la derecha */}
-        <div className="ms-auto">
+        {/* Ícono de usuario alineado a la derecha */}
+        <div className="flex items-center gap-3 2xsm:gap-7">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="40"
             height="40"
             viewBox="0 0 24 24"
-            className="me-2"
+            className="text-bodydark1 dark:text-bodydark hover:text-primary dark:hover:text-primary transition-colors cursor-pointer"
           >
             <path
               fill="currentColor"

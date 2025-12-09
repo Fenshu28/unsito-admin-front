@@ -4,21 +4,21 @@ import PrivateRoutes from "../router/PrivateRoutes";
 
 const MainComponent = () => {
   return (
-    <div className="d-flex vh-100">
-      {/* Sidebar fijo */}
-      <div className="flex-shrink-0 bg-light border-end">
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar fijo a la izquierda */}
+      <div className="flex-shrink-0">
         <Sidebar />
       </div>
 
       {/* Contenedor principal */}
-      <div className="d-flex flex-column flex-grow-1">
+      <div className="flex flex-col flex-1 overflow-hidden">
         {/* Navbar */}
-        <div>
+        <div className="flex-shrink-0">
           <NavBar />
         </div>
 
         {/* Contenido con scroll */}
-        <div className="flex-grow-1 overflow-auto">
+        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-boxdark-2">
           <PrivateRoutes />
         </div>
       </div>
