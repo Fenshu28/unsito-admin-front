@@ -3,9 +3,13 @@ import PublicRouter from "./router/PublicRouter";
 import Maincomponent from "./pages/Maincomponent";
 import { TaxonomyProvider } from "./context/TaxonomyContext";
 import { ToastProvider } from "./context/ToastContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   return (
+    <ThemeProvider>
+
+
     <ToastProvider>
       <TaxonomyProvider>
         <Router>
@@ -21,6 +25,8 @@ function App() {
         </Router>
       </TaxonomyProvider>
     </ToastProvider>
+    </ThemeProvider>
+
   );
 }
 

@@ -1,56 +1,71 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import BtnCerrar from "./BtnCerrar";
 import { Icon } from "@iconify/react";
-import Can from "./Can"; // Import the Can component
-import Categorias from "../pages/Categorias";
-const Sidebar = () => {
+import BtnCerrar from "./BtnCerrar";
+import Can from "./Can";
 
+const Sidebar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/";
   };
 
   return (
-    <div className="d-flex flex-column bg-dark text-white p-3 shadow vh-100 border-end border-secondary">
-      <h4 className="text-info fw-bold text-center mb-4">Menú</h4>
+    <div className="w-64 bg-blue-800 text-white flex flex-col p-6 shadow-xl min-h-screen border-r border-blue-900">
+      
+      {/* TÍTULO */}
+      <h2 className="text-2xl font-bold text-center mb-8 tracking-wide text-blue-100">
+        Panel Admin
+      </h2>
 
-      <ul className="nav nav-pills flex-column">
-        <li className="nav-item mb-2">
-          <Link to="/App/inicio" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
-          <Icon icon="mdi:home-variant" width="24" height="24" />
+      {/* NAV */}
+      <nav className="flex flex-col gap-2">
 
+        <Link
+          to="/App/inicio"
+          className="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-700 transition font-semibold"
+        >
+          <Icon icon="mdi:home-variant" width="24" />
+          Inicio
+        </Link>
 
-            Inicio
-          </Link>
-        </li>
+        <Link
+          to="/App/publicaciones"
+          className="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-700 transition font-semibold"
+        >
+          <Icon icon="mdi:newspaper-variant-multiple-outline" width="24" />
+          Publicaciones
+        </Link>
 
-        <li className="nav-item mb-2">
-          <Link to="/App/publicaciones" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
-          <Icon icon="mdi:newspaper-variant-multiple-outline" width="24" height="24" />
-            Publicaciones
-          </Link>
-        </li>
-        {/* Admin-only sections */}
+        {/* SOLO ADMIN */}
         <Can hasRole="admin">
-            <li className="nav-item mb-2">
-              <Link to="/App/categorias" className="nav-link text-white fw-semibold d-flex align-items-center gap-2" element={<Categorias />}>
-                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h14v2H7zm0 8v-2h14v2zM4 4.5A1.5 1.5 0 0 1 5.5 6A1.5 1.5 0 0 1 4 7.5A1.5 1.5 0 0 1 2.5 6A1.5 1.5 0 0 1 4 4.5m0 6A1.5 1.5 0 0 1 5.5 12A1.5 1.5 0 0 1 4 13.5A1.5 1.5 0 0 1 2.5 12A1.5 1.5 0 0 1 4 10.5M7 19v-2h14v2zm-3-2.5A1.5 1.5 0 0 1 5.5 18A1.5 1.5 0 0 1 4 19.5A1.5 1.5 0 0 1 2.5 18A1.5 1.5 0 0 1 4 16.5"></path></svg>
-                Categorías
-              </Link>
-            </li>
-            <li className="nav-item mb-2">
-                <Link to="/App/usuarios" className="nav-link text-white fw-semibold d-flex align-items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"></path></svg>
-                    Usuarios
-                </Link>
-            </li>
+          <Link
+            to="/App/categorias"
+            className="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-700 transition font-semibold"
+          >
+            <Icon icon="mdi:format-list-bulleted" width="24" />
+            Categorías
+          </Link>
+
+          <Link
+            to="/App/usuarios"
+            className="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-700 transition font-semibold"
+          >
+            <Icon icon="mdi:account-group-outline" width="24" />
+            Usuarios
+          </Link>
         </Can>
-      </ul>
-    <BtnCerrar onClick={handleLogout} />
+      </nav>
+
+      {/* BOTÓN CERRAR SESIÓN */}
+      <div className="mt-auto">
+        <BtnCerrar
+          onClick={handleLogout}
+          className="w-full bg-red-600 hover:bg-red-700 text-white p-3 rounded-xl font-semibold transition text-center"
+        />
+      </div>
     </div>
   );
 };
 
 export default Sidebar;
-

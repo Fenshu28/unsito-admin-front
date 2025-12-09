@@ -12,7 +12,7 @@ const accesos = [
 const Inicio = () => {
   return (
     <div className="container my-4">
-      <h2 className="mb-4">Accesos Rápidos</h2>
+      <h2 className="mb-4">Accesos Rápidos</h2>  
 
       <div className="row g-4">
         {accesos.map((item, index) => (

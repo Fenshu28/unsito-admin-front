@@ -1,13 +1,23 @@
-import React from 'react';
-import styles from '../styles/Banner.module.css';
+import React from "react";
 
 const LoginBanner = () => {
   return (
-    <div className={`col-md-6 d-flex align-items-center justify-content-center text-white ${styles.banner}`}>
-      <div className={styles.overlay}></div>
-      <div className="text-center position-relative">
-        <h1>Bienvenido a Unsito</h1>
-        <p>Tu plataforma para gestionar todo.</p>
+    <div
+      className="hidden md:flex w-1/2 relative items-center justify-center text-white bg-cover bg-center bg-no-repeat"
+      style={{backgroundImage:"url('https://assets-unsito.flaisgrafics.com/unsis.png')",
+      }}
+    >
+      {/* Overlay con blur */}
+      <div className="absolute inset-0 backdrop-blur-lg bg-black/30"></div>
+
+      {/* Texto */}
+      <div className="relative text-center px-6">
+        <h1 className="text-4xl font-extrabold drop-shadow-lg">
+          Bienvenido a Unsito
+        </h1>
+        <p className="mt-3 text-lg text-blue-100">
+          Tu plataforma para gestionar todo.
+        </p>
       </div>
     </div>
   );
