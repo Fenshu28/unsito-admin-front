@@ -1,28 +1,43 @@
 import NavBar from "../components/NavBar";
 import Sidebar from "../components/SideBar";
 import PrivateRoutes from "../router/PrivateRoutes";
+import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 
-const MainComponent = () => {
+const LayoutContent = () => {
+  const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+
   return (
-    <div className="flex h-screen overflow-hidden">
-      {/* Sidebar fijo a la izquierda */}
-      <div className="flex-shrink-0">
+    <div className="min-h-screen lg:flex">
+      {/* Sidebar */}
+      <div>
         <Sidebar />
       </div>
 
-      {/* Contenedor principal */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      {/* Contenedor principal con margen dinámico */}
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isExpanded || isHovered ? "lg:ml-[290px]" : "lg:ml-[90px]"
+        } ${isMobileOpen ? "ml-0" : ""}`}
+      >
         {/* Navbar */}
         <div className="flex-shrink-0">
           <NavBar />
         </div>
 
         {/* Contenido con scroll */}
-        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-boxdark-2">
+        <div className="p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10">
           <PrivateRoutes />
         </div>
       </div>
     </div>
+  );
+};
+
+const MainComponent = () => {
+  return (
+    <SidebarProvider>
+      <LayoutContent />
+    </SidebarProvider>
   );
 };
 
