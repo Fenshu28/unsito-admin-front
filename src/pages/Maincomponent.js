@@ -7,7 +7,7 @@ const LayoutContent = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
 
   return (
-    <div className="min-h-screen lg:flex">
+    <div className="min-h-screen lg:flex bg-gray-50">
       {/* Sidebar */}
       <div>
         <Sidebar />

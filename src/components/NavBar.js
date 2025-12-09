@@ -13,12 +13,12 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-999 flex w-full bg-white dark:bg-boxdark border-b border-stroke dark:border-strokedark shadow-2">
+    <nav className="sticky top-0 z-999 flex w-full bg-white border-b border-gray-200 shadow-sm">
       <div className="flex flex-grow items-center justify-between px-4 py-4 md:px-6 2xl:px-11">
         
         {/* Botón Toggle Sidebar */}
         <button
-          className="flex items-center justify-center w-10 h-10 text-bodydark1 border border-stroke dark:border-strokedark rounded-lg hover:bg-gray-2 dark:hover:bg-meta-4 transition-colors lg:w-11 lg:h-11"
+          className="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors lg:w-11 lg:h-11"
           onClick={handleToggle}
           aria-label="Toggle Sidebar"
         >
@@ -64,7 +64,7 @@ const NavBar = () => {
             alt="Logo"
             className="h-12 sm:h-14"
           />
-          <span className="text-title-md font-bold text-black dark:text-white hidden sm:block">
+          <span className="text-title-md font-bold text-gray-900 hidden sm:block">
             Unsito Digital
           </span>
         </div>
@@ -76,7 +76,7 @@ const NavBar = () => {
             width="40"
             height="40"
             viewBox="0 0 24 24"
-            className="text-bodydark1 dark:text-bodydark hover:text-primary dark:hover:text-primary transition-colors cursor-pointer"
+            className="text-gray-500 hover:text-brand-500 transition-colors cursor-pointer"
           >
             <path
               fill="currentColor"

@@ -4,11 +4,9 @@ import LoginForm from '../../components/LoginForm';
 
 const Login = () => {
   return (
-    <div className="container-fluid vh-100">
-      <div className="row h-100">
-        <LoginBanner />
-        <LoginForm />
-      </div>
+    <div className="relative flex h-screen overflow-hidden bg-white">
+      <LoginBanner />
+      <LoginForm />
     </div>
   );
 };
