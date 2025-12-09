@@ -2,22 +2,29 @@ import React from "react";
 
 const LoginBanner = () => {
   return (
-    <div
-      className="hidden md:flex w-1/2 relative items-center justify-center text-white bg-cover bg-center bg-no-repeat"
-      style={{backgroundImage:"url('https://assets-unsito.flaisgrafics.com/unsis.png')",
+    <div 
+      className="items-center hidden w-full h-full lg:w-1/2 lg:grid bg-cover bg-center"
+      style={{
+        backgroundImage: "url('https://assets-unsito.flaisgrafics.com/unsis.png')"
       }}
     >
-      {/* Overlay con blur */}
-      <div className="absolute inset-0 backdrop-blur-lg bg-black/30"></div>
-
-      {/* Texto */}
-      <div className="relative text-center px-6">
-        <h1 className="text-4xl font-extrabold drop-shadow-lg">
-          Bienvenido a Unsito
-        </h1>
-        <p className="mt-3 text-lg text-blue-100">
-          Tu plataforma para gestionar todo.
-        </p>
+      <div className="relative flex items-center justify-center z-1">
+        {/* Overlay con blur */}
+        <div className="absolute inset-0 backdrop-blur-lg bg-black/30"></div>
+        
+        {/* Contenido */}
+        <div className="relative flex flex-col items-center max-w-xs text-center text-white px-6">
+          <div className="mb-4">
+            <img
+              src="https://assets-unsito.flaisgrafics.com/logo.png"
+              alt="Logo"
+              className="h-16 w-auto drop-shadow-2xl"
+            />
+          </div>
+          <p className="text-lg">
+            Bienvenido a Unsito - Tu plataforma para gestionar todo
+          </p>
+        </div>
       </div>
     </div>
   );
