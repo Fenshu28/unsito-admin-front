@@ -23,6 +23,11 @@ const Sidebar = () => {
       path: "/App/inicio",
     },
     {
+      name: "Analytics",
+      icon: "mdi:chart-box-outline",
+      path: "/App/analytics",
+    },
+    {
       name: "Publicaciones",
       icon: "mdi:newspaper-variant-multiple-outline",
       path: "/App/publicaciones",
