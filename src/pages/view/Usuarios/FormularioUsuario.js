@@ -57,74 +57,108 @@ const FormularioUsuario = ({ onUserCreated }) => {
     };
 
     return (
-        <div className="card">
-            <div className="card-header">
-                Crear Nuevo Usuario
-            </div>
-            <div className="card-body">
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label htmlFor="displayNameInput" className="form-label">Nombre Completo</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="displayNameInput"
-                            value={displayName}
-                            onChange={(e) => setDisplayName(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="emailInput" className="form-label">Correo Electrónico</label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="emailInput"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="passwordInput" className="form-label">Contraseña</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="passwordInput"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            minLength="6"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="rolesSelect" className="form-label">Roles</label>
-                        <select 
-                            multiple 
-                            className="form-select" 
-                            id="rolesSelect"
-                            value={roles}
-                            onChange={handleRolesChange}
-                            disabled={availableRoles.length === 0}
-                        >
-                            {availableRoles.map(role => (
-                                <option key={role} value={role}>{role}</option>
-                            ))}
-                        </select>
-                        <div className="form-text">
-                            Mantén presionada la tecla Ctrl (o Cmd en Mac) para seleccionar múltiples roles.
-                        </div>
-                    </div>
+        <div className="w-full px-6 py-6">
 
-                    {error && <div className="alert alert-danger">{error}</div>}
-                    {success && <div className="alert alert-success">{success}</div>}
-
-                    <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                        {isSubmitting ? 'Creando...' : 'Crear Usuario'}
-                    </button>
-                </form>
-            </div>
+        <div className="mb-6 border-b border-stroke pb-4">
+          <h1 className="text-title-md font-semibold text-gray-800">
+            Usuarios
+          </h1>
+          <p className="text-sm text-gray-500">
+            Crear y administrar usuarios del sistema
+          </p>
         </div>
+  
+        <div className="max-w-7xl">
+  
+          <form onSubmit={handleSubmit} className="space-y-6">
+  
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+  
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                  Nombre Completo
+                </label>
+                <input
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  className="h-11 w-full rounded-md border border-stroke px-4 text-sm
+                    focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                />
+              </div>
+  
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                  Correo Electrónico
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="h-11 w-full rounded-md border border-stroke px-4 text-sm
+                    focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                />
+              </div>
+  
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                  Contraseña
+                </label>
+                <input
+                  type="password"
+                  minLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-11 w-full rounded-md border border-stroke px-4 text-sm
+                    focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                />
+              </div>
+  
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                  Roles
+                </label>
+                <select
+                  multiple
+                  value={roles}
+                  onChange={handleRolesChange}
+                  className="h-32 w-full rounded-md border border-stroke px-4 py-2 text-sm
+                    focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                >
+                  {availableRoles.map(role => (
+                    <option key={role} value={role}>{role}</option>
+                  ))}
+                </select>
+              </div>
+  
+            </div>
+  
+            {error && (
+              <div className="rounded-md border border-error-200 bg-error-50 px-4 py-3 text-sm text-error-700">
+                {error}
+              </div>
+            )}
+  
+            {success && (
+              <div className="rounded-md border border-success-200 bg-success-50 px-4 py-3 text-sm text-success-700">
+                {success}
+              </div>
+            )}
+  
+            <div className="flex justify-end gap-3 border-t border-stroke pt-4">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="rounded-md bg-brand-500 px-6 py-2.5 text-sm font-medium text-white
+                  hover:bg-brand-600 disabled:opacity-60"
+              >
+                {isSubmitting ? 'Creando...' : 'Crear Usuario'}
+              </button>
+            </div>
+  
+          </form>
+        </div>
+      </div>
     );
 };
 
