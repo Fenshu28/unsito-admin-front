@@ -4,6 +4,7 @@ import PublicacionesList from "../pages/PublicacionesList";
 import PublicacionDetalle from "../pages/PublicacionDetalle";
 import Usuarios from "../pages/Usuarios";
 import Categorias from "../pages/Categorias";
+import Autores from "../pages/Autores";
 
 const PrivateRoutes = () => {
   const isAuth = localStorage.getItem("token");
@@ -17,6 +18,7 @@ const PrivateRoutes = () => {
       <Route path="publicaciones/:id" element={<PublicacionDetalle />} />
       <Route path="usuarios" element={<Usuarios />} />
       <Route path="categorias" element={<Categorias />} />
+      <Route path="Autores" element={<Autores/>}/>
     </Routes>
   );
 };

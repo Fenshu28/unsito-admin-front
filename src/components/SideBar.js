@@ -40,6 +40,11 @@ const Sidebar = () => {
       icon: "mdi:account-group-outline",
       path: "/App/usuarios",
     },
+    {
+      name: "Autores",
+      icon: "mdi:account-group-outline",
+      path: "/App/autores",
+    },
   ];
 
   const renderMenuItem = (item, index) => (
