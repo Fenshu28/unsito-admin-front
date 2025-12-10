@@ -27,3 +27,41 @@ export const crearAutor = async (autorData) => {
 };
 
 
+export const obtenerAutorPorId = async (id) => {
+  try {
+    const response = await apiClient.get(`/autores/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      'Error al obtener el autor:',
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+export const actualizarAutor = async (id, autorData) => {
+  try {
+    const response = await apiClient.patch(`/autores/${id}`, autorData);
+    return response.data;
+  } catch (error) {
+    console.error(
+      'Error al actualizar el autor:',
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+export const eliminarAutor = async (id) => {
+  try {
+    const response = await apiClient.delete(`/autores/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      'Error al eliminar el autor:',
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
