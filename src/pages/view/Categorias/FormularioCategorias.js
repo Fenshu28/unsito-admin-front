@@ -11,7 +11,7 @@ const FormularioCategorias = () => {
       setMensaje("El nombre es obligatorio");
       return;
     }
-    
+
     try {
       const nuevaCategoria = await crearCategoria({
         nombre,
@@ -30,35 +30,63 @@ const FormularioCategorias = () => {
   };
 
   return (
-    <div className="p-3 border rounded shadow-sm mb-4">
-      <h5 className="fw-semibold mb-3">Formulario de categoría</h5>
+    <div className="w-full px-6 py-6">
 
-      <label className="form-label fw-bold">Nombre de categoría</label>
-      <input
-        type="text"
-        className="form-control mb-3"
-        placeholder="p. ej., Beca de investigación"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-      />
+      {/* Header sección */}
+      <div className="mb-6 border-b border-stroke pb-4">
+        <h2 className="text-title-sm font-semibold text-gray-800">
+          Categorías
+        </h2>
+        <p className="text-sm text-gray-500">
+          Crear y administrar categorías del sistema
+        </p>
+      </div>
 
-      <label className="form-label fw-bold">Descripción (Opcional)</label>
-      <textarea
-        className="form-control mb-3"
-        rows="3"
-        value={descripcion}
-        onChange={(e) => setDescripcion(e.target.value)}
-      ></textarea>
+      {/* Formulario */}
+      <div className="max-w-4xl">
+        <div className="space-y-6">
 
-      <button
-        className="btn btn-danger fw-semibold"
-        onClick={handleCrear}
-      >
-        Agregar categoría
-      </button>
+          {/* Nombre */}
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-gray-700">
+              Nombre de la categoría
+            </label>
+            <input
+              type="text"
+              placeholder="Ej. Beca de investigación"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              className="h-11 w-full rounded-md border border-stroke px-4 text-sm
+                focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+            />
+          </div>
 
-      {mensaje && <p className="mt-2">{mensaje}</p>}
+          {/* Descripción */}
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-gray-700">
+              Descripción (opcional)
+            </label>
+            <textarea
+              rows="4"
+              value={descripcion}
+              onChange={(e) => setDescripcion(e.target.value)}
+              className="w-full rounded-md border border-stroke px-4 py-2 text-sm
+                focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+            />
+          </div>
+
+          <button
+            className="btn btn-danger fw-semibold"
+            onClick={handleCrear}
+          >
+            Agregar categoría
+          </button>
+
+          {mensaje && <p className="mt-2">{mensaje}</p>}
+        </div>
+      </div>
     </div>
+
   );
 };
 
