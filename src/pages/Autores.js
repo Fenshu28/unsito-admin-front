@@ -5,7 +5,6 @@ const Autores = () => {
     <div>
       <h1>Autores</h1>
 
-      {/* AQUÍ SE LLAMA AL COMPONENTE */}
       <FormularioAutor />
 
     </div>
