@@ -15,7 +15,11 @@ export const obtenerAutores = async () => {
 
 export const crearAutor = async (autorData) => {
   try {
-    const response = await apiClient.post('/autores', autorData);
+    const response = await apiClient.post('/autores', autorData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(
@@ -42,7 +46,11 @@ export const obtenerAutorPorId = async (id) => {
 
 export const actualizarAutor = async (id, autorData) => {
   try {
-    const response = await apiClient.patch(`/autores/${id}`, autorData);
+    const response = await apiClient.patch(`/autores/${id}`, autorData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(
@@ -52,6 +60,7 @@ export const actualizarAutor = async (id, autorData) => {
     throw error;
   }
 };
+
 
 export const eliminarAutor = async (id) => {
   try {

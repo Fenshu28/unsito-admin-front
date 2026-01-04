@@ -6,16 +6,27 @@ const FormularioAutor = ({ onSuccess }) => {
         nombre: "",
         email: "",
         biografia: "",
+        foto: null,
     });
 
     const [error, setError] = useState("");
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
+        const { name, value, files } = e.target;
+        if (name==="foto"){
+          setFormData((prev) => ({
+            ...prev,
+            foto:files[0],
+        }));
+
+        }else{
+          setFormData((prev) =>({
             ...prev,
             [name]: value,
-        }));
+
+          }));
+        }
+        
     };
 
     const handleSubmit = async (e) => {
