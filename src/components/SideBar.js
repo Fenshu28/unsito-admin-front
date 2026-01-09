@@ -88,8 +88,10 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen bg-white border-r border-gray-200 flex flex-col shadow-sm transition-all duration-300 ease-in-out
-          ${
+        //className={`fixed top-0 left-0 z-50 h-screen bg-white border-r border-gray-200 flex flex-col shadow-sm transition-all duration-300 ease-in-out
+        className={`fixed top-0 left-0 z-50 h-screen bg-white flex flex-col shadow-sm transition-all duration-300 ease-in-out
+  
+        ${
             isExpanded || isMobileOpen
               ? "w-[290px]"
               : isHovered
@@ -103,7 +105,9 @@ const Sidebar = () => {
       >
         {/* Logo / Título */}
         <div
-          className={`py-5.5 px-6 border-b border-gray-200 flex ${
+          //className={`py-5.5 px-6 border-b border-gray-200 flex ${
+          className={`py-5.5 px-6 flex ${
+
             !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
           }`}
         >
@@ -177,7 +181,9 @@ const Sidebar = () => {
         </div>
 
         {/* Botón Cerrar Sesión */}
-        <div className="px-4 py-4 border-t border-gray-200">
+        {/*<div className="px-4 py-4 border-t border-gray-200">*/}
+        <div className="px-4 py-4">
+
           <button
             onClick={handleLogout}
             className={`w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2.5 px-4 rounded-lg font-medium transition duration-300 ${
