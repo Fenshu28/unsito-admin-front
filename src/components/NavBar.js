@@ -13,7 +13,9 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-999 flex w-full bg-white border-b border-gray-200 shadow-sm">
+    <nav className="sticky top-0 z-999 flex w-full bg-white shadow-sm">
+    {/*<nav className="sticky top-0 z-999 flex w-full bg-white border-b border-gray-200 shadow-sm">*/}
+
       <div className="flex flex-grow items-center justify-between px-4 py-4 md:px-6 2xl:px-11">
         
         {/* Botón Toggle Sidebar */}
