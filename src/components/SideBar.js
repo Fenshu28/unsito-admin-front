@@ -47,7 +47,7 @@ const Sidebar = () => {
     },
     {
       name: "Autores",
-      icon: "mdi:account-group-outline",
+      icon: "mdi:account-multiple-outline",
       path: "/App/autores",
     },
   ];
