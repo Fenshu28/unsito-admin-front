@@ -67,7 +67,7 @@ const ListaAutores = () => {
 
               {/* Email */}
               <p className="text-gray-600 text-sm">
-                📧 {autor.email}
+               {autor.email}
               </p>
 
               {/* Biografía */}

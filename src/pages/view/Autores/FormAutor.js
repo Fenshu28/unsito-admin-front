@@ -1,42 +1,41 @@
 import { useState } from "react";
 import { Icon } from "@iconify/react";
+import TextField from "../../../components/TextField";
+import TextAreaField from "../../../components/TextAreaField";
 import { crearAutor } from "../../../services/autoresService";
+import { useToast } from "../../../context/ToastContext";
 
 const FormAutor = ({ onSuccess }) => {
+  const toast = useToast();
+
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
     biografia: "",
-    foto: "", // 👈 STRING (URL)
+    foto: "",
   });
 
-  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (!formData.nombre.trim()) {
-      setError("El nombre es obligatorio");
+      toast.error("El nombre del autor es obligatorio");
       return;
     }
 
     try {
-      await crearAutor({
-        nombre: formData.nombre,
-        email: formData.email,
-        biografia: formData.biografia,
-        foto: formData.foto, // 👈 string
-      });
+      setIsSubmitting(true);
+
+      await crearAutor(formData);
+
+      toast.success("Autor creado correctamente");
 
       setFormData({
         nombre: "",
@@ -46,79 +45,109 @@ const FormAutor = ({ onSuccess }) => {
       });
 
       onSuccess && onSuccess();
-    } catch (err) {
-      setError(err.response?.data?.message || "Error al crear el autor");
+    } catch (error) {
+      const msg =
+        error.response?.data?.message || "Error al crear el autor";
+      toast.error(msg);
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default">
-      {/* Header */}
-      <div className="border-b py-4 px-6">
-        <h2 className="text-title-sm font-semibold">Autores</h2>
-        <p className="text-sm text-gray-500">
-          Crear y administrar autores del sistema
-        </p>
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark flex items-center gap-3">
+        <Icon
+          icon="mdi:account-edit"
+          width="26"
+          className="text-primary"
+        />
+        <div>
+          <h2 className="text-title-sm font-semibold text-black dark:text-white">
+            Autor
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Crear y administrar autores del sistema
+          </p>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="p-6 space-y-6">
-          {error && <p className="text-red-600">{error}</p>}
+        <div className="p-6.5">
+          {/* Nombre y Email */}
+          <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <TextField
+              id="nombre"
+              name="nombre"
+              label="Nombre del autor"
+              placeholder="Ingrese el nombre completo"
+              value={formData.nombre}
+              onChange={handleChange}
+              required
+            />
 
-          {/* Nombre */}
-          <input
-            type="text"
-            name="nombre"
-            placeholder="Nombre del autor"
-            value={formData.nombre}
-            onChange={handleChange}
-            className="w-full border rounded px-4 py-2"
-          />
-
-          {/* Email */}
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full border rounded px-4 py-2"
-          />
+            <TextField
+              id="email"
+              name="email"
+              type="email"
+              label="Correo electrónico"
+              placeholder="correo@ejemplo.com"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
 
           {/* Biografía */}
-          <textarea
-            name="biografia"
-            placeholder="Biografía"
-            value={formData.biografia}
-            onChange={handleChange}
-            className="w-full border rounded px-4 py-2"
-          />
+          <div className="mb-6">
+            <TextAreaField
+              id="biografia"
+              name="biografia"
+              label="Biografía"
+              placeholder="Escriba una breve biografía del autor"
+              rows={5}
+              value={formData.biografia}
+              onChange={handleChange}
+            />
+          </div>
 
-          {/* Foto (URL) */}
-          <input
-            type="text"
-            name="foto"
-            placeholder="URL de la foto"
-            value={formData.foto}
-            onChange={handleChange}
-            className="w-full border rounded px-4 py-2"
-          />
+          {/* Foto */}
+          <div className="mb-6">
+            <TextField
+              id="foto"
+              name="foto"
+              label="Foto (URL)"
+              placeholder="https://imagen-del-autor.jpg"
+              value={formData.foto}
+              onChange={handleChange}
+            />
+          </div>
 
           {/* Preview */}
           {formData.foto && (
-            <img
-              src={formData.foto}
-              alt="Preview"
-              className="w-24 h-24 rounded-full object-cover"
-            />
+            <div className="mb-6 flex items-center gap-4">
+              <img
+                src={formData.foto}
+                alt="Preview autor"
+                className="h-24 w-24 rounded-full object-cover border border-stroke dark:border-strokedark"
+              />
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Vista previa de la foto
+              </span>
+            </div>
           )}
 
-          <button
-            type="submit"
-            className="bg-primary text-white px-6 py-2 rounded"
-          >
-            Crear Autor
-          </button>
+          {/* Botón */}
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex items-center gap-2 rounded bg-primary px-6 py-3 font-medium text-white hover:bg-opacity-90 transition disabled:opacity-50"
+            >
+              <Icon icon="mdi:account-plus" width="20" />
+              {isSubmitting ? "Guardando..." : "Crear Autor"}
+            </button>
+          </div>
         </div>
       </form>
     </div>
