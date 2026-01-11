@@ -6,20 +6,19 @@ const ListaAutores = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const cargarAutores = async () => {
-    try {
-      setLoading(true);
-      const data = await obtenerAutores();
-      setAutores(data);
-    } catch (err) {
-      console.error(err);
-      setError("Error al cargar los autores");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const cargarAutores = async () => {
+      try {
+        const data = await obtenerAutores();
+        setAutores(data); // 👈 ya viene como array
+      } catch (err) {
+        console.error(err);
+        setError("Error al cargar los autores");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     cargarAutores();
   }, []);
 
@@ -45,34 +44,36 @@ const ListaAutores = () => {
         <div className="grid gap-4 md:grid-cols-2">
           {autores.map((autor) => (
             <div
-              key={autor.id}
+              key={autor._id}
               className="bg-white shadow-md rounded-xl p-4"
             >
               {/* Foto */}
-              {autor.foto && (
+              {autor.foto ? (
                 <img
                   src={autor.foto}
                   alt={autor.nombre}
                   className="w-full h-40 object-cover rounded-lg mb-3"
                 />
+              ) : (
+                <div className="w-full h-40 bg-gray-200 rounded-lg mb-3 flex items-center justify-center text-gray-500">
+                  Sin imagen
+                </div>
               )}
 
-              {/* Datos */}
+              {/* Nombre */}
               <h3 className="text-xl font-semibold">
                 {autor.nombre}
               </h3>
 
-              {autor.email && (
-                <p className="text-gray-600 text-sm">
-                  📧 {autor.email}
-                </p>
-              )}
+              {/* Email */}
+              <p className="text-gray-600 text-sm">
+                📧 {autor.email}
+              </p>
 
-              {autor.biografia && (
-                <p className="text-gray-700 mt-2 text-sm">
-                  {autor.biografia}
-                </p>
-              )}
+              {/* Biografía */}
+              <p className="text-gray-700 mt-2 text-sm">
+                {autor.biografia}
+              </p>
             </div>
           ))}
         </div>
