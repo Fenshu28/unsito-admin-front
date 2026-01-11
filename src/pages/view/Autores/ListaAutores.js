@@ -10,7 +10,7 @@ const ListaAutores = () => {
     const cargarAutores = async () => {
       try {
         const data = await obtenerAutores();
-        setAutores(data); // 👈 ya viene como array
+        setAutores(data); 
       } catch (err) {
         console.error(err);
         setError("Error al cargar los autores");

@@ -68,7 +68,7 @@ const FormAutor = ({ onSuccess }) => {
             Autor
           </h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Crear y administrar autores del sistema
+            Crear y administrar autores 
           </p>
         </div>
       </div>
