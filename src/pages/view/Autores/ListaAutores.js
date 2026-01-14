@@ -10,7 +10,7 @@ const ListaAutores = () => {
     const cargarAutores = async () => {
       try {
         const data = await obtenerAutores();
-        setAutores(data); 
+        setAutores(data);
       } catch (err) {
         console.error(err);
         setError("Error al cargar los autores");
@@ -22,16 +22,11 @@ const ListaAutores = () => {
     cargarAutores();
   }, []);
 
-  if (loading) {
-    return <p className="text-center">Cargando autores...</p>;
-  }
-
-  if (error) {
-    return <p className="text-red-600 text-center">{error}</p>;
-  }
+  if (loading) return <p className="text-center">Cargando autores...</p>;
+  if (error) return <p className="text-red-600 text-center">{error}</p>;
 
   return (
-    <div className="max-w-4xl mx-auto mt-6">
+    <div className="mt-6">
       <h2 className="text-2xl font-bold mb-4 text-center">
         Lista de Autores
       </h2>
@@ -41,41 +36,47 @@ const ListaAutores = () => {
           No hay autores registrados
         </p>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
-          {autores.map((autor) => (
-            <div
-              key={autor._id}
-              className="bg-white shadow-md rounded-xl p-4"
-            >
-              {/* Foto */}
-              {autor.foto ? (
-                <img
-                  src={autor.foto}
-                  alt={autor.nombre}
-                  className="w-full h-40 object-cover rounded-lg mb-3"
-                />
-              ) : (
-                <div className="w-full h-40 bg-gray-200 rounded-lg mb-3 flex items-center justify-center text-gray-500">
-                  Sin imagen
-                </div>
-              )}
+        <div className="overflow-x-auto bg-white shadow-md rounded-xl">
+          <table className="w-full border-collapse">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                  Foto
+                </th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                  Nombre
+                </th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                  Email
+                </th>
+              </tr>
+            </thead>
 
-              {/* Nombre */}
-              <h3 className="text-xl font-semibold">
-                {autor.nombre}
-              </h3>
+            <tbody>
+              {autores.map((autor) => (
+                <tr
+                  key={autor._id}
+                  className="border-t hover:bg-gray-50 transition"
+                >
+                  <td className="px-6 py-4">
+                    <img
+                      src={autor.foto}
+                      alt={autor.nombre}
+                      className="w-14 h-14 rounded-full object-cover border"
+                    />
+                  </td>
 
-              {/* Email */}
-              <p className="text-gray-600 text-sm">
-               {autor.email}
-              </p>
+                  <td className="px-6 py-4 font-medium text-gray-800">
+                    {autor.nombre}
+                  </td>
 
-              {/* Biografía */}
-              <p className="text-gray-700 mt-2 text-sm">
-                {autor.biografia}
-              </p>
-            </div>
-          ))}
+                  <td className="px-6 py-4 text-gray-600">
+                    {autor.email}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

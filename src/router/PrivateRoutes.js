@@ -21,6 +21,7 @@ const PrivateRoutes = () => {
       <Route path="usuarios" element={<Usuarios />} />
       <Route path="categorias" element={<Categorias />} />
       <Route path="Autores" element={<Autores/>}/>
+
     </Routes>
   );
 };
