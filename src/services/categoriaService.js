@@ -1,6 +1,6 @@
 import apiClient from "./api";
 
-// 🔹 Obtener todas las categorías
+
 export const obtenerCategorias = async () => {
   try {
     const response = await apiClient.get("/categorias");
@@ -14,7 +14,7 @@ export const obtenerCategorias = async () => {
   }
 };
 
-// 🔹 Obtener categoría por ID (PARA EDITAR)
+
 export const obtenerCategoriaPorId = async (id) => {
   try {
     const response = await apiClient.get(`/categorias/${id}`);
@@ -28,7 +28,7 @@ export const obtenerCategoriaPorId = async (id) => {
   }
 };
 
-// 🔹 Crear categoría
+
 export const crearCategoria = async (categoriaData) => {
   try {
     const response = await apiClient.post("/categorias", categoriaData);
@@ -42,7 +42,7 @@ export const crearCategoria = async (categoriaData) => {
   }
 };
 
-// 🔹 Actualizar categoría (EDITAR)
+
 export const actualizarCategoria = async (id, categoriaData) => {
   try {
     const response = await apiClient.put(
@@ -59,7 +59,7 @@ export const actualizarCategoria = async (id, categoriaData) => {
   }
 };
 
-// 🔹 Eliminar categoría (OPCIONAL, pero recomendado)
+
 export const eliminarCategoria = async (id) => {
   try {
     const response = await apiClient.delete(`/categorias/${id}`);
