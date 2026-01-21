@@ -56,17 +56,17 @@ const Sidebar = () => {
     <li key={item.name}>
       <Link
         to={item.path}
-        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out ${
-          isActive(item.path)
-            ? "bg-brand-500 text-white"
-            : "text-gray-700 hover:bg-gray-100"
+        className={`menu-item group ${
+          isActive(item.path) ? "menu-item-active" : "menu-item-inactive"
         } ${!isExpanded && !isHovered ? "lg:justify-center" : ""}`}
       >
         <Icon
           icon={item.icon}
-          width="20"
+          width="24"
           className={`${
-            isActive(item.path) ? "text-white" : "text-gray-500"
+            isActive(item.path)
+              ? "menu-item-icon-active"
+              : "menu-item-icon-inactive"
           }`}
         />
         {(isExpanded || isHovered || isMobileOpen) && (
@@ -88,16 +88,14 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        //className={`fixed top-0 left-0 z-50 h-screen bg-white border-r border-gray-200 flex flex-col shadow-sm transition-all duration-300 ease-in-out
-        className={`fixed top-0 left-0 z-50 h-screen bg-white flex flex-col shadow-sm transition-all duration-300 ease-in-out
-  
+        className={`fixed top-0 left-0 z-50 h-screen bg-white border-r border-gray-200 flex flex-col shadow-sm transition-all duration-300 ease-in-out
         ${
-            isExpanded || isMobileOpen
-              ? "w-[290px]"
-              : isHovered
+          isExpanded || isMobileOpen
+            ? "w-[290px]"
+            : isHovered
               ? "w-[290px]"
               : "w-[90px]"
-          }
+        }
           ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0`}
         onMouseEnter={() => !isExpanded && setIsHovered(true)}
@@ -105,9 +103,7 @@ const Sidebar = () => {
       >
         {/* Logo / Título */}
         <div
-          //className={`py-5.5 px-6 border-b border-gray-200 flex ${
-          className={`py-5.5 px-6 flex ${
-
+          className={`py-5.5 px-6 border-b border-gray-200 flex ${
             !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
           }`}
         >
@@ -118,9 +114,7 @@ const Sidebar = () => {
                 alt="Logo"
                 className="h-10"
               />
-              <h2 className="text-xl font-bold text-gray-900">
-                Unsito
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900">Unsito</h2>
             </div>
           ) : (
             <img
@@ -172,7 +166,7 @@ const Sidebar = () => {
                 </h3>
                 <ul className="flex flex-col gap-1.5">
                   {adminMenuItems.map((item, index) =>
-                    renderMenuItem(item, `admin-${index}`)
+                    renderMenuItem(item, `admin-${index}`),
                   )}
                 </ul>
               </div>
@@ -181,9 +175,7 @@ const Sidebar = () => {
         </div>
 
         {/* Botón Cerrar Sesión */}
-        {/*<div className="px-4 py-4 border-t border-gray-200">*/}
-        <div className="px-4 py-4">
-
+        <div className="px-4 py-4 border-t border-gray-200">
           <button
             onClick={handleLogout}
             className={`w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2.5 px-4 rounded-lg font-medium transition duration-300 ${
@@ -191,7 +183,9 @@ const Sidebar = () => {
             }`}
           >
             <Icon icon="mdi:logout" width="20" />
-            {(isExpanded || isHovered || isMobileOpen) && <span>Cerrar Sesión</span>}
+            {(isExpanded || isHovered || isMobileOpen) && (
+              <span>Cerrar Sesión</span>
+            )}
           </button>
         </div>
       </aside>

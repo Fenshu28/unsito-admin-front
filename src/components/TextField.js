@@ -1,21 +1,24 @@
-import React from 'react';
+import React from "react";
 
-const TextField = ({ 
+const TextField = ({
   id,
-  name, 
-  label, 
-  value, 
-  onChange, 
+  name,
+  label,
+  value,
+  onChange,
   placeholder = "",
   disabled = false,
   required = false,
-  type = "text"
+  type = "text",
 }) => {
   return (
     <div className="w-full">
       {label && (
-        <label htmlFor={id} className="mb-2.5 block text-black dark:text-white font-semibold">
-          {label} {required && <span className="text-meta-1">*</span>}
+        <label
+          htmlFor={id}
+          className="mb-2 block text-sm font-medium text-gray-700"
+        >
+          {label} {required && <span className="text-error-600">*</span>}
         </label>
       )}
       <input
@@ -27,7 +30,7 @@ const TextField = ({
         placeholder={placeholder}
         disabled={disabled}
         required={required}
-        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:disabled:bg-form-input"
+        className="w-full rounded-lg border border-gray-200 bg-transparent py-3 px-5 text-sm text-gray-800 shadow-sm placeholder:text-gray-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/10 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
       />
     </div>
   );
