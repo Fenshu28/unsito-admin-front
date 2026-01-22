@@ -9,19 +9,15 @@ const TextAreaField = ({
   placeholder = "",
   disabled = false,
   required = false,
-  rows = 6,
+  rows = 4,
   error = false,
   hint = "",
 }) => {
-  // TextArea con borde visible y sombra
-  let textareaClasses = `w-full rounded-lg border bg-white px-4 py-3 text-sm shadow-theme-xs transition-all focus:outline-none focus:ring-4`;
+  // TextArea estilo Analytics
+  let textareaClasses = `w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors disabled:cursor-not-allowed disabled:bg-gray-100`;
 
-  if (disabled) {
-    textareaClasses += ` text-gray-500 border-gray-300 bg-gray-100 cursor-not-allowed`;
-  } else if (error) {
-    textareaClasses += ` text-gray-800 border-error-400 focus:border-error-500 focus:ring-error-500/20`;
-  } else {
-    textareaClasses += ` text-gray-800 border-gray-300 focus:border-brand-500 focus:ring-brand-500/20`;
+  if (error) {
+    textareaClasses = `w-full rounded-lg border border-red-500 bg-white px-4 py-3 text-sm text-gray-800 placeholder:text-red-300 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors`;
   }
 
   return (
@@ -29,9 +25,9 @@ const TextAreaField = ({
       {label && (
         <label
           htmlFor={id}
-          className="mb-2 block text-sm font-semibold text-gray-700"
+          className="mb-2 block text-sm font-medium text-gray-700"
         >
-          {label} {required && <span className="text-error-500">*</span>}
+          {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
@@ -48,7 +44,7 @@ const TextAreaField = ({
         ></textarea>
         {hint && (
           <p
-            className={`mt-1.5 text-xs ${error ? "text-error-500" : "text-gray-500"}`}
+            className={`mt-1.5 text-xs ${error ? "text-red-500" : "text-gray-500"}`}
           >
             {hint}
           </p>

@@ -14,20 +14,25 @@ const SelectField = ({
   valueKey = "_id",
   labelKey = "nombre",
   className = "",
+  error = false,
 }) => {
-  // Select con bg-white, borde visible y sombra
-  const selectClasses = `h-11 w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm shadow-theme-xs transition-all focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/20 ${
+  // Select estilo Analytics
+  let selectClasses = `w-full appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2.5 pr-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors disabled:cursor-not-allowed disabled:bg-gray-100 ${
     value ? "text-gray-800" : "text-gray-500"
-  } ${disabled ? "bg-gray-100 cursor-not-allowed" : ""} ${className}`;
+  } ${className}`;
+
+  if (error) {
+    selectClasses = `w-full appearance-none rounded-lg border border-red-500 bg-white px-4 py-2.5 pr-10 text-sm text-gray-800 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors`;
+  }
 
   return (
     <div className="w-full">
       {label && (
         <label
           htmlFor={id}
-          className="mb-2 block text-sm font-semibold text-gray-700"
+          className="mb-2 block text-sm font-medium text-gray-700"
         >
-          {label} {required && <span className="text-error-500">*</span>}
+          {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
@@ -40,12 +45,12 @@ const SelectField = ({
           required={required}
           className={selectClasses}
         >
-          <option value="" disabled className="text-gray-500">
+          <option value="" disabled>
             {placeholder}
           </option>
-          {options.map((option) => (
+          {options.map((option, idx) => (
             <option
-              key={option[valueKey]}
+              key={option[valueKey] || idx}
               value={option[valueKey]}
               className="text-gray-800"
             >
@@ -53,9 +58,9 @@ const SelectField = ({
             </option>
           ))}
         </select>
-        <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2 pointer-events-none text-gray-500">
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
           <Icon icon="mdi:chevron-down" width="20" />
-        </span>
+        </div>
       </div>
     </div>
   );
