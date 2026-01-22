@@ -100,6 +100,9 @@ module.exports = {
           950: "#053321",
         },
       },
+      fontFamily: {
+        sans: ["Outfit", "sans-serif"],
+      },
       fontSize: {
         "title-xxl": ["44px", "55px"],
         "title-xl": ["36px", "45px"],
