@@ -13,7 +13,7 @@ const DatePicker = ({
       {label && (
         <label
           htmlFor={id}
-          className="mb-2 block text-sm font-bold text-gray-700"
+          className="mb-2 block text-sm font-medium text-gray-700"
         >
           {label} {required && <span className="text-red-500">*</span>}
         </label>
