@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import FormularioPublicacion from "./view/Publicaciones/FormularioPublicacion";
 import {
   obtenerPublicacionPorId,
-  actualizarPublicacion
+  actualizarPublicacion,
 } from "../services/publicacionesService";
 import { useTaxonomy } from "../context/TaxonomyContext";
 import { useToast } from "../context/ToastContext";
@@ -15,7 +15,7 @@ const PublicacionDetalle = () => {
   const navigate = useNavigate();
   const { categorias, tipos } = useTaxonomy();
   const toast = useToast();
-  
+
   const [publicacion, setPublicacion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,7 +28,10 @@ const PublicacionDetalle = () => {
       const pubData = await obtenerPublicacionPorId(id);
       setPublicacion(pubData);
     } catch (err) {
-      setError("Error al cargar la publicación: " + (err.response?.data?.message || err.message));
+      setError(
+        "Error al cargar la publicación: " +
+          (err.response?.data?.message || err.message),
+      );
       console.error(err);
     } finally {
       setLoading(false);
@@ -44,10 +47,8 @@ const PublicacionDetalle = () => {
     try {
       await actualizarPublicacion(id, formData);
       await cargarDatos();
-      // Success toast se muestra en FormularioPublicacion
     } catch (err) {
       console.error(err);
-      // Error toast se muestra en FormularioPublicacion
       throw err;
     } finally {
       setLoading(false);
@@ -59,10 +60,8 @@ const PublicacionDetalle = () => {
     try {
       await actualizarPublicacion(id, statusData);
       await cargarDatos();
-      // Success toast se muestra en FormularioPublicacion
     } catch (err) {
       console.error(err);
-      // Error toast se muestra en FormularioPublicacion
       throw err;
     } finally {
       setLoading(false);
@@ -73,10 +72,11 @@ const PublicacionDetalle = () => {
     setLoading(true);
     try {
       await actualizarPublicacion(id, { status: "Trash" });
-      toast.success('Publicación movida a la papelera');
+      toast.success("Publicación movida a la papelera");
       navigate("/App/publicaciones");
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Error al eliminar la publicación';
+      const errorMessage =
+        err.response?.data?.message || "Error al eliminar la publicación";
       toast.error(errorMessage);
       console.error(err);
     } finally {
@@ -91,61 +91,39 @@ const PublicacionDetalle = () => {
 
   if (loading && !publicacion) {
     return (
-      <div className="p-4 md:p-6">
-        <div className="text-center">
-          <p className="text-black dark:text-white">Cargando...</p>
+      <div className="p-4 md:p-6 font-sans">
+        <div className="mb-6 flex items-center justify-between">
+          <div className="h-6 bg-gray-200 rounded w-32 animate-pulse"></div>
+          <div className="h-10 bg-gray-200 rounded-lg w-24 animate-pulse"></div>
         </div>
-      </div>
-    );
-  }
-
-  if (error && !publicacion) {
-    return (
-      <div className="p-4 md:p-6">
-        <div className="mb-4 rounded-lg bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-          <p>{error}</p>
+        <div className="rounded-2xl border border-gray-300 bg-white p-6 shadow-sm animate-pulse space-y-6">
+          <div className="h-12 bg-gray-100 rounded-lg"></div>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="h-10 bg-gray-100 rounded-lg"></div>
+            <div className="h-10 bg-gray-100 rounded-lg"></div>
+          </div>
+          <div className="h-32 bg-gray-100 rounded-lg"></div>
         </div>
-        <button
-          onClick={handleVolver}
-          className="inline-flex items-center justify-center rounded-md border border-stroke px-6 py-3 text-center font-medium hover:shadow-1 dark:border-strokedark"
-        >
-          Volver
-        </button>
       </div>
     );
   }
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-6 font-sans">
       {/* Header con botón volver y eliminar */}
       <div className="mb-6 flex items-center justify-between">
         <button
           onClick={handleVolver}
-          className="inline-flex items-center text-sm text-primary hover:underline"
+          className="inline-flex items-center text-sm font-bold text-brand-600 hover:text-brand-700 transition-colors"
         >
-          <svg
-            className="mr-1 fill-current"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 12L6 8L10 4"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <Icon icon="mdi:arrow-left" className="mr-2" width="20" />
           Volver a Publicaciones
         </button>
 
         {publicacion && publicacion.status !== "Trash" && (
           <button
             onClick={() => setShowDeleteModal(true)}
-            className="inline-flex items-center gap-2 rounded bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 transition-colors shadow-sm"
           >
             <Icon icon="mdi:delete" width="18" />
             Eliminar
@@ -153,22 +131,24 @@ const PublicacionDetalle = () => {
         )}
       </div>
 
-      {/* Error Message - Solo para errores críticos (404, etc) */}
+      {/* Error Message */}
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-          <p>{error}</p>
+        <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800 shadow-sm">
+          <p className="text-sm font-medium">{error}</p>
         </div>
       )}
 
-      {/* Formulario directo - sin modo vista */}
-      <FormularioPublicacion
-        publicacionActual={publicacion}
-        categorias={categorias}
-        tipos={tipos}
-        onSubmit={handleActualizar}
-        onImageUploaded={cargarDatos}
-        onStatusChanged={handleStatusChange}
-      />
+      {/* Formulario directo */}
+      {publicacion && (
+        <FormularioPublicacion
+          publicacionActual={publicacion}
+          categorias={categorias}
+          tipos={tipos}
+          onSubmit={handleActualizar}
+          onImageUploaded={cargarDatos}
+          onStatusChanged={handleStatusChange}
+        />
+      )}
 
       {/* Delete Confirmation Modal */}
       <ConfirmModal

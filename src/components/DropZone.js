@@ -1,7 +1,12 @@
 import { useState, useCallback } from "react";
 import { Icon } from "@iconify/react";
 
-const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5, fileType = "image" }) => {
+const DropZone = ({
+  onFileSelect,
+  accept = "image/*",
+  maxSize = 5,
+  fileType = "image",
+}) => {
   const [isDragging, setIsDragging] = useState(false);
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);
@@ -18,78 +23,64 @@ const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5, fileType = "i
   }, []);
 
   const getAcceptedFormats = () => {
-    if (fileType === "pdf") {
-      return "PDF";
-    } else if (fileType === "image") {
-      return "PNG, JPG, GIF, WEBP";
-    } else if (accept.includes("image")) {
-      return "Imágenes";
-    } else if (accept.includes("pdf")) {
-      return "PDF";
-    }
+    if (fileType === "pdf") return "PDF";
+    if (fileType === "image") return "PNG, JPG, GIF, WEBP";
+    if (accept.includes("image")) return "Imágenes";
+    if (accept.includes("pdf")) return "PDF";
     return "Archivos";
   };
 
-  const validateFile = (file) => {
-    // Validar tipo según fileType
-    if (fileType === "image" && !file.type.startsWith('image/')) {
-      setError('Solo se permiten archivos de imagen');
-      return false;
-    }
-    
-    if (fileType === "pdf" && file.type !== 'application/pdf') {
-      setError('Solo se permiten archivos PDF');
-      return false;
-    }
+  const validateFile = useCallback(
+    (file) => {
+      if (fileType === "image" && !file.type.startsWith("image/")) {
+        setError("Solo se permiten archivos de imagen");
+        return false;
+      }
+      if (fileType === "pdf" && file.type !== "application/pdf") {
+        setError("Solo se permiten archivos PDF");
+        return false;
+      }
+      const fileSizeMB = file.size / (1024 * 1024);
+      if (fileSizeMB > maxSize) {
+        setError(`El archivo debe ser menor a ${maxSize}MB`);
+        return false;
+      }
+      setError(null);
+      return true;
+    },
+    [fileType, maxSize],
+  );
 
-    // Validar tamaño (en MB)
-    const fileSizeMB = file.size / (1024 * 1024);
-    if (fileSizeMB > maxSize) {
-      setError(`El archivo debe ser menor a ${maxSize}MB`);
-      return false;
-    }
+  const processFile = useCallback(
+    (file) => {
+      if (!validateFile(file)) return;
+      setFileName(file.name);
+      if (fileType === "image") {
+        const reader = new FileReader();
+        reader.onloadend = () => setPreview(reader.result);
+        reader.readAsDataURL(file);
+      } else if (fileType === "pdf") {
+        setPreview("pdf");
+      }
+      onFileSelect(file);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [onFileSelect, fileType, validateFile],
+  );
 
-    setError(null);
-    return true;
-  };
-
-  const processFile = useCallback((file) => {
-    if (!validateFile(file)) return;
-
-    setFileName(file.name);
-
-    // Crear preview según tipo
-    if (fileType === "image") {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else if (fileType === "pdf") {
-      // Para PDF, mostrar icono y nombre
-      setPreview("pdf");
-    }
-
-    // Notificar al padre
-    onFileSelect(file);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onFileSelect, fileType]);
-
-  const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    setIsDragging(false);
-
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      processFile(files[0]);
-    }
-  }, [processFile]);
+  const handleDrop = useCallback(
+    (e) => {
+      e.preventDefault();
+      setIsDragging(false);
+      const files = e.dataTransfer.files;
+      if (files.length > 0) processFile(files[0]);
+    },
+    [processFile],
+  );
 
   const handleFileInput = (e) => {
     const files = e.target.files;
-    if (files.length > 0) {
-      processFile(files[0]);
-    }
+    if (files.length > 0) processFile(files[0]);
   };
 
   const handleRemove = () => {
@@ -99,16 +90,16 @@ const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5, fileType = "i
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full font-sans">
       {!preview ? (
         <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          className={`relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+          className={`relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl cursor-pointer transition-all ${
             isDragging
-              ? 'border-primary bg-primary bg-opacity-5'
-              : 'border-stroke dark:border-strokedark hover:border-primary'
+              ? "border-brand-600 bg-brand-50/50 scale-[1.01]"
+              : "border-gray-300 hover:border-brand-600 hover:bg-gray-50"
           }`}
         >
           <input
@@ -117,55 +108,66 @@ const DropZone = ({ onFileSelect, accept = "image/*", maxSize = 5, fileType = "i
             onChange={handleFileInput}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           />
-          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-            <Icon 
-              icon={fileType === "pdf" ? "mdi:file-pdf-box" : "mdi:cloud-upload"} 
-              className="w-12 h-12 mb-4 text-gray-400"
-            />
-            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-              <span className="font-semibold">Click para subir</span> o arrastra y suelta
+          <div className="flex flex-col items-center justify-center p-6 bg-white/50 backdrop-blur-sm rounded-xl">
+            <div className="w-12 h-12 rounded-full bg-brand-50 flex items-center justify-center text-brand-600 mb-4 transition-transform group-hover:scale-110">
+              <Icon
+                icon={
+                  fileType === "pdf"
+                    ? "mdi:file-pdf-box"
+                    : "mdi:cloud-upload-outline"
+                }
+                width="28"
+              />
+            </div>
+            <p className="mb-1 text-sm text-gray-700">
+              <span className="font-bold text-brand-600">Click para subir</span>{" "}
+              o arrastra y suelta
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-gray-500">
               {getAcceptedFormats()} hasta {maxSize}MB
             </p>
           </div>
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative group overflow-hidden rounded-2xl border border-gray-200">
           {fileType === "image" ? (
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-64 object-contain rounded-lg bg-gray-50 dark:bg-boxdark-2"
+              className="w-full h-64 object-cover bg-gray-50 transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="flex flex-col items-center justify-center w-full h-64 rounded-lg bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark">
-              <Icon 
-                icon="mdi:file-pdf-box" 
+            <div className="flex flex-col items-center justify-center w-full h-64 bg-gray-50">
+              <Icon
+                icon="mdi:file-pdf-box"
                 className="w-20 h-20 mb-4 text-red-600"
               />
-              <p className="text-sm font-medium text-black dark:text-white px-4 text-center break-all">
+              <p className="text-sm font-bold text-gray-800 px-4 text-center break-all">
                 {fileName}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                PDF seleccionado
+              <p className="text-xs font-medium text-gray-500 mt-2">
+                PDF SELECCIONADO
               </p>
             </div>
           )}
-          <button
-            type="button"
-            onClick={handleRemove}
-            className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-full hover:bg-red-700 shadow-lg"
-          >
-            <Icon icon="mdi:close" width="20" />
-          </button>
+
+          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <button
+              type="button"
+              onClick={handleRemove}
+              className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 shadow-xl transition-transform transform scale-75 group-hover:scale-100"
+            >
+              <Icon icon="mdi:trash-can-outline" width="24" />
+            </button>
+          </div>
         </div>
       )}
 
       {error && (
-        <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+        <div className="mt-3 flex items-center gap-2 text-xs font-bold text-red-600 bg-red-50 p-2 rounded-lg border border-red-100">
+          <Icon icon="mdi:alert-circle" width="16" />
           {error}
-        </p>
+        </div>
       )}
     </div>
   );

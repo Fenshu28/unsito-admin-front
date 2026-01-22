@@ -106,18 +106,12 @@ const PublicacionesList = () => {
         </div>
       </div>
 
-      {/* Loading */}
-      {loading && (
-        <div className="mb-4 text-center">
-          <p className="text-sm text-gray-500">Cargando...</p>
-        </div>
-      )}
-
       {/* Table */}
       <TablaPublicaciones
         publicaciones={publicaciones}
         onVer={handleVer}
         onRecargar={cargarPublicaciones}
+        loading={loading}
       />
     </div>
   );

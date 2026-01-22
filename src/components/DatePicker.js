@@ -1,9 +1,21 @@
-const DatePicker = ({ id, value, onChange, disabled = false, label, required = false }) => {
+import React from "react";
+
+const DatePicker = ({
+  id,
+  value,
+  onChange,
+  disabled = false,
+  label,
+  required = false,
+}) => {
   return (
-    <div>
+    <div className="font-sans">
       {label && (
-        <label htmlFor={id} className="mb-2.5 block text-black dark:text-white font-semibold">
-          {label} {required && <span className="text-meta-1">*</span>}
+        <label
+          htmlFor={id}
+          className="mb-2 block text-sm font-bold text-gray-700"
+        >
+          {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
@@ -15,9 +27,9 @@ const DatePicker = ({ id, value, onChange, disabled = false, label, required = f
           disabled={disabled}
           required={required}
           style={{
-            colorScheme: 'light dark'
+            colorScheme: "light",
           }}
-          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:disabled:bg-form-input"
+          className="w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-sm text-gray-800 outline-none transition focus:border-brand-600 focus:ring-1 focus:ring-brand-600/20 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400"
         />
       </div>
     </div>
