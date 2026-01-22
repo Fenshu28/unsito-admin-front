@@ -65,10 +65,11 @@ const PublicacionesList = () => {
         <button
           onClick={handleNueva}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+          // Cambiado a bg-brand-600 para usar el nuevo rojo vino
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Nueva
           <Icon icon="mdi:plus" width="20" height="20" />
+          {loading ? "Creando..." : "Nueva"}
         </button>
       </div>
 
@@ -90,7 +91,8 @@ const PublicacionesList = () => {
               <select
                 value={filtroStatus}
                 onChange={(e) => setFiltroStatus(e.target.value)}
-                className="w-full appearance-none rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-800 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                // Cambiado focus a brand-600
+                className="w-full appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600"
               >
                 <option value="">Todos</option>
                 <option value="Draft">Borrador</option>

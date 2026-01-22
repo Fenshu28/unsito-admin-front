@@ -14,8 +14,8 @@ const TextField = ({
   success = false,
   hint = "",
 }) => {
-  // Input estilo Analytics: border-gray-200, rounded-lg, focus-blue
-  let inputClasses = `w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors disabled:cursor-not-allowed disabled:bg-gray-100`;
+  // Input estilo Analytics: border-gray-200, rounded-lg, focus-brand (Rojo Vino)
+  let inputClasses = `w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 transition-colors disabled:cursor-not-allowed disabled:bg-gray-100`;
 
   if (error) {
     inputClasses = `w-full rounded-lg border border-red-500 bg-white px-4 py-2.5 text-sm text-gray-800 placeholder:text-red-300 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors`;

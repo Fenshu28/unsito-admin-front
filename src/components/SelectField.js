@@ -16,8 +16,8 @@ const SelectField = ({
   className = "",
   error = false,
 }) => {
-  // Select estilo Analytics
-  let selectClasses = `w-full appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2.5 pr-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors disabled:cursor-not-allowed disabled:bg-gray-100 ${
+  // Select estilo Analytics con focus brand
+  let selectClasses = `w-full appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2.5 pr-10 text-sm focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 transition-colors disabled:cursor-not-allowed disabled:bg-gray-100 ${
     value ? "text-gray-800" : "text-gray-500"
   } ${className}`;
 
