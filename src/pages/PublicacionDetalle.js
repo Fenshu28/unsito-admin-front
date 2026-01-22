@@ -43,7 +43,6 @@ const PublicacionDetalle = () => {
   }, [cargarDatos]);
 
   const handleActualizar = async (formData) => {
-    setLoading(true);
     try {
       await actualizarPublicacion(id, formData);
       await cargarDatos();

@@ -45,7 +45,6 @@ const FormularioPublicacion = ({
   const toast = useToast();
 
   useEffect(() => {
-    // Solo sincronizamos formData con publicacionActual en el primer montaje o si el form está limpio
     if (publicacionActual) {
       const data = {
         titulo: publicacionActual.titulo || "",
@@ -61,12 +60,26 @@ const FormularioPublicacion = ({
         autor: publicacionActual.autor?._id || "",
       };
 
-      if (!isDirty || !originalData) {
+      const hasChanged =
+        originalData &&
+        (originalData.titulo !== data.titulo ||
+          originalData.descripcion !== data.descripcion ||
+          originalData.categoria !== data.categoria ||
+          originalData.tipo !== data.tipo ||
+          originalData.fecha !== data.fecha ||
+          originalData.isFeatured !== data.isFeatured ||
+          originalData.status !== data.status ||
+          JSON.stringify(originalData.linksExternos) !==
+            JSON.stringify(data.linksExternos) ||
+          originalData.autor !== data.autor);
+
+      if (!isDirty || hasChanged) {
         setFormData(data);
+        setOriginalData(data);
+        if (hasChanged) setIsDirty(false);
       }
-      setOriginalData(data);
     }
-  }, [publicacionActual]); // Quitamos isDirty de dependencias para evitar loops
+  }, [publicacionActual, isDirty, originalData]);
 
   // Advertencia de cambios sin guardar al cerrar pestaña
   useEffect(() => {

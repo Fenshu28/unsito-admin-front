@@ -20,12 +20,19 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
         nombre: categoriaActual.nombre || "",
         descripcion: categoriaActual.descripcion || "",
       };
-      if (!isDirty || !originalData) {
+
+      const hasChanged =
+        originalData &&
+        (originalData.nombre !== data.nombre ||
+          originalData.descripcion !== data.descripcion);
+
+      if (!isDirty || hasChanged) {
         setFormData(data);
+        setOriginalData(data);
+        if (hasChanged) setIsDirty(false);
       }
-      setOriginalData(data);
     }
-  }, [categoriaActual]);
+  }, [categoriaActual, isDirty, originalData]);
 
   // Advertencia de cambios sin guardar al cerrar pestaña
   useEffect(() => {

@@ -28,7 +28,7 @@ const TablaCategorias = ({
           <thead className="border-gray-100 border-y">
             <tr>
               <th className="py-3 px-2 font-bold text-gray-500 text-left text-xs font-sans">
-                Nombre de Categoría
+                Nombre
               </th>
               <th className="py-3 px-2 font-bold text-gray-500 text-left text-xs font-sans">
                 Descripción
@@ -57,9 +57,11 @@ const TablaCategorias = ({
                   className="hover:bg-gray-50 cursor-pointer transition-colors"
                 >
                   <td className="py-3 px-2">
-                    <p className="font-bold text-gray-800 text-sm font-sans">
-                      {cat.nombre}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold text-gray-800 text-sm font-sans">
+                        {cat.nombre}
+                      </p>
+                    </div>
                   </td>
                   <td className="py-3 px-2 text-gray-600 text-sm font-sans">
                     {cat.descripcion || "-"}
