@@ -11,6 +11,7 @@ import { Icon } from "@iconify/react";
 
 const CategoriasList = () => {
   const [categorias, setCategorias] = useState([]);
+  const [filtroStatus, setFiltroStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const toast = useToast();
@@ -18,7 +19,7 @@ const CategoriasList = () => {
   const cargarCategorias = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await obtenerCategorias();
+      const data = await obtenerCategorias(filtroStatus || null);
       setCategorias(data || []);
     } catch (error) {
       console.error(error);
@@ -26,7 +27,7 @@ const CategoriasList = () => {
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  }, [toast, filtroStatus]);
 
   useEffect(() => {
     cargarCategorias();
@@ -90,6 +91,31 @@ const CategoriasList = () => {
           <Icon icon="mdi:plus" width="20" height="20" />
           Nueva
         </button>
+      </div>
+
+      {/* Filters Card */}
+      <div className="mb-6 rounded-2xl border border-gray-300 bg-white p-5 shadow-sm sm:px-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+          <div className="w-full sm:w-64">
+            <label className="mb-2 block text-xs font-medium text-gray-500 font-sans">
+              Filtrar por estado
+            </label>
+            <div className="relative">
+              <select
+                value={filtroStatus}
+                onChange={(e) => setFiltroStatus(e.target.value)}
+                className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
+              >
+                <option value="">Todos</option>
+                <option value="Active">Activa</option>
+                <option value="Trash">Papelera</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                <Icon icon="mdi:chevron-down" width="20" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <TablaCategorias

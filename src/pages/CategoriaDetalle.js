@@ -92,13 +92,31 @@ const CategoriaDetalle = () => {
           Volver a Categorías
         </button>
 
-        <button
-          onClick={() => setShowDeleteModal(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 transition-colors shadow-sm"
-        >
-          <Icon icon="mdi:trash-can-outline" width="18" />
-          Eliminar
-        </button>
+        {categoria?.status === "Trash" ? (
+          <button
+            onClick={async () => {
+              try {
+                await actualizarCategoria(id, { status: "Active" });
+                toast.success("Categoría restaurada");
+                await cargarDatos();
+              } catch (error) {
+                toast.error("Error al restaurar categoría");
+              }
+            }}
+            className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-700 transition-colors shadow-sm"
+          >
+            <Icon icon="mdi:restore" width="18" />
+            Restaurar
+          </button>
+        ) : (
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 transition-colors shadow-sm"
+          >
+            <Icon icon="mdi:trash-can-outline" width="18" />
+            Eliminar
+          </button>
+        )}
       </div>
 
       {error && (

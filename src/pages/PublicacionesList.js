@@ -97,6 +97,7 @@ const PublicacionesList = () => {
                 <option value="">Todos</option>
                 <option value="Draft">Borrador</option>
                 <option value="Published">Publicado</option>
+                <option value="Trash">Papelera</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
                 <Icon icon="mdi:chevron-down" width="20" />

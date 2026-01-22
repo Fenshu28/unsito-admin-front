@@ -1,14 +1,15 @@
 import apiClient from "./api";
 
-/* Obtener todas las categorías */
-export const obtenerCategorias = async () => {
+/* Obtener todas las categorías con filtro opcional de status */
+export const obtenerCategorias = async (status = null) => {
   try {
-    const response = await apiClient.get("/categorias");
+    const url = status ? `/categorias?status=${status}` : "/categorias";
+    const response = await apiClient.get(url);
     return response.data;
   } catch (error) {
     console.error(
       "Error al obtener las categorías:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -22,7 +23,7 @@ export const obtenerCategoriaPorId = async (id) => {
   } catch (error) {
     console.error(
       "Error al obtener la categoría:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -36,7 +37,7 @@ export const crearCategoria = async (categoriaData) => {
   } catch (error) {
     console.error(
       "Error al crear la categoría:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -50,7 +51,7 @@ export const actualizarCategoria = async (id, categoriaData) => {
   } catch (error) {
     console.error(
       "Error al actualizar la categoría:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -64,7 +65,7 @@ export const eliminarCategoria = async (id) => {
   } catch (error) {
     console.error(
       "Error al eliminar la categoría:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }

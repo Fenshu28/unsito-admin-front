@@ -6,6 +6,22 @@ const TablaCategorias = ({
   onEliminar,
   loading = false,
 }) => {
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Active":
+        return { bg: "bg-green-50", text: "text-green-600" };
+      case "Trash":
+        return { bg: "bg-red-50", text: "text-red-600" };
+      default:
+        return { bg: "bg-gray-50", text: "text-gray-500" };
+    }
+  };
+
+  const statusText = {
+    Active: "Activa",
+    Trash: "Papelera",
+  };
+
   if (loading) {
     return (
       <div className="overflow-hidden rounded-2xl border border-gray-300 bg-white px-4 pb-3 pt-4 sm:px-6 shadow-sm">
@@ -67,8 +83,10 @@ const TablaCategorias = ({
                     {cat.descripcion || "-"}
                   </td>
                   <td className="py-3 px-2 text-center">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold font-sans bg-green-50 text-green-600">
-                      ACTIVA
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold font-sans ${getStatusColor(cat.status).bg} ${getStatusColor(cat.status).text}`}
+                    >
+                      {statusText[cat.status] || cat.status}
                     </span>
                   </td>
                 </tr>

@@ -119,14 +119,32 @@ const PublicacionDetalle = () => {
           Volver a Publicaciones
         </button>
 
-        {publicacion && publicacion.status !== "Trash" && (
+        {publicacion?.status === "Trash" ? (
           <button
-            onClick={() => setShowDeleteModal(true)}
-            className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 transition-colors shadow-sm"
+            onClick={async () => {
+              try {
+                await actualizarPublicacion(id, { status: "Draft" });
+                toast.success("Publicación restaurada");
+                await cargarDatos();
+              } catch (error) {
+                toast.error("Error al restaurar la publicación");
+              }
+            }}
+            className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-700 transition-colors shadow-sm"
           >
-            <Icon icon="mdi:delete" width="18" />
-            Eliminar
+            <Icon icon="mdi:restore" width="18" />
+            Restaurar
           </button>
+        ) : (
+          publicacion && (
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 transition-colors shadow-sm"
+            >
+              <Icon icon="mdi:delete" width="18" />
+              Eliminar
+            </button>
+          )
         )}
       </div>
 
