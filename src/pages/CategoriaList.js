@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TablaCategorias from "./view/Categorias/TablaCategorias.";
-import {
-  obtenerCategorias,
-  crearCategoria
-} from "../services/categoriaService";
+import { obtenerCategorias, crearCategoria, eliminarCategoria } from "../services/categoriaService";
+import { useToast } from "../context/ToastContext";
 
 const CategoriasList = () => {
   const [categorias, setCategorias] = useState([]);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const cargarCategorias = async () => {
     const data = await obtenerCategorias();
@@ -22,16 +21,24 @@ const CategoriasList = () => {
   const handleNueva = async () => {
     try {
       const nueva = await crearCategoria({
-        nombre: `Nueva Categoría ${Date.now()}`, // 👈 único
-        descripcion: "",
-        color: "#000000" // 👈 válido #rrggbb
+        nombre: `Nueva Categoría ${Date.now()}`,
+        descripcion: ""
       });
-
       navigate(`/App/categorias/${nueva._id}`);
     } catch (error) {
-      console.error(
-        error.response?.data?.message || error.message
-      );
+      console.error(error.response?.data?.message || error.message);
+      toast.error("Error al crear categoría");
+    }
+  };
+
+  const handleEliminar = async (id) => {
+    try {
+      await eliminarCategoria(id);
+      toast.success("Categoría eliminada");
+      await cargarCategorias(); // refrescar la lista
+    } catch (error) {
+      console.error(error.response?.data?.message || error.message);
+      toast.error("Error al eliminar categoría");
     }
   };
 
@@ -50,6 +57,7 @@ const CategoriasList = () => {
       <TablaCategorias
         categorias={categorias}
         onVer={(id) => navigate(`/App/categorias/${id}`)}
+        onEliminar={handleEliminar}
       />
     </div>
   );
