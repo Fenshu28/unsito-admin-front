@@ -5,11 +5,9 @@ import PublicacionDetalle from "../pages/PublicacionDetalle";
 import Usuarios from "../pages/Usuarios";
 import Autores from "../pages/Autores";
 import Analytics from "../pages/Analytics";
-import EditarAutor from "../pages/view/Autores/EditarAutor";
-
 import CategoriasList from "../pages/CategoriaList";
 import CategoriaDetalle from "../pages/CategoriaDetalle";
-
+import EditarAutor from "../pages/view/Autores/EditarAutor";
 const PrivateRoutes = () => {
   const isAuth = localStorage.getItem("token");
 
