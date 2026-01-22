@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react"; // Importar Iconify
 import TablaPublicaciones from "./view/Publicaciones/TablaPublicaciones";
 import {
   obtenerPublicaciones,
@@ -38,12 +39,9 @@ const PublicacionesList = () => {
     setLoading(true);
     setError(null);
     try {
-      // Crear publicación vacía con solo título por defecto
       const nuevaPublicacion = await crearPublicacion({
         titulo: "Nueva Publicación",
       });
-
-      // Redirigir inmediatamente al detalle para editar
       navigate(`/App/publicaciones/${nuevaPublicacion._id}`);
     } catch (err) {
       setError(
@@ -60,71 +58,60 @@ const PublicacionesList = () => {
   };
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="font-sans">
       {/* Header */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold text-gray-900">Publicaciones</h2>
         <button
           onClick={handleNueva}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          // Cambiado a bg-brand-600 para usar el nuevo rojo vino
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <svg
-            className="fill-current"
-            width="18"
-            height="18"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 4.375C10.3452 4.375 10.625 4.65482 10.625 5V9.375H15C15.3452 9.375 15.625 9.65482 15.625 10C15.625 10.3452 15.3452 10.625 15 10.625H10.625V15C10.625 15.3452 10.3452 15.625 10 15.625C9.65482 15.625 9.375 15.3452 9.375 15V10.625H5C4.65482 10.625 4.375 10.3452 4.375 10C4.375 9.65482 4.65482 9.375 5 9.375H9.375V5C9.375 4.65482 9.65482 4.375 10 4.375Z"
-              fill=""
-            />
-          </svg>
-          {loading ? "Creando..." : "Nueva Publicación"}
+          <Icon icon="mdi:plus" width="20" height="20" />
+          {loading ? "Creando..." : "Nueva"}
         </button>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="mb-4 rounded-lg border border-error-200 bg-error-50 p-4">
-          <p className="text-sm text-error-700">{error}</p>
+        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 shadow-sm">
+          <p className="text-sm font-medium text-red-700">{error}</p>
         </div>
       )}
 
-      {/* Filters */}
-      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      {/* Filters Card */}
+      <div className="mb-6 rounded-2xl border border-gray-300 bg-white p-5 shadow-sm sm:px-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
           <div className="w-full sm:w-64">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-xs font-medium text-gray-500 font-sans">
               Filtrar por estado
             </label>
-            <select
-              value={filtroStatus}
-              onChange={(e) => setFiltroStatus(e.target.value)}
-              className="w-full rounded-lg border border-gray-200 bg-transparent px-4 py-3 text-sm text-gray-800 shadow-sm transition-colors focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/10"
-            >
-              <option value="">Todos</option>
-              <option value="Draft">Borrador</option>
-              <option value="Published">Publicado</option>
-            </select>
+            <div className="relative">
+              <select
+                value={filtroStatus}
+                onChange={(e) => setFiltroStatus(e.target.value)}
+                // Cambiado focus a brand-600 y border-gray-300
+                className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
+              >
+                <option value="">Todos</option>
+                <option value="Draft">Borrador</option>
+                <option value="Published">Publicado</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                <Icon icon="mdi:chevron-down" width="20" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Loading */}
-      {loading && (
-        <div className="mb-4 text-center">
-          <p className="text-sm text-gray-500">Cargando...</p>
-        </div>
-      )}
 
       {/* Table */}
       <TablaPublicaciones
         publicaciones={publicaciones}
         onVer={handleVer}
         onRecargar={cargarPublicaciones}
+        loading={loading}
       />
     </div>
   );

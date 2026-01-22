@@ -13,7 +13,18 @@ const SelectField = ({
   required = false,
   valueKey = "_id",
   labelKey = "nombre",
+  className = "",
+  error = false,
 }) => {
+  // Select estilo Analytics con focus brand
+  let selectClasses = `w-full appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2.5 pr-10 text-sm focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 transition-colors disabled:cursor-not-allowed disabled:bg-gray-100 ${
+    value ? "text-gray-800" : "text-gray-500"
+  } ${className}`;
+
+  if (error) {
+    selectClasses = `w-full appearance-none rounded-lg border border-red-500 bg-white px-4 py-2.5 pr-10 text-sm text-gray-800 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors`;
+  }
+
   return (
     <div className="w-full">
       {label && (
@@ -21,7 +32,7 @@ const SelectField = ({
           htmlFor={id}
           className="mb-2 block text-sm font-medium text-gray-700"
         >
-          {label} {required && <span className="text-error-600">*</span>}
+          {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
@@ -32,18 +43,24 @@ const SelectField = ({
           onChange={onChange}
           disabled={disabled}
           required={required}
-          className="relative z-20 w-full appearance-none rounded-lg border border-gray-200 bg-transparent py-3 px-5 pr-12 text-sm text-gray-800 shadow-sm transition-colors focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/10 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+          className={selectClasses}
         >
-          <option value="">{placeholder}</option>
-          {options.map((option) => (
-            <option key={option[valueKey]} value={option[valueKey]}>
+          <option value="" disabled>
+            {placeholder}
+          </option>
+          {options.map((option, idx) => (
+            <option
+              key={option[valueKey] || idx}
+              value={option[valueKey]}
+              className="text-gray-800"
+            >
               {option[labelKey]}
             </option>
           ))}
         </select>
-        <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2 pointer-events-none text-gray-500">
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
           <Icon icon="mdi:chevron-down" width="20" />
-        </span>
+        </div>
       </div>
     </div>
   );

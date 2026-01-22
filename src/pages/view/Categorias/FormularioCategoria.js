@@ -5,31 +5,58 @@ import { Icon } from "@iconify/react";
 import { useToast } from "../../../context/ToastContext";
 
 const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
-  const toast = useToast();
-
   const [formData, setFormData] = useState({
     nombre: "",
-    descripcion: ""
+    descripcion: "",
   });
+
+  const [originalData, setOriginalData] = useState(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     if (categoriaActual) {
-      setFormData({
+      const data = {
         nombre: categoriaActual.nombre || "",
-        descripcion: categoriaActual.descripcion || ""
-      });
+        descripcion: categoriaActual.descripcion || "",
+      };
+      if (!isDirty || !originalData) {
+        setFormData(data);
+      }
+      setOriginalData(data);
     }
   }, [categoriaActual]);
 
+  // Advertencia de cambios sin guardar al cerrar pestaña
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isDirty]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setIsDirty(true);
+  };
+
+  const handleReset = () => {
+    if (originalData) setFormData(originalData);
+    setIsDirty(false);
+    toast.info("Cambios descartados");
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     try {
       await onSubmit(formData);
+      setIsDirty(false);
+      setOriginalData(formData);
       toast.success("Categoría guardada correctamente");
     } catch {
       toast.error("Error al guardar la categoría");
@@ -37,46 +64,65 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="max-w-xl mx-auto rounded-xl border border-stroke bg-white shadow-lg dark:border-strokedark dark:bg-boxdark transition-all">
-        {/* Header */}
-        <div className="px-6 py-4 border-b border-stroke dark:border-strokedark">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-            {categoriaActual ? "Editar Categoría" : "Nueva Categoría"}
+    <div className="max-w-3xl mx-auto space-y-6 pb-32">
+      <div className="rounded-2xl border border-gray-300 bg-white shadow-sm overflow-hidden">
+        {/* Post Style Header Simplificado */}
+        <div className="p-6 border-b border-gray-100 bg-gray-50/30">
+          <h3 className="font-bold text-gray-900 leading-tight text-xl">
+            {formData.nombre || "Nueva Categoría"}
           </h3>
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-50 px-2 py-0.5 rounded border border-brand-100">
+              Configuración de Categoría
+            </span>
+          </div>
         </div>
 
-        {/* Form Fields */}
-        <div className="px-6 py-6 space-y-5">
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <TextField
-            label="Nombre"
+            id="nombre"
             name="nombre"
+            label="Nombre de la Categoría"
             value={formData.nombre}
             onChange={handleChange}
+            placeholder="Ej: Noticias, Eventos, Proyectos..."
             required
           />
 
           <TextAreaField
-            label="Descripción"
+            id="descripcion"
             name="descripcion"
+            label="Descripción"
             value={formData.descripcion}
             onChange={handleChange}
-            rows={4}
+            placeholder="Breve descripción sobre el propósito de esta categoría..."
+            rows={5}
           />
-        </div>
+        </form>
+      </div>
 
-        {/* Footer Buttons */}
-        <div className="flex justify-end px-6 py-4 border-t border-stroke dark:border-strokedark">
+      {/* Floating Action Buttons */}
+      {isDirty && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex gap-4">
           <button
-            type="submit"
-            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-2 text-white font-medium shadow-md hover:scale-105 hover:opacity-90 transition-transform"
+            type="button"
+            onClick={handleSubmit}
+            className="flex items-center gap-2 rounded-full bg-brand-600 px-8 py-3 font-bold text-white hover:bg-brand-700 transition-all shadow-xl active:scale-95"
           >
-            <Icon icon="mdi:content-save" width="18" />
-            Guardar
+            <Icon icon="mdi:content-save" width="20" />
+            Guardar Cambios
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-8 py-3 font-bold text-gray-700 hover:bg-gray-50 transition-all shadow-xl active:scale-95"
+          >
+            <Icon icon="mdi:close" width="20" />
+            Descartar
           </button>
         </div>
-      </div>
-    </form>
+      )}
+    </div>
   );
 };
 

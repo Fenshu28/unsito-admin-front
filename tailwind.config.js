@@ -54,20 +54,20 @@ module.exports = {
           950: "#0c111d",
           dark: "#1a2231",
         },
-        // Brand colors from theme-tailwind
+        // Brand colors (Base: #79170f)
         brand: {
-          25: "#f2f7ff",
-          50: "#ecf3ff",
-          100: "#dde9ff",
-          200: "#c2d6ff",
-          300: "#9cb9ff",
-          400: "#7592ff",
-          500: "#465fff",
-          600: "#3641f5",
-          700: "#2a31d8",
-          800: "#252dae",
-          900: "#262e89",
-          950: "#161950",
+          25: "#fff5f5",
+          50: "#fff0f0",
+          100: "#ffdedd",
+          200: "#ffc2c0",
+          300: "#ff9591",
+          400: "#ff5852",
+          500: "#e02d24",
+          600: "#79170f", // Main requested color
+          700: "#63100a",
+          800: "#54100b",
+          900: "#48100c",
+          950: "#2a0503",
         },
         // Error colors from theme-tailwind
         error: {
@@ -99,6 +99,9 @@ module.exports = {
           900: "#054f31",
           950: "#053321",
         },
+      },
+      fontFamily: {
+        sans: ["Outfit", "sans-serif"],
       },
       fontSize: {
         "title-xxl": ["44px", "55px"],

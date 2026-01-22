@@ -2,27 +2,38 @@ import React from "react";
 
 const LoginBanner = () => {
   return (
-    <div 
-      className="items-center hidden w-full h-full lg:w-1/2 lg:grid bg-cover bg-center"
-      style={{
-        backgroundImage: "url('https://assets-unsito.flaisgrafics.com/unsis.png')"
-      }}
-    >
-      <div className="relative flex items-center justify-center z-1">
-        {/* Overlay con blur */}
-        <div className="absolute inset-0 backdrop-blur-lg bg-black/30"></div>
-        
-        {/* Contenido */}
-        <div className="relative flex flex-col items-center max-w-xs text-center text-white px-6">
-          <div className="mb-4">
-            <img
-              src="https://assets-unsito.flaisgrafics.com/logo.png"
-              alt="Logo"
-              className="h-16 w-auto drop-shadow-2xl"
-            />
+    <div className="hidden h-screen w-1/2 lg:block relative overflow-hidden">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 h-full w-full bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://assets-unsito.flaisgrafics.com/unsis.png')",
+        }}
+      ></div>
+
+      {/* Overlay Oscuro Completo con Blur Visible */}
+      <div className="absolute inset-0 h-full w-full bg-black/40 backdrop-blur-md"></div>
+
+      {/* Contenido Centrado */}
+      <div className="relative z-10 flex h-full items-center justify-center px-10 text-center">
+        <div className="max-w-[400px]">
+          <div className="mb-8 flex justify-center">
+            {/* Logo Circular con más presencia y fondo claro */}
+            <div className="rounded-full bg-white/95 p-6 shadow-2xl backdrop-blur-sm">
+              <img
+                src="https://assets-unsito.flaisgrafics.com/logo.png"
+                alt="Logo"
+                className="h-28 w-auto drop-shadow-md"
+              />
+            </div>
           </div>
-          <p className="text-lg">
-            Bienvenido a Unsito - Tu plataforma para gestionar todo
+          <h2 className="mb-4 text-3xl font-bold text-white drop-shadow-md">
+            Bienvenido a Unsito
+          </h2>
+          <p className="text-lg text-white/90 drop-shadow-sm font-medium">
+            Tu plataforma digital universitaria para gestionar todo en un solo
+            lugar.
           </p>
         </div>
       </div>
