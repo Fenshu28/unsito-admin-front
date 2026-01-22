@@ -38,12 +38,9 @@ const PublicacionesList = () => {
     setLoading(true);
     setError(null);
     try {
-      // Crear publicación vacía con solo título por defecto
       const nuevaPublicacion = await crearPublicacion({
         titulo: "Nueva Publicación",
       });
-
-      // Redirigir inmediatamente al detalle para editar
       navigate(`/App/publicaciones/${nuevaPublicacion._id}`);
     } catch (err) {
       setError(
@@ -67,7 +64,7 @@ const PublicacionesList = () => {
         <button
           onClick={handleNueva}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-medium text-white shadow-theme-sm transition-all hover:bg-brand-600 hover:shadow-theme-md focus:outline-none focus:ring-4 focus:ring-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg
             className="fill-current"
@@ -88,22 +85,22 @@ const PublicacionesList = () => {
 
       {/* Error Message */}
       {error && (
-        <div className="mb-4 rounded-lg border border-error-200 bg-error-50 p-4">
-          <p className="text-sm text-error-700">{error}</p>
+        <div className="mb-4 rounded-lg border border-error-300 bg-error-50 p-4 shadow-theme-xs">
+          <p className="text-sm font-medium text-error-700">{error}</p>
         </div>
       )}
 
-      {/* Filters */}
-      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      {/* Filters Card - con sombra visible */}
+      <div className="mb-6 rounded-xl border border-gray-300 bg-white p-5 shadow-theme-sm lg:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
           <div className="w-full sm:w-64">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-sm font-semibold text-gray-700">
               Filtrar por estado
             </label>
             <select
               value={filtroStatus}
               onChange={(e) => setFiltroStatus(e.target.value)}
-              className="w-full rounded-lg border border-gray-200 bg-transparent px-4 py-3 text-sm text-gray-800 shadow-sm transition-colors focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/10"
+              className="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs transition-all focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/20"
             >
               <option value="">Todos</option>
               <option value="Draft">Borrador</option>

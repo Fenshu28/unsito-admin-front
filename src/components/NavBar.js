@@ -13,14 +13,12 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-999 flex w-full bg-white shadow-sm">
-    {/*<nav className="sticky top-0 z-999 flex w-full bg-white border-b border-gray-200 shadow-sm">*/}
-
+    // NavBar con borde inferior y sombra visible
+    <nav className="sticky top-0 z-999 flex w-full bg-white border-b border-gray-300 shadow-theme-sm">
       <div className="flex flex-grow items-center justify-between px-4 py-4 md:px-6 2xl:px-11">
-        
-        {/* Botón Toggle Sidebar */}
+        {/* Botón Toggle Sidebar - con sombra sutil */}
         <button
-          className="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors lg:w-11 lg:h-11"
+          className="flex items-center justify-center w-10 h-10 text-gray-600 bg-gray-50 border border-gray-200 rounded-lg shadow-theme-xs hover:bg-gray-100 hover:text-gray-800 transition-all lg:w-11 lg:h-11"
           onClick={handleToggle}
           aria-label="Toggle Sidebar"
         >
@@ -71,20 +69,22 @@ const NavBar = () => {
           </span>
         </div>
 
-        {/* Ícono de usuario alineado a la derecha */}
+        {/* Ícono de usuario - con hover más visible */}
         <div className="flex items-center gap-3 2xsm:gap-7">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
-            viewBox="0 0 24 24"
-            className="text-gray-500 hover:text-brand-500 transition-colors cursor-pointer"
-          >
-            <path
-              fill="currentColor"
-              d="M12 19.2c-2.5 0-4.71-1.28-6-3.2c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"
-            ></path>
-          </svg>
+          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-brand-50 transition-colors cursor-pointer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              className="text-gray-600 hover:text-brand-500"
+            >
+              <path
+                fill="currentColor"
+                d="M12 19.2c-2.5 0-4.71-1.28-6-3.2c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"
+              ></path>
+            </svg>
+          </div>
         </div>
       </div>
     </nav>

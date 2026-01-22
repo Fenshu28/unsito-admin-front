@@ -88,7 +88,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen bg-white border-r border-gray-200 flex flex-col shadow-sm transition-all duration-300 ease-in-out
+        className={`fixed top-0 left-0 z-50 h-screen bg-white border-r border-gray-300 flex flex-col shadow-theme-lg transition-all duration-300 ease-in-out
         ${
           isExpanded || isMobileOpen
             ? "w-[290px]"
@@ -103,7 +103,7 @@ const Sidebar = () => {
       >
         {/* Logo / Título */}
         <div
-          className={`py-5.5 px-6 border-b border-gray-200 flex ${
+          className={`py-6 px-6 flex ${
             !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
           }`}
         >

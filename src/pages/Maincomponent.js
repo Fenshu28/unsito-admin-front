@@ -20,9 +20,7 @@ const LayoutContent = () => {
         } ${isMobileOpen ? "ml-0" : ""}`}
       >
         {/* Navbar */}
-        <div className="flex-shrink-0">
-          <NavBar />
-        </div>
+        <NavBar />
 
         {/* Contenido con scroll */}
         <div className="p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10">
