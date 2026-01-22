@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 
 const MarkdownEditor = ({
   label,
+  name,
   value,
   onChange,
   placeholder = "",
@@ -131,6 +132,7 @@ const MarkdownEditor = ({
           {activeTab === "write" ? (
             <textarea
               id="md-editor"
+              name={name}
               value={value}
               onChange={onChange}
               disabled={disabled}

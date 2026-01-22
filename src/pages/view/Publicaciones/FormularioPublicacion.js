@@ -45,6 +45,7 @@ const FormularioPublicacion = ({
   const toast = useToast();
 
   useEffect(() => {
+    // Solo sincronizamos formData con publicacionActual en el primer montaje o si el form está limpio
     if (publicacionActual) {
       const data = {
         titulo: publicacionActual.titulo || "",
@@ -59,11 +60,25 @@ const FormularioPublicacion = ({
         linksExternos: publicacionActual.linksExternos || [],
         autor: publicacionActual.autor?._id || "",
       };
-      setFormData(data);
+
+      if (!isDirty || !originalData) {
+        setFormData(data);
+      }
       setOriginalData(data);
-      setIsDirty(false);
     }
-  }, [publicacionActual]);
+  }, [publicacionActual]); // Quitamos isDirty de dependencias para evitar loops
+
+  // Advertencia de cambios sin guardar al cerrar pestaña
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isDirty]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -163,16 +178,21 @@ const FormularioPublicacion = ({
         <div className="rounded-2xl border border-gray-300 bg-white shadow-sm overflow-hidden">
           {/* Facebook Style Header */}
           <div className="p-6 flex items-center gap-4 border-b border-gray-100 bg-gray-50/30">
-            <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 shadow-inner">
-              <Icon icon="mdi:account" width="30" />
+            <div className="w-12 h-12 rounded-full bg-brand-50 flex items-center justify-center text-brand-600 shadow-sm border border-brand-100">
+              <Icon icon="mdi:pencil-box-multiple" width="28" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 leading-tight">
-                Dashboard Administrador
+              <h3 className="font-bold text-gray-900 leading-tight text-lg">
+                {formData.titulo || "Nueva Publicación"}
               </h3>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded">
-                  Sistema Digital
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-50 px-2 py-0.5 rounded border border-brand-100">
+                  {publicacionActual?.autor?.nombre || "Autor Desconocido"}
+                </span>
+                <span className="text-gray-300">•</span>
+                <span className="text-[10px] font-bold text-gray-500 flex items-center gap-1">
+                  <Icon icon="mdi:calendar" width="12" />
+                  {formData.fecha}
                 </span>
                 <span className="text-gray-300">•</span>
                 <span className="text-[10px] font-bold text-brand-600 flex items-center gap-1">
@@ -198,6 +218,7 @@ const FormularioPublicacion = ({
 
               <MarkdownEditor
                 label="Contenido"
+                name="descripcion"
                 value={formData.descripcion}
                 onChange={handleChange}
                 placeholder="Escribe el cuerpo de tu publicación aquí..."
