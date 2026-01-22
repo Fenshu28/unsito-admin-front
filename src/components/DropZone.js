@@ -59,8 +59,9 @@ const DropZone = ({
         const reader = new FileReader();
         reader.onloadend = () => setPreview(reader.result);
         reader.readAsDataURL(file);
-      } else if (fileType === "pdf") {
-        setPreview("pdf");
+      } else {
+        // Para PDF o archivos genéricos, mostramos el estado de previsualización
+        setPreview(fileType);
       }
       onFileSelect(file);
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,13 +103,7 @@ const DropZone = ({
               : "border-gray-300 hover:border-brand-600 hover:bg-gray-50"
           }`}
         >
-          <input
-            type="file"
-            accept={accept}
-            onChange={handleFileInput}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          />
-          <div className="flex flex-col items-center justify-center p-6 bg-white/50 backdrop-blur-sm rounded-xl">
+          <div className="flex flex-col items-center justify-center p-6 bg-white/50 backdrop-blur-sm rounded-xl pointer-events-none">
             <div className="w-12 h-12 rounded-full bg-brand-50 flex items-center justify-center text-brand-600 mb-4 transition-transform group-hover:scale-110">
               <Icon
                 icon={
@@ -127,6 +122,12 @@ const DropZone = ({
               {getAcceptedFormats()} hasta {maxSize}MB
             </p>
           </div>
+          <input
+            type="file"
+            accept={accept}
+            onChange={handleFileInput}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+          />
         </div>
       ) : (
         <div className="relative group overflow-hidden rounded-2xl border border-gray-200">
@@ -139,14 +140,22 @@ const DropZone = ({
           ) : (
             <div className="flex flex-col items-center justify-center w-full h-64 bg-gray-50">
               <Icon
-                icon="mdi:file-pdf-box"
-                className="w-20 h-20 mb-4 text-red-600"
+                icon={
+                  fileName?.endsWith(".pdf")
+                    ? "mdi:file-pdf-box"
+                    : fileName?.match(/\.(doc|docx)$/)
+                      ? "mdi:file-word-box"
+                      : fileName?.match(/\.(xls|xlsx)$/)
+                        ? "mdi:file-excel-box"
+                        : "mdi:file-document"
+                }
+                className={`w-20 h-20 mb-4 ${fileName?.endsWith(".pdf") ? "text-red-600" : "text-brand-600"}`}
               />
               <p className="text-sm font-bold text-gray-800 px-4 text-center break-all">
                 {fileName}
               </p>
-              <p className="text-xs font-medium text-gray-500 mt-2">
-                PDF SELECCIONADO
+              <p className="text-xs font-medium text-gray-500 mt-2 uppercase tracking-wide">
+                Archivo Seleccionado
               </p>
             </div>
           )}
