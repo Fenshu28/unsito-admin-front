@@ -4,17 +4,19 @@ import React from "react";
 const TablaPublicaciones = ({ publicaciones, onVer }) => {
   const getStatusBadge = (status) => {
     const badges = {
-      Draft: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400",
-      Published: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400",
-      Trash: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"
+      Draft: "bg-warning-50 text-warning-700 border border-warning-200",
+      Published: "bg-success-50 text-success-700 border border-success-200",
+      Trash: "bg-error-50 text-error-700 border border-error-200",
     };
     const statusText = {
       Draft: "Borrador",
       Published: "Publicado",
-      Trash: "Papelera"
+      Trash: "Papelera",
     };
     return (
-      <span className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${badges[status] || badges.Draft}`}>
+      <span
+        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${badges[status] || badges.Draft}`}
+      >
         {statusText[status] || status}
       </span>
     );
@@ -23,43 +25,49 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
-    return date.toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
+    return date.toLocaleDateString("es-MX", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="px-4 py-6 md:px-6 xl:px-7.5">
-        <h4 className="text-xl font-semibold text-black dark:text-white">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+      {/* Header */}
+      <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+        <h4 className="text-lg font-semibold text-gray-800">
           Lista de Publicaciones
         </h4>
       </div>
 
+      {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
+            <tr className="border-b border-gray-200 bg-gray-50 text-left">
+              <th className="min-w-[220px] px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
                 Título
               </th>
-              <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
+              <th className="min-w-[150px] px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
                 Categoría
               </th>
-              <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
+              <th className="min-w-[120px] px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
                 Tipo
               </th>
-              <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
-                Publicado
+              <th className="min-w-[120px] px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
+                Actualizado
               </th>
-              <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
+              <th className="min-w-[120px] px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
                 Estado
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-200">
             {publicaciones.length === 0 ? (
               <tr>
-                <td colSpan="6" className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                  <p className="text-black dark:text-white">No hay publicaciones</p>
+                <td colSpan="5" className="px-6 py-8 text-center">
+                  <p className="text-sm text-gray-500">No hay publicaciones</p>
                 </td>
               </tr>
             ) : (
@@ -67,37 +75,37 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
                 <tr
                   key={pub._id}
                   onClick={() => onVer(pub._id)}
-                  className="cursor-pointer border-b border-[#eee] hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                  className="cursor-pointer transition-colors hover:bg-gray-50"
                 >
-                  <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
-                    <h5 className="font-medium text-black dark:text-white flex items-center gap-2">
-                      {pub.titulo}
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <h5 className="text-sm font-medium text-gray-900">
+                        {pub.titulo}
+                      </h5>
                       {pub.isFeatured && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-warning bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-warning">
-                          <Icon icon="mdi:star" width="14" />
+                        <span className="inline-flex items-center gap-1 rounded-full bg-warning-50 border border-warning-200 px-2 py-0.5 text-xs font-medium text-warning-700">
+                          <Icon icon="mdi:star" width="12" />
                           Destacado
                         </span>
-                      )}                      
-                    </h5>
+                      )}
+                    </div>
                   </td>
-                  <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
+                  <td className="px-6 py-4">
+                    <p className="text-sm text-gray-700">
                       {pub.categoria?.nombre || "-"}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
+                  <td className="px-6 py-4">
+                    <p className="text-sm text-gray-700">
                       {pub.tipo?.nombre || "-"}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
+                  <td className="px-6 py-4">
+                    <p className="text-sm text-gray-500">
                       {formatDate(pub.updatedAt)}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                    {getStatusBadge(pub.status)}
-                  </td>
+                  <td className="px-6 py-4">{getStatusBadge(pub.status)}</td>
                 </tr>
               ))
             )}

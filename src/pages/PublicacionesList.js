@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import TablaPublicaciones from "./view/Publicaciones/TablaPublicaciones";
-import { obtenerPublicaciones, crearPublicacion } from "../services/publicacionesService";
+import {
+  obtenerPublicaciones,
+  crearPublicacion,
+} from "../services/publicacionesService";
 
 const PublicacionesList = () => {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -17,7 +20,10 @@ const PublicacionesList = () => {
       const data = await obtenerPublicaciones(filtroStatus || null);
       setPublicaciones(data);
     } catch (err) {
-      setError("Error al cargar las publicaciones: " + (err.response?.data?.message || err.message));
+      setError(
+        "Error al cargar las publicaciones: " +
+          (err.response?.data?.message || err.message),
+      );
       console.error(err);
     } finally {
       setLoading(false);
@@ -34,13 +40,16 @@ const PublicacionesList = () => {
     try {
       // Crear publicación vacía con solo título por defecto
       const nuevaPublicacion = await crearPublicacion({
-        titulo: "Nueva Publicación"
+        titulo: "Nueva Publicación",
       });
-      
+
       // Redirigir inmediatamente al detalle para editar
       navigate(`/App/publicaciones/${nuevaPublicacion._id}`);
     } catch (err) {
-      setError("Error al crear la publicación: " + (err.response?.data?.message || err.message));
+      setError(
+        "Error al crear la publicación: " +
+          (err.response?.data?.message || err.message),
+      );
       console.error(err);
       setLoading(false);
     }
@@ -54,18 +63,16 @@ const PublicacionesList = () => {
     <div className="p-4 md:p-6">
       {/* Header */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-2xl font-bold text-black dark:text-white">
-          Publicaciones
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900">Publicaciones</h2>
         <button
           onClick={handleNueva}
           disabled={loading}
-          className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-center font-medium text-white hover:bg-opacity-90 disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg
-            className="mr-2 fill-current"
-            width="20"
-            height="20"
+            className="fill-current"
+            width="18"
+            height="18"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -81,22 +88,22 @@ const PublicacionesList = () => {
 
       {/* Error Message */}
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-          <p>{error}</p>
+        <div className="mb-4 rounded-lg border border-error-200 bg-error-50 p-4">
+          <p className="text-sm text-error-700">{error}</p>
         </div>
       )}
 
       {/* Filters */}
-      <div className="mb-6 rounded-sm border border-stroke bg-white p-6 shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
           <div className="w-full sm:w-64">
-            <label className="mb-2 block text-sm font-medium text-black dark:text-white">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
               Filtrar por estado
             </label>
             <select
               value={filtroStatus}
               onChange={(e) => setFiltroStatus(e.target.value)}
-              className="w-full rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary dark:border-strokedark dark:bg-form-input"
+              className="w-full rounded-lg border border-gray-200 bg-transparent px-4 py-3 text-sm text-gray-800 shadow-sm transition-colors focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/10"
             >
               <option value="">Todos</option>
               <option value="Draft">Borrador</option>
@@ -109,7 +116,7 @@ const PublicacionesList = () => {
       {/* Loading */}
       {loading && (
         <div className="mb-4 text-center">
-          <p className="text-black dark:text-white">Cargando...</p>
+          <p className="text-sm text-gray-500">Cargando...</p>
         </div>
       )}
 
