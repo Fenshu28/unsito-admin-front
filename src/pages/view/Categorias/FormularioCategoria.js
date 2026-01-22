@@ -38,8 +38,16 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="p-6">
+      <div className="max-w-xl mx-auto rounded-xl border border-stroke bg-white shadow-lg dark:border-strokedark dark:bg-boxdark transition-all">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-stroke dark:border-strokedark">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+            {categoriaActual ? "Editar Categoría" : "Nueva Categoría"}
+          </h3>
+        </div>
+
+        {/* Form Fields */}
+        <div className="px-6 py-6 space-y-5">
           <TextField
             label="Nombre"
             name="nombre"
@@ -48,21 +56,20 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
             required
           />
 
-          <div className="mt-4">
-            <TextAreaField
-              label="Descripción"
-              name="descripcion"
-              value={formData.descripcion}
-              onChange={handleChange}
-              rows={4}
-            />
-          </div>
+          <TextAreaField
+            label="Descripción"
+            name="descripcion"
+            value={formData.descripcion}
+            onChange={handleChange}
+            rows={4}
+          />
         </div>
 
-        <div className="flex justify-end border-t p-4">
+        {/* Footer Buttons */}
+        <div className="flex justify-end px-6 py-4 border-t border-stroke dark:border-strokedark">
           <button
             type="submit"
-            className="flex items-center gap-2 rounded px-6 py-2 text-white bg-gray-700 hover:bg-gray-600 transition-colors"
+            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-2 text-white font-medium shadow-md hover:scale-105 hover:opacity-90 transition-transform"
           >
             <Icon icon="mdi:content-save" width="18" />
             Guardar
