@@ -97,12 +97,12 @@ const LoginForm = () => {
                 <span>Recordarme</span>
               </label>
 
-              <a
-                href="#"
-                className="text-sm font-medium text-brand-600 hover:text-brand-700 hover:underline"
+              <button
+                type="button"
+                className="text-sm font-medium text-brand-600 hover:text-brand-700 hover:underline bg-transparent border-none p-0 cursor-pointer"
               >
                 ¿Olvidaste tu contraseña?
-              </a>
+              </button>
             </div>
 
             <button
@@ -116,9 +116,12 @@ const LoginForm = () => {
             <div className="text-center mt-6">
               <p className="text-sm font-medium text-gray-500">
                 ¿No tienes cuenta?{" "}
-                <a href="#" className="text-brand-600 hover:underline">
+                <button
+                  type="button"
+                  className="text-brand-600 hover:underline bg-transparent border-none p-0 cursor-pointer text-sm font-medium"
+                >
                   Contacta al administrador
-                </a>
+                </button>
               </p>
             </div>
           </div>
