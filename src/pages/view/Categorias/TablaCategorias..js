@@ -2,26 +2,33 @@ import React from "react";
 
 const TablaCategorias = ({ categorias, onVer }) => {
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="px-4 py-6 md:px-6 xl:px-7.5">
-        <h4 className="text-xl font-semibold text-black dark:text-white">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+      {/* Header */}
+      <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+        <h4 className="text-lg font-semibold text-gray-800">
           Lista de Categorías
         </h4>
       </div>
 
+      {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="px-4 py-4 font-medium">Nombre</th>
-              <th className="px-4 py-4 font-medium">Descripción</th>
+            <tr className="border-b border-gray-200 bg-gray-50 text-left">
+              <th className="min-w-[220px] px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
+                Nombre
+              </th>
+              <th className="min-w-[150px] px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
+                Descripción
+              </th>
             </tr>
           </thead>
-          <tbody>
+
+          <tbody className="divide-y divide-gray-200">
             {categorias.length === 0 ? (
               <tr>
-                <td colSpan="2" className="px-4 py-5 text-center">
-                  No hay categorías
+                <td colSpan="2" className="px-6 py-8 text-center">
+                  <p className="text-sm text-gray-500">No hay categorías</p>
                 </td>
               </tr>
             ) : (
@@ -29,10 +36,14 @@ const TablaCategorias = ({ categorias, onVer }) => {
                 <tr
                   key={cat._id}
                   onClick={() => onVer(cat._id)}
-                  className="cursor-pointer border-b hover:bg-gray-2 dark:hover:bg-meta-4"
+                  className="cursor-pointer transition-colors hover:bg-gray-50"
                 >
-                  <td className="px-4 py-5 font-medium">{cat.nombre}</td>
-                  <td className="px-4 py-5">{cat.descripcion || "-"}</td>
+                  <td className="px-6 py-4">
+                    <p className="text-sm font-medium text-gray-900">{cat.nombre}</p>
+                  </td>
+                  <td className="px-6 py-4">
+                    <p className="text-sm text-gray-700">{cat.descripcion || "-"}</p>
+                  </td>
                 </tr>
               ))
             )}
