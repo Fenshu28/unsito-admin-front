@@ -123,18 +123,8 @@ const TopPublicationsTable = ({ publications, loading }) => {
                     </span>
                   )}
                 </td>
-                <td className="py-3 px-2">
-                  {item.publicacion.categoria && (
-                    <span
-                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold font-sans"
-                      style={{
-                        backgroundColor: `${item.publicacion.categoria.color}20`,
-                        color: item.publicacion.categoria.color,
-                      }}
-                    >
-                      {item.publicacion.categoria.nombre}
-                    </span>
-                  )}
+                <td className="py-3 px-2 text-gray-600 text-sm font-sans">
+                  {item.publicacion.categoria?.nombre || "-"}
                 </td>
                 <td className="py-3 px-2 text-gray-500 text-sm dark:text-gray-400 font-sans">
                   {item.publicacion.tipo?.nombre || "-"}

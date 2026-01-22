@@ -58,7 +58,7 @@ const PublicacionesList = () => {
   };
 
   return (
-    <div>
+    <div className="font-sans">
       {/* Header */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold text-gray-900">Publicaciones</h2>
@@ -81,18 +81,18 @@ const PublicacionesList = () => {
       )}
 
       {/* Filters Card */}
-      <div className="mb-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:px-6">
+      <div className="mb-6 rounded-2xl border border-gray-300 bg-white p-5 shadow-sm sm:px-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
           <div className="w-full sm:w-64">
-            <label className="mb-2 block text-xs font-medium text-gray-500">
+            <label className="mb-2 block text-xs font-medium text-gray-500 font-sans">
               Filtrar por estado
             </label>
             <div className="relative">
               <select
                 value={filtroStatus}
                 onChange={(e) => setFiltroStatus(e.target.value)}
-                // Cambiado focus a brand-600
-                className="w-full appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600"
+                // Cambiado focus a brand-600 y border-gray-300
+                className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
               >
                 <option value="">Todos</option>
                 <option value="Draft">Borrador</option>

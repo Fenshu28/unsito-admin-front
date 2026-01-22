@@ -32,26 +32,26 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
   };
 
   return (
-    // Estilo copiado de TopPublicationsTable (Analitycs)
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 sm:px-6 shadow-sm">
+    // Estilo copiado de TopPublicationsTable (Analitycs) y adaptado a border-gray-300
+    <div className="overflow-hidden rounded-2xl border border-gray-300 bg-white px-4 pb-3 pt-4 sm:px-6 shadow-sm">
       <div className="max-w-full overflow-x-auto">
         <table className="w-full">
           {/* Header simple con borde arriba/abajo, texto gris suave */}
           <thead className="border-gray-100 border-y">
             <tr>
-              <th className="py-3 px-2 font-medium text-gray-500 text-left text-xs">
+              <th className="py-3 px-2 font-bold text-gray-500 text-left text-xs font-sans">
                 Título
               </th>
-              <th className="py-3 px-2 font-medium text-gray-500 text-left text-xs">
+              <th className="py-3 px-2 font-bold text-gray-500 text-left text-xs font-sans">
                 Categoría
               </th>
-              <th className="py-3 px-2 font-medium text-gray-500 text-left text-xs">
+              <th className="py-3 px-2 font-bold text-gray-500 text-left text-xs font-sans">
                 Tipo
               </th>
-              <th className="py-3 px-2 font-medium text-gray-500 text-center text-xs">
+              <th className="py-3 px-2 font-bold text-gray-500 text-center text-xs font-sans">
                 Actualizado
               </th>
-              <th className="py-3 px-2 font-medium text-gray-500 text-right text-xs">
+              <th className="py-3 px-2 font-bold text-gray-500 text-center text-xs font-sans">
                 Estado
               </th>
             </tr>
@@ -60,7 +60,7 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
             {publicaciones.length === 0 ? (
               <tr>
                 <td
-                  className="py-8 text-center text-gray-500 text-sm"
+                  className="py-8 text-center text-gray-500 text-sm font-sans"
                   colSpan="5"
                 >
                   No hay publicaciones
@@ -75,7 +75,7 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
                 >
                   <td className="py-3 px-2">
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-gray-800 text-sm">
+                      <p className="font-bold text-gray-800 text-sm font-sans">
                         {pub.titulo}
                       </p>
                       {pub.isFeatured && (
@@ -87,32 +87,19 @@ const TablaPublicaciones = ({ publicaciones, onVer }) => {
                       )}
                     </div>
                   </td>
-                  <td className="py-3 px-2">
-                    {/* Estilo de categoría como en Analytics */}
-                    {pub.categoria ? (
-                      <span
-                        className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
-                        style={{
-                          backgroundColor: `${pub.categoria.color || "#e5e7eb"}20`,
-                          color: pub.categoria.color || "#374151",
-                        }}
-                      >
-                        {pub.categoria.nombre}
-                      </span>
-                    ) : (
-                      <span className="text-gray-400 text-sm">-</span>
-                    )}
+                  <td className="py-3 px-2 text-gray-600 text-sm font-sans">
+                    {pub.categoria?.nombre || "-"}
                   </td>
-                  <td className="py-3 px-2 text-gray-600 text-sm">
+                  <td className="py-3 px-2 text-gray-600 text-sm font-sans">
                     {pub.tipo?.nombre || "-"}
                   </td>
-                  <td className="py-3 px-2 text-center text-gray-500 text-sm">
+                  <td className="py-3 px-2 text-center text-gray-500 text-sm font-sans">
                     {formatDate(pub.updatedAt)}
                   </td>
-                  <td className="py-3 px-2 text-right">
+                  <td className="py-3 px-2 text-center">
                     {/* Badge simplificado sin componente complejo */}
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(pub.status).bg} ${getStatusColor(pub.status).text}`}
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold font-sans ${getStatusColor(pub.status).bg} ${getStatusColor(pub.status).text}`}
                     >
                       {statusText[pub.status] || pub.status}
                     </span>
