@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import StatsCard from "../components/StatsCard";
 import TopPublicationsTable from "../components/TopPublicationsTable";
-import { getDashboardStats, getTopPublicaciones } from "../services/analyticsService";
+import {
+  getDashboardStats,
+  getTopPublicaciones,
+} from "../services/analyticsService";
 
 const Analytics = () => {
   const [stats, setStats] = useState(null);
@@ -11,7 +14,7 @@ const Analytics = () => {
 
   useEffect(() => {
     loadDashboardData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadDashboardData = async () => {
@@ -31,7 +34,7 @@ const Analytics = () => {
 
   const loadTopPublications = async () => {
     try {
-      const data = await getTopPublicaciones('views', 10);
+      const data = await getTopPublicaciones("views", 10);
       setTopPublications(data.results || []);
     } catch (err) {
       console.error("Error al cargar top publicaciones:", err);
@@ -41,14 +44,18 @@ const Analytics = () => {
   if (error) {
     return (
       <div className="container my-4">
+        {/* Error Card con estilo consistente */}
         <div className="rounded-2xl border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-900/20">
-          <h3 className="text-lg font-semibold text-red-800 dark:text-red-400">
+          <h3 className="text-lg font-bold text-red-800 dark:text-red-400 font-sans">
             Error
           </h3>
-          <p className="mt-2 text-red-600 dark:text-red-300">{error}</p>
+          <p className="mt-2 text-sm text-red-600 dark:text-red-300 font-sans">
+            {error}
+          </p>
           <button
             onClick={loadDashboardData}
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            // Botón consistente: brand? No, es error, rojo standard está bien.
+            className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-red-700 shadow-sm"
           >
             Reintentar
           </button>
@@ -60,10 +67,10 @@ const Analytics = () => {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white/90">
+        <h2 className="text-2xl font-bold text-gray-900 font-sans dark:text-white/90">
           Analytics Dashboard
         </h2>
-        <p className="mt-1 text-gray-500 dark:text-gray-400">
+        <p className="mt-1 text-sm text-gray-500 font-sans dark:text-gray-400">
           Estadísticas y métricas de tus publicaciones
         </p>
       </div>
@@ -74,7 +81,10 @@ const Analytics = () => {
           {loading ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 animate-pulse">
+                <div
+                  key={i}
+                  className="rounded-2xl border border-gray-300 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 animate-pulse"
+                >
                   <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
                   <div className="mt-5">
                     <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
@@ -89,7 +99,7 @@ const Analytics = () => {
                 title="Total Publicaciones"
                 value={stats.totalPublicaciones}
                 icon="mdi:file-document-multiple"
-                color="blue"
+                color="brand" // Usando Brand (Wine Red)
               />
               <StatsCard
                 title="Vistas Totales"
@@ -130,8 +140,8 @@ const Analytics = () => {
 
         {/* Top Publications Table */}
         <div className="col-span-12">
-          <TopPublicationsTable 
-            publications={topPublications} 
+          <TopPublicationsTable
+            publications={topPublications}
             loading={loading}
           />
         </div>
