@@ -8,6 +8,7 @@ const ListaAutores = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [eliminandoId, setEliminandoId] = useState(null);
+
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -50,82 +51,110 @@ const ListaAutores = () => {
   };
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
       {/* Header */}
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-black dark:text-white">
-          Autores
-        </h2>
+      <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+        <h4 className="text-lg font-semibold text-gray-800">
+          Lista de Autores
+        </h4>
       </div>
 
       {loading && (
-        <p className="text-center text-black dark:text-white">
+        <p className="px-6 py-8 text-center text-sm text-gray-500">
           Cargando autores...
         </p>
       )}
 
-      {error && <p className="text-center text-red-600">{error}</p>}
+      {error && (
+        <p className="px-6 py-4 text-center text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
       {!loading && autores.length === 0 && (
-        <p className="text-center text-gray-600">
+        <p className="px-6 py-8 text-center text-sm text-gray-500">
           No hay autores registrados
         </p>
       )}
 
       {!loading && autores.length > 0 && (
-        <div className="overflow-x-auto bg-white shadow-md rounded-xl">
-          <table className="w-full border-collapse">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-6 py-3 text-left font-semibold text-gray-700">
+        <div className="overflow-x-auto">
+          <table className="w-full table-auto">
+            <thead>
+              <tr className="border-b border-gray-200 bg-gray-50 text-left">
+                <th className="px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
                   Foto
                 </th>
-                <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                <th className="px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
                   Nombre
                 </th>
-                <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                <th className="px-6 py-3.5 text-xs font-medium uppercase tracking-wide text-gray-500">
                   Email
                 </th>
-                <th className="px-6 py-3 text-center font-semibold text-gray-700">
+                <th className="px-6 py-3.5 text-center text-xs font-medium uppercase tracking-wide text-gray-500">
                   Acciones
                 </th>
               </tr>
             </thead>
-            <tbody>
+
+            <tbody className="divide-y divide-gray-200">
               {autores.map((autor) => (
                 <tr
                   key={autor._id}
-                  className="border-t hover:bg-gray-50 transition"
+                  className="transition-colors hover:bg-gray-50"
                 >
                   <td className="px-6 py-4">
                     <img
                       src={autor.foto}
                       alt={autor.nombre}
-                      className="w-14 h-14 rounded-full object-cover border"
+                      className="h-12 w-12 rounded-full object-cover border"
                     />
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-800">
+
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
                     {autor.nombre}
                   </td>
-                  <td className="px-6 py-4 text-gray-600">
-                    {autor.email}
+
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {autor.email || "-"}
                   </td>
-                  <td className="px-6 py-4 flex justify-center gap-2">
-                    <button
-                      onClick={() => handleEditar(autor._id)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => handleEliminar(autor._id)}
-                      disabled={eliminandoId === autor._id}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm disabled:opacity-50"
-                    >
-                      {eliminandoId === autor._id
-                        ? "Eliminando..."
-                        : "Eliminar"}
-                    </button>
+
+                  <td className="px-6 py-4">
+                    <div className="flex justify-center gap-2">
+                      {/* Editar */}
+                      <button
+                        onClick={() => handleEditar(autor._id)}
+                        className="
+                          rounded-lg border border-brand-500
+                          bg-brand-500 px-3 py-1.5
+                          text-xs font-medium text-white
+                          transition-all
+                          hover:bg-brand-600 hover:border-brand-600
+                          focus:outline-none focus:ring-4 focus:ring-brand-500/20
+                        "
+                      >
+                        Editar
+                      </button>
+
+                      {/* Eliminar */}
+                      <button
+                        onClick={() => handleEliminar(autor._id)}
+                        disabled={eliminandoId === autor._id}
+                        className="
+                          rounded-lg border border-error-500
+                          bg-error-500 px-3 py-1.5
+                          text-xs font-medium text-white
+                          transition-all
+                          hover:bg-error-600 hover:border-error-600
+                          focus:outline-none focus:ring-4 focus:ring-error-500/20
+                          disabled:cursor-not-allowed disabled:opacity-50
+                        "
+                      >
+                        {eliminandoId === autor._id
+                          ? "Eliminando..."
+                          : "Eliminar"}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
