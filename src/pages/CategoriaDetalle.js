@@ -16,12 +16,12 @@ const CategoriaDetalle = () => {
   const toast = useToast();
 
   const [categoria, setCategoria] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const cargarDatos = useCallback(async () => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const data = await obtenerCategoriaPorId(id);
@@ -30,7 +30,7 @@ const CategoriaDetalle = () => {
       setError("Error al cargar los datos de la categoría");
       console.error(err);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [id]);
 
@@ -50,7 +50,7 @@ const CategoriaDetalle = () => {
   };
 
   const handleDelete = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       await eliminarCategoria(id);
       toast.success("Categoría eliminada con éxito");
@@ -58,12 +58,12 @@ const CategoriaDetalle = () => {
     } catch (err) {
       toast.error("No se pudo eliminar la categoría");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
       setShowDeleteModal(false);
     }
   };
 
-  if (loading && !categoria) {
+  if (isLoading && !categoria) {
     return (
       <div className="p-4 md:p-6 font-sans">
         <div className="mb-6 flex items-center justify-between">
