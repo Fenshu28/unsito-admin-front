@@ -41,3 +41,31 @@ export const crearCategoria = async (categoriaData) => {
     throw error;
   }
 };
+
+/* Actualizar categoría */
+export const actualizarCategoria = async (id, categoriaData) => {
+  try {
+    const response = await apiClient.patch(`/categorias/${id}`, categoriaData);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error al actualizar la categoría:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+/* Eliminar categoría */
+export const eliminarCategoria = async (id) => {
+  try {
+    const response = await apiClient.delete(`/categorias/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error al eliminar la categoría:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};

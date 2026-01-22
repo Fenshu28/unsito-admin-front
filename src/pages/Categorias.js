@@ -1,6 +1,6 @@
 import React from "react";
-import CategoriaForm from "./view/Categorias/FormularioCategorias";
-import ListaCategorias from "./view/Categorias/ListaCategorias";
+import CategoriaForm from "./view/Categorias/FormularioCategoria";
+import ListaCategorias from "./view/Categorias/TablaCategorias.";
 const Categorias = () => {
   return (
     <div className="container mt-4">
