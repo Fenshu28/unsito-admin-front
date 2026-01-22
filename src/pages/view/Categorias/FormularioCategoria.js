@@ -29,7 +29,7 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await onSubmit(formData); // 👈 ya NO manda color
+      await onSubmit(formData);
       toast.success("Categoría guardada correctamente");
     } catch {
       toast.error("Error al guardar la categoría");
@@ -62,7 +62,7 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
         <div className="flex justify-end border-t p-4">
           <button
             type="submit"
-            className="flex items-center gap-2 rounded bg-primary px-6 py-2 text-white"
+            className="flex items-center gap-2 rounded px-6 py-2 text-white bg-gray-700 hover:bg-gray-600 transition-colors"
           >
             <Icon icon="mdi:content-save" width="18" />
             Guardar

@@ -15,13 +15,12 @@ const TablaCategorias = ({ categorias, onVer }) => {
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="px-4 py-4 font-medium">Nombre</th>
               <th className="px-4 py-4 font-medium">Descripción</th>
-              <th className="px-4 py-4 font-medium">Color</th>
             </tr>
           </thead>
           <tbody>
             {categorias.length === 0 ? (
               <tr>
-                <td colSpan="3" className="px-4 py-5 text-center">
+                <td colSpan="2" className="px-4 py-5 text-center">
                   No hay categorías
                 </td>
               </tr>
@@ -34,15 +33,6 @@ const TablaCategorias = ({ categorias, onVer }) => {
                 >
                   <td className="px-4 py-5 font-medium">{cat.nombre}</td>
                   <td className="px-4 py-5">{cat.descripcion || "-"}</td>
-                  <td className="px-4 py-5">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="h-4 w-4 rounded-full"
-                        style={{ backgroundColor: cat.color }}
-                      />
-                      {cat.color}
-                    </div>
-                  </td>
                 </tr>
               ))
             )}
