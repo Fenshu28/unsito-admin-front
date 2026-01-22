@@ -1,32 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import TablaCategorias from "./view/Categorias/TablaCategorias.";
-import { obtenerCategorias, crearCategoria, eliminarCategoria } from "../services/categoriaService";
+import TablaCategorias from "./view/Categorias/TablaCategorias";
+import {
+  obtenerCategorias,
+  crearCategoria,
+  eliminarCategoria,
+} from "../services/categoriaService";
 import { useToast } from "../context/ToastContext";
+import { Icon } from "@iconify/react";
 
 const CategoriasList = () => {
   const [categorias, setCategorias] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const toast = useToast();
 
-  const cargarCategorias = async () => {
-    const data = await obtenerCategorias();
-    setCategorias(data);
-  };
+  const cargarCategorias = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await obtenerCategorias();
+      setCategorias(data || []);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al cargar categorías");
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]);
 
   useEffect(() => {
     cargarCategorias();
-  }, []);
+  }, [cargarCategorias]);
 
   const handleNueva = async () => {
     try {
       const nueva = await crearCategoria({
-        nombre: `Nueva Categoría ${Date.now()}`,
-        descripcion: ""
+        nombre: `Nueva Categoría`,
+        descripcion: "",
       });
       navigate(`/App/categorias/${nueva._id}`);
     } catch (error) {
-      console.error(error.response?.data?.message || error.message);
       toast.error("Error al crear categoría");
     }
   };
@@ -35,27 +48,29 @@ const CategoriasList = () => {
     try {
       await eliminarCategoria(id);
       toast.success("Categoría eliminada");
-      await cargarCategorias(); // refrescar la lista
+      await cargarCategorias();
     } catch (error) {
-      console.error(error.response?.data?.message || error.message);
       toast.error("Error al eliminar categoría");
     }
   };
 
   return (
-    <div className="p-4 md:p-6">
-      <div className="mb-6 flex justify-between">
-        <h2 className="text-2xl font-bold">Categorías</h2>
+    <div className="font-sans">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-2xl font-bold text-gray-900">Categorías</h2>
         <button
           onClick={handleNueva}
-          className="rounded bg-primary px-6 py-2 text-white"
+          disabled={loading}
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed uppercase"
         >
-          Nueva Categoría
+          <Icon icon="mdi:plus" width="20" height="20" />
+          {loading ? "Creando..." : "Nueva"}
         </button>
       </div>
 
       <TablaCategorias
         categorias={categorias}
+        loading={loading}
         onVer={(id) => navigate(`/App/categorias/${id}`)}
         onEliminar={handleEliminar}
       />
