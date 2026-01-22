@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import TablaCategorias from "./view/Categorias/TablaCategorias";
 import {
   obtenerCategorias,
-  crearCategoria,
   eliminarCategoria,
 } from "../services/categoriaService";
 import { useToast } from "../context/ToastContext";
@@ -32,16 +31,9 @@ const CategoriasList = () => {
     cargarCategorias();
   }, [cargarCategorias]);
 
-  const handleNueva = async () => {
-    try {
-      const nueva = await crearCategoria({
-        nombre: `Nueva Categoría`,
-        descripcion: "",
-      });
-      navigate(`/App/categorias/${nueva._id}`);
-    } catch (error) {
-      toast.error("Error al crear categoría");
-    }
+  const handleNueva = () => {
+    // Solo navegamos al formulario de creación
+    navigate("/App/categorias/nuevo");
   };
 
   const handleEliminar = async (id) => {
@@ -64,7 +56,7 @@ const CategoriasList = () => {
           className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed uppercase"
         >
           <Icon icon="mdi:plus" width="20" height="20" />
-          {loading ? "Creando..." : "Nueva"}
+          Nueva
         </button>
       </div>
 
