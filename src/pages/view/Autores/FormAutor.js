@@ -4,6 +4,9 @@ import { useToast } from "../../../context/ToastContext";
 import TextField from "../../../components/TextField";
 import TextAreaField from "../../../components/TextAreaField";
 
+// Color fijo para la inicial
+const fixedColor = "#3B82F6"; // azul fijo, puedes cambiarlo
+
 const FormAutor = ({ onSuccess }) => {
   const toast = useToast();
 
@@ -15,6 +18,7 @@ const FormAutor = ({ onSuccess }) => {
   });
 
   const [error, setError] = useState("");
+  const [imageError, setImageError] = useState(false); // para manejar error de imagen
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,6 +26,10 @@ const FormAutor = ({ onSuccess }) => {
       ...prev,
       [name]: value,
     }));
+
+    if (name === "foto") {
+      setImageError(false); // resetear si cambia la URL
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -41,6 +49,7 @@ const FormAutor = ({ onSuccess }) => {
         biografia: "",
         foto: "",
       });
+      setImageError(false);
       toast.success("Autor creado correctamente");
       onSuccess && onSuccess();
     } catch (err) {
@@ -49,13 +58,16 @@ const FormAutor = ({ onSuccess }) => {
     }
   };
 
+  // Obtener inicial del nombre
+  const getInitial = (nombre) => {
+    return nombre ? nombre.charAt(0).toUpperCase() : "";
+  };
+
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       {/* Header */}
       <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-        <h3 className="font-medium text-black dark:text-white">
-          Crear Autor
-        </h3>
+        <h3 className="font-medium text-black dark:text-white">Crear Autor</h3>
       </div>
 
       {/* Form */}
@@ -110,18 +122,23 @@ const FormAutor = ({ onSuccess }) => {
 
             {/* Preview */}
             <div className="flex justify-center">
-              <div className="flex h-28 w-28 items-center justify-center rounded-full border border-dashed border-stroke bg-gray-50 dark:bg-meta-4">
-                {formData.foto ? (
+              <div className="flex h-28 w-28 items-center justify-center rounded-full border border-dashed border-stroke bg-gray-50 dark:bg-meta-4 overflow-hidden">
+                {formData.foto && !imageError ? (
                   <img
                     src={formData.foto}
                     alt="Preview autor"
                     className="h-24 w-24 rounded-full object-cover"
-                    onError={(e) => (e.target.style.display = "none")}
+                    onError={() => setImageError(true)}
                   />
+                ) : formData.nombre ? (
+                  <div
+                    className="flex h-full w-full items-center justify-center text-white text-2xl font-bold"
+                    style={{ backgroundColor: fixedColor }}
+                  >
+                    {getInitial(formData.nombre)}
+                  </div>
                 ) : (
-                  <span className="text-xs text-gray-400 text-center">
-                    Sin foto
-                  </span>
+                  <span className="text-xs text-gray-400 text-center">Sin foto</span>
                 )}
               </div>
             </div>
