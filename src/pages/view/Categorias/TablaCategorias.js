@@ -58,12 +58,12 @@ const TablaCategorias = ({
                 >
                   <td className="py-3 px-2">
                     <div className="flex items-center gap-2">
-                      <p className="font-bold text-gray-800 text-sm font-sans">
+                      <p className="font-bold text-gray-800 text-sm font-sans leading-tight">
                         {cat.nombre}
                       </p>
                     </div>
                   </td>
-                  <td className="py-3 px-2 text-gray-600 text-sm font-sans">
+                  <td className="py-3 px-2 text-gray-600 text-sm font-sans leading-tight">
                     {cat.descripcion || "-"}
                   </td>
                   <td className="py-3 px-2 text-center">

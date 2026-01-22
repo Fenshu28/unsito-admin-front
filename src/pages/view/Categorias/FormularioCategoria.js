@@ -71,11 +71,11 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 pb-32">
+    <div className="max-w-3xl mx-auto space-y-6 pb-32 font-sans">
       <div className="rounded-2xl border border-gray-300 bg-white shadow-sm overflow-hidden">
         {/* Post Style Header Simplificado */}
         <div className="p-6 border-b border-gray-100 bg-gray-50/30">
-          <h3 className="font-bold text-gray-900 leading-tight text-xl">
+          <h3 className="font-bold text-gray-900 leading-tight text-lg">
             {formData.nombre || "Nueva Categoría"}
           </h3>
           <div className="flex items-center gap-2 mt-2">
