@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TablaCategorias from "./view/Categorias/TablaCategorias";
 import {
   obtenerCategorias,
+  crearCategoria,
   eliminarCategoria,
 } from "../services/categoriaService";
 import { useToast } from "../context/ToastContext";
@@ -31,9 +32,40 @@ const CategoriasList = () => {
     cargarCategorias();
   }, [cargarCategorias]);
 
-  const handleNueva = () => {
-    // Solo navegamos al formulario de creación
-    navigate("/App/categorias/nuevo");
+  const handleNueva = async () => {
+    setLoading(true);
+    try {
+      // Generar nombre único basado en un timestamp corto para evitar duplicados en Live Create
+      const shortId = Math.floor(Date.now() / 1000) % 10000;
+      const response = await crearCategoria({
+        nombre: `Nueva Categoría #${shortId}`,
+        descripcion: "",
+      });
+      // Manejar respuesta si viene envuelta en data
+      const nueva = response.data || response;
+      if (nueva && nueva._id) {
+        navigate(`/App/categorias/${nueva._id}`);
+      } else {
+        toast.error("Error: Respuesta del servidor inesperada");
+        console.error("Respuesta sin _id:", response);
+      }
+    } catch (error) {
+      console.error("Error en handleNueva:", error);
+      const errorData = error.response?.data;
+      let msg = "Error al crear categoría";
+
+      if (typeof errorData === "string") {
+        msg = errorData;
+      } else if (errorData?.message && typeof errorData.message === "string") {
+        msg = errorData.message;
+      } else if (error?.message && typeof error.message === "string") {
+        msg = error.message;
+      }
+
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleEliminar = async (id) => {
@@ -53,7 +85,7 @@ const CategoriasList = () => {
         <button
           onClick={handleNueva}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed uppercase"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Icon icon="mdi:plus" width="20" height="20" />
           Nueva
