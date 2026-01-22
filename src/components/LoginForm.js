@@ -29,21 +29,24 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-center p-8 lg:w-1/2 lg:p-12 xl:p-16">
-      <div className="w-full max-w-[400px]">
-        <div className="mb-10">
-          <h1 className="mb-3 text-3xl font-bold text-gray-900">
+    <div className="flex w-full items-center justify-center p-8 lg:w-1/2">
+      <div className="w-full max-w-sm">
+        {" "}
+        {/* max-w-sm para evitar que sea gigante */}
+        <div className="mb-8">
+          <h1 className="mb-2 text-2xl font-bold text-gray-900 font-sans">
+            {" "}
+            {/* Texto más moderado */}
             Iniciar Sesión
           </h1>
-          <p className="text-gray-500">
+          <p className="text-sm text-gray-500 font-sans">
             Ingresa tu correo y contraseña para acceder
           </p>
         </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
+        <form onSubmit={handleSubmit} className="font-sans">
+          <div className="space-y-5">
             <div>
-              <label className="mb-2.5 block font-medium text-gray-800">
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">
                 Email
               </label>
               <input
@@ -52,12 +55,13 @@ const LoginForm = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-lg border border-gray-300 bg-white py-4 pl-6 pr-10 text-gray-800 outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all placeholder:text-gray-400"
+                // Standarizado: h-11, text-sm, py-2.5 (mismo que TextField component)
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all placeholder:text-gray-400"
               />
             </div>
 
             <div>
-              <label className="mb-2.5 block font-medium text-gray-800">
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">
                 Contraseña
               </label>
               <div className="relative">
@@ -67,7 +71,8 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full rounded-lg border border-gray-300 bg-white py-4 pl-6 pr-10 text-gray-800 outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all placeholder:text-gray-400"
+                  // Standarizado
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-10 text-sm text-gray-800 outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all placeholder:text-gray-400"
                 />
                 <span
                   onClick={() => setShowPassword(!showPassword)}
@@ -75,17 +80,17 @@ const LoginForm = () => {
                 >
                   <Icon
                     icon={showPassword ? "mdi:eye" : "mdi:eye-off"}
-                    width="24"
+                    width="20"
                   />
                 </span>
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="flex cursor-pointer select-none items-center gap-2 font-medium text-gray-600">
+              <label className="flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-gray-600">
                 <input
                   type="checkbox"
-                  className="h-5 w-5 rounded border-gray-300 text-brand-600 focus:ring-brand-600"
+                  className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-600"
                   checked={isChecked}
                   onChange={(e) => setIsChecked(e.target.checked)}
                 />
@@ -94,7 +99,7 @@ const LoginForm = () => {
 
               <a
                 href="#"
-                className="font-medium text-brand-600 hover:text-brand-700 hover:underline"
+                className="text-sm font-medium text-brand-600 hover:text-brand-700 hover:underline"
               >
                 ¿Olvidaste tu contraseña?
               </a>
@@ -102,13 +107,14 @@ const LoginForm = () => {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-brand-600 py-4 font-bold text-white transition-all hover:bg-brand-700 shadow-md"
+              // Botón h-11 para coincidir con inputs, text-sm
+              className="flex w-full items-center justify-center rounded-lg bg-brand-600 py-2.5 text-sm font-bold text-white transition-all hover:bg-brand-700 shadow-sm hover:shadow-md focus:ring-4 focus:ring-brand-500/20"
             >
               Iniciar Sesión
             </button>
 
             <div className="text-center mt-6">
-              <p className="font-medium text-gray-500">
+              <p className="text-sm font-medium text-gray-500">
                 ¿No tienes cuenta?{" "}
                 <a href="#" className="text-brand-600 hover:underline">
                   Contacta al administrador
