@@ -1,7 +1,6 @@
 {
   "name": "unsito",
   "version": "0.1.0",
-  "homepage": "/admin",
   "private": true,
   "dependencies": {
     "@iconify/react": "^6.0.2",
