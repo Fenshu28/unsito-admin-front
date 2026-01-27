@@ -3,36 +3,40 @@ import TextField from "../../../components/TextField";
 import TextAreaField from "../../../components/TextAreaField";
 import { Icon } from "@iconify/react";
 import { useToast } from "../../../context/ToastContext";
+import ConfirmModal from "../../../components/ConfirmModal";
 
 const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
+    status: "Active",
   });
 
   const [originalData, setOriginalData] = useState(null);
   const [isDirty, setIsDirty] = useState(false);
+  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [pendingStatus, setPendingStatus] = useState(null);
   const toast = useToast();
 
   useEffect(() => {
+    // Sincronizar solo si cambia el ID o si no tenemos datos originales aún
     if (categoriaActual) {
       const data = {
         nombre: categoriaActual.nombre || "",
         descripcion: categoriaActual.descripcion || "",
+        status: categoriaActual.status || "Active",
       };
 
-      const hasChanged =
-        originalData &&
-        (originalData.nombre !== data.nombre ||
-          originalData.descripcion !== data.descripcion);
-
-      if (!isDirty || hasChanged) {
+      // Si el ID cambió o no hay datos cargados, reseteamos todo
+      if (!originalData || categoriaActual._id !== originalData._id) {
         setFormData(data);
-        setOriginalData(data);
-        if (hasChanged) setIsDirty(false);
+        setOriginalData({ ...data, _id: categoriaActual._id });
+        setIsDirty(false);
       }
     }
-  }, [categoriaActual, isDirty, originalData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoriaActual]); // Dependencia simplificada para evitar loops
 
   // Advertencia de cambios sin guardar al cerrar pestaña
   useEffect(() => {
@@ -58,12 +62,38 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
     toast.info("Cambios descartados");
   };
 
+  const handleStatusClick = (newStatus) => {
+    if (newStatus === formData.status) {
+      setShowStatusDropdown(false);
+      return;
+    }
+    setPendingStatus(newStatus);
+    setShowConfirmModal(true);
+    setShowStatusDropdown(false);
+  };
+
+  const confirmStatusChange = async () => {
+    if (!pendingStatus || !categoriaActual?._id) return;
+    try {
+      await onSubmit({ ...formData, status: pendingStatus });
+      setFormData((prev) => ({ ...prev, status: pendingStatus }));
+      setOriginalData((prev) => ({ ...prev, status: pendingStatus }));
+      toast.success(
+        `Estado cambiado a ${pendingStatus === "Active" ? "Activo" : "Borrador"}`,
+      );
+    } catch (error) {
+      toast.error("Error al cambiar el estado");
+    } finally {
+      setShowConfirmModal(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     try {
       await onSubmit(formData);
       setIsDirty(false);
-      setOriginalData(formData);
+      setOriginalData({ ...formData, _id: categoriaActual?._id });
       toast.success("Categoría guardada correctamente");
     } catch {
       toast.error("Error al guardar la categoría");
@@ -85,7 +115,65 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <div className="p-6 space-y-6">
+          {/* Status Switcher - Dropdown Style */}
+          <div className="relative">
+            <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider">
+              Estado de la Categoría
+            </label>
+            <button
+              type="button"
+              onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+              className={`w-full max-w-xs flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-bold transition-all shadow-sm ${
+                formData.status === "Active"
+                  ? "bg-green-100 text-green-700 border border-green-200"
+                  : "bg-orange-100 text-orange-700 border border-orange-200"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Icon
+                  icon={
+                    formData.status === "Active"
+                      ? "mdi:check-circle"
+                      : "mdi:pencil-circle"
+                  }
+                  width="18"
+                />
+                {formData.status === "Active" ? "ACTIVO" : "BORRADOR"}
+              </div>
+              <Icon icon="mdi:chevron-down" width="16" />
+            </button>
+
+            {showStatusDropdown && (
+              <div className="absolute left-0 mt-2 w-full max-w-xs rounded-xl border border-gray-200 bg-white shadow-xl z-20 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => handleStatusClick("Active")}
+                  className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm hover:bg-gray-50"
+                >
+                  <Icon
+                    icon="mdi:check-circle"
+                    className="text-green-600"
+                    width="18"
+                  />
+                  <span className="font-bold text-gray-700">Activo</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleStatusClick("Draft")}
+                  className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm hover:bg-gray-50 border-t border-gray-100"
+                >
+                  <Icon
+                    icon="mdi:pencil-circle"
+                    className="text-orange-600"
+                    width="18"
+                  />
+                  <span className="font-bold text-gray-700">Borrador</span>
+                </button>
+              </div>
+            )}
+          </div>
+
           <TextField
             id="nombre"
             name="nombre"
@@ -105,8 +193,22 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
             placeholder="Breve descripción sobre el propósito de esta categoría..."
             rows={5}
           />
-        </form>
+        </div>
       </div>
+
+      <ConfirmModal
+        isOpen={showConfirmModal}
+        onClose={() => {
+          setShowConfirmModal(false);
+          setPendingStatus(null);
+        }}
+        onConfirm={confirmStatusChange}
+        title="Cambiar Estado"
+        message={`¿Está seguro de cambiar el estado a "${pendingStatus === "Active" ? "Activo" : "Borrador"}"?`}
+        confirmText="Confirmar"
+        cancelText="Cancelar"
+        type={pendingStatus === "Active" ? "success" : "warning"}
+      />
 
       {/* Floating Action Buttons */}
       {isDirty && (

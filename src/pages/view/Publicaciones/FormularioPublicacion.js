@@ -45,6 +45,7 @@ const FormularioPublicacion = ({
   const toast = useToast();
 
   useEffect(() => {
+    // Sincronizar solo si cambia el ID o si no tenemos datos originales aún
     if (publicacionActual) {
       const data = {
         titulo: publicacionActual.titulo || "",
@@ -60,26 +61,15 @@ const FormularioPublicacion = ({
         autor: publicacionActual.autor?._id || "",
       };
 
-      const hasChanged =
-        originalData &&
-        (originalData.titulo !== data.titulo ||
-          originalData.descripcion !== data.descripcion ||
-          originalData.categoria !== data.categoria ||
-          originalData.tipo !== data.tipo ||
-          originalData.fecha !== data.fecha ||
-          originalData.isFeatured !== data.isFeatured ||
-          originalData.status !== data.status ||
-          JSON.stringify(originalData.linksExternos) !==
-            JSON.stringify(data.linksExternos) ||
-          originalData.autor !== data.autor);
-
-      if (!isDirty || hasChanged) {
+      // Si el ID cambió o no hay datos cargados, reseteamos todo
+      if (!originalData || publicacionActual._id !== originalData._id) {
         setFormData(data);
-        setOriginalData(data);
-        if (hasChanged) setIsDirty(false);
+        setOriginalData({ ...data, _id: publicacionActual._id });
+        setIsDirty(false);
       }
     }
-  }, [publicacionActual, isDirty, originalData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicacionActual]); // Dependencia simplificada para evitar loops
 
   // Advertencia de cambios sin guardar al cerrar pestaña
   useEffect(() => {
