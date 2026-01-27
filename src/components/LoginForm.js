@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import apiClient from "../services/api";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -14,17 +13,22 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
+      const response = await apiClient.post("/auth/login", {
         email,
         password,
-      );
-      const token = await userCredential.user.getIdToken();
-      localStorage.setItem("token", token);
-      navigate("/App/inicio");
+      });
+
+      if (response.data && response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/App/inicio");
+      } else {
+        alert("Error: No se recibió un token válido.");
+      }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Error al iniciar sesión");
+      const errorMessage =
+        error.response?.data?.message || "Error al iniciar sesión";
+      alert(errorMessage);
     }
   };
 
