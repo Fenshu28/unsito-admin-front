@@ -1,13 +1,25 @@
 import apiClient from "./api";
 
-// Listar todas las publicaciones con filtro opcional de status
-export const obtenerPublicaciones = async (status = null) => {
+// Listar todas las publicaciones con filtros opcionales
+export const obtenerPublicaciones = async (filters = {}) => {
   try {
-    const url = status ? `/publicaciones?status=${status}` : '/publicaciones';
+    const params = new URLSearchParams();
+    if (filters.status) params.append("status", filters.status);
+    if (filters.categoria) params.append("categoria", filters.categoria);
+    if (filters.tipo) params.append("tipo", filters.tipo);
+    if (filters.autor) params.append("autor", filters.autor);
+
+    const queryString = params.toString();
+    const url = queryString
+      ? `/publicaciones?${queryString}`
+      : "/publicaciones";
     const response = await apiClient.get(url);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener las publicaciones", error.response?.data || error.message);
+    console.error(
+      "Error al obtener las publicaciones",
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };
@@ -18,7 +30,10 @@ export const obtenerPublicacionPorId = async (id) => {
     const response = await apiClient.get(`/publicaciones/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener la publicación", error.response?.data || error.message);
+    console.error(
+      "Error al obtener la publicación",
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };
@@ -26,13 +41,16 @@ export const obtenerPublicacionPorId = async (id) => {
 // Crear nueva publicación (solo requiere título)
 export const crearPublicacion = async (data) => {
   try {
-    const response = await apiClient.post('/publicaciones', {
+    const response = await apiClient.post("/publicaciones", {
       titulo: data.titulo,
-      descripcion: data.descripcion || ""
+      descripcion: data.descripcion || "",
     });
     return response.data;
   } catch (error) {
-    console.error("Error al crear la publicación", error.response?.data || error.message);
+    console.error(
+      "Error al crear la publicación",
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };
@@ -43,7 +61,10 @@ export const actualizarPublicacion = async (id, data) => {
     const response = await apiClient.patch(`/publicaciones/${id}`, data);
     return response.data;
   } catch (error) {
-    console.error("Error al actualizar la publicación", error.response?.data || error.message);
+    console.error(
+      "Error al actualizar la publicación",
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };
@@ -54,7 +75,10 @@ export const eliminarPublicacion = async (id) => {
     const response = await apiClient.delete(`/publicaciones/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Error al eliminar la publicación", error.response?.data || error.message);
+    console.error(
+      "Error al eliminar la publicación",
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };
@@ -63,17 +87,24 @@ export const eliminarPublicacion = async (id) => {
 export const subirArchivo = async (id, file, addTo) => {
   try {
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('addTo', addTo);
+    formData.append("file", file);
+    formData.append("addTo", addTo);
 
-    const response = await apiClient.post(`/publicaciones/${id}/upload`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await apiClient.post(
+      `/publicaciones/${id}/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return response.data;
   } catch (error) {
-    console.error("Error al subir el archivo", error.response?.data || error.message);
+    console.error(
+      "Error al subir el archivo",
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };
@@ -84,12 +115,15 @@ export const eliminarArchivo = async (id, archivoId, removeFrom) => {
     const response = await apiClient.delete(`/publicaciones/${id}/file`, {
       data: {
         archivoId,
-        removeFrom
-      }
+        removeFrom,
+      },
     });
     return response.data;
   } catch (error) {
-    console.error("Error al eliminar el archivo", error.response?.data || error.message);
+    console.error(
+      "Error al eliminar el archivo",
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };

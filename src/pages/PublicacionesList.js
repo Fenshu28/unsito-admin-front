@@ -6,15 +6,22 @@ import {
   obtenerPublicaciones,
   crearPublicacion,
 } from "../services/publicacionesService";
+import { useTaxonomy } from "../context/TaxonomyContext";
 
 const PublicacionesList = () => {
   const [publicaciones, setPublicaciones] = useState([]);
-  const [filtroStatus, setFiltroStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [filtros, setFiltros] = useState({
+    status: "",
+    categoria: "",
+    tipo: "",
+    autor: "",
+  });
   const navigate = useNavigate();
 
   const [initialLoading, setInitialLoading] = useState(true);
+  const { categorias, tipos, autores } = useTaxonomy();
 
   const cargarPublicaciones = useCallback(
     async (isFilter = false) => {
@@ -22,7 +29,7 @@ const PublicacionesList = () => {
       setLoading(true);
       setError(null);
       try {
-        const data = await obtenerPublicaciones(filtroStatus || null);
+        const data = await obtenerPublicaciones(filtros);
         setPublicaciones(data);
       } catch (err) {
         setError(
@@ -35,7 +42,7 @@ const PublicacionesList = () => {
         setInitialLoading(false);
       }
     },
-    [filtroStatus],
+    [filtros],
   );
 
   useEffect(() => {
@@ -89,22 +96,98 @@ const PublicacionesList = () => {
 
       {/* Filters Card */}
       <div className="mb-6 rounded-2xl border border-gray-300 bg-white p-5 shadow-sm sm:px-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
-          <div className="w-full sm:w-64">
-            <label className="mb-2 block text-xs font-medium text-gray-500 font-sans">
-              Filtrar por estado
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider font-sans">
+              Estado
             </label>
             <div className="relative">
               <select
-                value={filtroStatus}
-                onChange={(e) => setFiltroStatus(e.target.value)}
-                // Cambiado focus a brand-600 y border-gray-300
+                value={filtros.status}
+                onChange={(e) =>
+                  setFiltros((prev) => ({ ...prev, status: e.target.value }))
+                }
                 className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
               >
                 <option value="">Todos</option>
                 <option value="Draft">Borrador</option>
                 <option value="Published">Publicado</option>
                 <option value="Trash">Papelera</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                <Icon icon="mdi:chevron-down" width="20" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider font-sans">
+              Categoría
+            </label>
+            <div className="relative">
+              <select
+                value={filtros.categoria}
+                onChange={(e) =>
+                  setFiltros((prev) => ({ ...prev, categoria: e.target.value }))
+                }
+                className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
+              >
+                <option value="">Todas</option>
+                {categorias.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.nombre}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                <Icon icon="mdi:chevron-down" width="20" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider font-sans">
+              Tipo
+            </label>
+            <div className="relative">
+              <select
+                value={filtros.tipo}
+                onChange={(e) =>
+                  setFiltros((prev) => ({ ...prev, tipo: e.target.value }))
+                }
+                className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
+              >
+                <option value="">Todos</option>
+                {tipos.map((tipo) => (
+                  <option key={tipo._id} value={tipo._id}>
+                    {tipo.nombre}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                <Icon icon="mdi:chevron-down" width="20" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider font-sans">
+              Autor
+            </label>
+            <div className="relative">
+              <select
+                value={filtros.autor}
+                onChange={(e) =>
+                  setFiltros((prev) => ({ ...prev, autor: e.target.value }))
+                }
+                className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
+              >
+                <option value="">Todos</option>
+                {autores.map((autor) => (
+                  <option key={autor._id} value={autor._id}>
+                    {autor.nombre}
+                  </option>
+                ))}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
                 <Icon icon="mdi:chevron-down" width="20" />
