@@ -1,12 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { obtenerTaxonomia } from '../services/tiposService';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { obtenerTaxonomia } from "../services/tiposService";
+import { obtenerAutores } from "../services/autoresService";
 
 const TaxonomyContext = createContext();
 
 export const useTaxonomy = () => {
   const context = useContext(TaxonomyContext);
   if (!context) {
-    throw new Error('useTaxonomy must be used within a TaxonomyProvider');
+    throw new Error("useTaxonomy must be used within a TaxonomyProvider");
   }
   return context;
 };
@@ -14,6 +15,7 @@ export const useTaxonomy = () => {
 export const TaxonomyProvider = ({ children }) => {
   const [categorias, setCategorias] = useState([]);
   const [tipos, setTipos] = useState([]);
+  const [autores, setAutores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -24,12 +26,17 @@ export const TaxonomyProvider = ({ children }) => {
   const loadTaxonomy = async () => {
     try {
       setLoading(true);
-      const data = await obtenerTaxonomia();
-      setCategorias(data.categorias || []);
-      setTipos(data.tipos || []);
+      const [taxData, autoresData] = await Promise.all([
+        obtenerTaxonomia(),
+        obtenerAutores("Active"),
+      ]);
+
+      setCategorias(taxData.categorias || []);
+      setTipos(taxData.tipos || []);
+      setAutores(autoresData || []);
       setError(null);
     } catch (err) {
-      console.error('Error loading taxonomy:', err);
+      console.error("Error loading taxonomy:", err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -39,9 +46,10 @@ export const TaxonomyProvider = ({ children }) => {
   const value = {
     categorias,
     tipos,
+    autores,
     loading,
     error,
-    reload: loadTaxonomy
+    reload: loadTaxonomy,
   };
 
   return (
