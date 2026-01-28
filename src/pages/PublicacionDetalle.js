@@ -13,7 +13,7 @@ import ConfirmModal from "../components/ConfirmModal";
 const PublicacionDetalle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { categorias, tipos } = useTaxonomy();
+  const { categorias, tipos, autores, reload } = useTaxonomy();
   const toast = useToast();
 
   const [publicacion, setPublicacion] = useState(null);
@@ -25,6 +25,8 @@ const PublicacionDetalle = () => {
     setLoading(true);
     setError(null);
     try {
+      // Recargar taxonomía para asegurar datos frescos
+      await reload();
       const pubData = await obtenerPublicacionPorId(id);
       setPublicacion(pubData);
     } catch (err) {
@@ -36,7 +38,7 @@ const PublicacionDetalle = () => {
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, reload]);
 
   useEffect(() => {
     cargarDatos();
@@ -161,6 +163,7 @@ const PublicacionDetalle = () => {
           publicacionActual={publicacion}
           categorias={categorias}
           tipos={tipos}
+          autores={autores}
           onSubmit={handleActualizar}
           onImageUploaded={cargarDatos}
           onStatusChanged={handleStatusChange}
