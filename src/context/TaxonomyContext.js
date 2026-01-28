@@ -28,7 +28,7 @@ export const TaxonomyProvider = ({ children }) => {
 
   useEffect(() => {
     loadTaxonomy();
-  }, []);
+  }, [loadTaxonomy]);
 
   const loadTaxonomy = useCallback(async () => {
     try {
