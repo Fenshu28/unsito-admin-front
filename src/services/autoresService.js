@@ -100,3 +100,32 @@ export const eliminarAutor = async (id) => {
     throw error;
   }
 };
+
+/**
+ * Subir foto de perfil de un autor
+ * POST /autores/:id/upload-photo
+ */
+export const subirFotoAutor = async (id, file) => {
+  try {
+    const formData = new FormData();
+    formData.append("foto", file);
+
+    const response = await apiClient.post(
+      `/autores/${id}/upload-photo`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error al subir la foto del autor:",
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
