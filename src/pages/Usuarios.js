@@ -9,7 +9,8 @@ import { useToast } from "../context/ToastContext";
 
 const Usuarios = () => {
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
   const [viewingUser, setViewingUser] = useState(null);
@@ -31,35 +32,41 @@ const Usuarios = () => {
     }
   }, []);
 
-  const fetchUsers = useCallback(() => {
-    setIsLoading(true);
-    setError(null);
+  const fetchUsers = useCallback(
+    (isFirst = false) => {
+      if (isFirst) setInitialLoading(true);
+      setIsLoading(true);
+      setError(null);
 
-    let query = "/usuarios?";
-    if (filtroStatus !== "") query += `status=${filtroStatus}&`;
-    if (filtroRole !== "all") query += `role=${filtroRole}&`;
+      let query = "/usuarios?";
+      if (filtroStatus !== "") query += `status=${filtroStatus}&`;
+      if (filtroRole !== "all" && filtroRole !== "")
+        query += `role=${filtroRole}&`;
 
-    apiClient
-      .get(query)
-      .then((response) => {
-        setUsers(response.data);
-      })
-      .catch((error) => {
-        const errorMessage = error.response?.data?.message || error.message;
-        setError(errorMessage);
-        toast.error("Error al cargar usuarios");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [filtroStatus, filtroRole, toast]);
+      apiClient
+        .get(query)
+        .then((response) => {
+          setUsers(response.data);
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data?.message || error.message;
+          setError(errorMessage);
+          toast.error("Error al cargar usuarios");
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setInitialLoading(false);
+        });
+    },
+    [filtroStatus, filtroRole, toast],
+  );
 
   useEffect(() => {
     fetchRoles();
   }, [fetchRoles]);
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(true);
   }, [fetchUsers]);
 
   const handleRolesUpdated = () => {
@@ -142,6 +149,7 @@ const Usuarios = () => {
       <ListaUsuarios
         users={users}
         isLoading={isLoading}
+        initialLoading={initialLoading && users.length === 0}
         onManageRoles={setEditingUser}
         onViewDetails={setViewingUser}
       />

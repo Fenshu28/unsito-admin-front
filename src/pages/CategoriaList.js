@@ -12,25 +12,31 @@ import { Icon } from "@iconify/react";
 const CategoriasList = () => {
   const [categorias, setCategorias] = useState([]);
   const [filtroStatus, setFiltroStatus] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const navigate = useNavigate();
   const toast = useToast();
 
-  const cargarCategorias = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await obtenerCategorias(filtroStatus);
-      setCategorias(data || []);
-    } catch (error) {
-      console.error(error);
-      toast.error("Error al cargar categorías");
-    } finally {
-      setLoading(false);
-    }
-  }, [toast, filtroStatus]);
+  const cargarCategorias = useCallback(
+    async (isFilter = false) => {
+      if (!isFilter) setInitialLoading(true);
+      setLoading(true);
+      try {
+        const data = await obtenerCategorias(filtroStatus);
+        setCategorias(data || []);
+      } catch (error) {
+        console.error(error);
+        toast.error("Error al cargar categorías");
+      } finally {
+        setLoading(false);
+        setInitialLoading(false);
+      }
+    },
+    [toast, filtroStatus],
+  );
 
   useEffect(() => {
-    cargarCategorias();
+    cargarCategorias(true);
   }, [cargarCategorias]);
 
   const handleNueva = async () => {
@@ -121,6 +127,7 @@ const CategoriasList = () => {
       <TablaCategorias
         categorias={categorias}
         loading={loading}
+        initialLoading={initialLoading && categorias.length === 0}
         onVer={(id) => navigate(`/App/categorias/${id}`)}
         onEliminar={handleEliminar}
       />

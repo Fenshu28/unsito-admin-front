@@ -9,29 +9,35 @@ const Autores = () => {
   const [autores, setAutores] = useState([]);
   const [filtroStatus, setFiltroStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const toast = useToast();
 
-  const cargarAutores = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await obtenerAutores(filtroStatus);
-      setAutores(data);
-    } catch (err) {
-      setError(
-        "Error al cargar los autores: " +
-          (err.response?.data?.message || err.message),
-      );
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [filtroStatus]);
+  const cargarAutores = useCallback(
+    async (isFilter = false) => {
+      if (!isFilter) setInitialLoading(true);
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await obtenerAutores(filtroStatus);
+        setAutores(data);
+      } catch (err) {
+        setError(
+          "Error al cargar los autores: " +
+            (err.response?.data?.message || err.message),
+        );
+        console.error(err);
+      } finally {
+        setLoading(false);
+        setInitialLoading(false);
+      }
+    },
+    [filtroStatus],
+  );
 
   useEffect(() => {
-    cargarAutores();
+    cargarAutores(true);
   }, [cargarAutores]);
 
   const handleNuevo = async () => {
@@ -106,6 +112,7 @@ const Autores = () => {
       <ListaAutores
         autores={autores}
         loading={loading}
+        initialLoading={initialLoading && autores.length === 0}
         onRecargar={cargarAutores}
       />
     </div>

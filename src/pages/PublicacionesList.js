@@ -14,25 +14,32 @@ const PublicacionesList = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const cargarPublicaciones = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await obtenerPublicaciones(filtroStatus || null);
-      setPublicaciones(data);
-    } catch (err) {
-      setError(
-        "Error al cargar las publicaciones: " +
-          (err.response?.data?.message || err.message),
-      );
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [filtroStatus]);
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  const cargarPublicaciones = useCallback(
+    async (isFilter = false) => {
+      if (!isFilter) setInitialLoading(true);
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await obtenerPublicaciones(filtroStatus || null);
+        setPublicaciones(data);
+      } catch (err) {
+        setError(
+          "Error al cargar las publicaciones: " +
+            (err.response?.data?.message || err.message),
+        );
+        console.error(err);
+      } finally {
+        setLoading(false);
+        setInitialLoading(false);
+      }
+    },
+    [filtroStatus],
+  );
 
   useEffect(() => {
-    cargarPublicaciones();
+    cargarPublicaciones(true); // Usamos true para que si ya hay algo no muestre skeleton total, pero al inicio publicaciones está vacío []
   }, [cargarPublicaciones]);
 
   const handleNueva = async () => {
@@ -113,6 +120,7 @@ const PublicacionesList = () => {
         onVer={handleVer}
         onRecargar={cargarPublicaciones}
         loading={loading}
+        initialLoading={initialLoading && publicaciones.length === 0}
       />
     </div>
   );
