@@ -19,6 +19,7 @@ const FormularioPublicacion = ({
   publicacionActual,
   categorias,
   tipos,
+  autores = [],
   onSubmit,
   onImageUploaded,
   onStatusChanged,
@@ -424,8 +425,8 @@ const FormularioPublicacion = ({
               label="Autor"
               value={formData.autor}
               onChange={handleChange}
-              options={[]}
-              placeholder="Seleccione"
+              options={autores.map((a) => ({ value: a._id, label: a.nombre }))}
+              placeholder="Seleccione Autor"
               disabled={isPublished}
             />
           </div>
