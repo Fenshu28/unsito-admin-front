@@ -138,7 +138,7 @@ const Sidebar = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "MENU"
+                  "General"
                 ) : (
                   <Icon icon="mdi:dots-horizontal" className="w-6 h-6" />
                 )}
@@ -159,7 +159,7 @@ const Sidebar = () => {
                   }`}
                 >
                   {isExpanded || isHovered || isMobileOpen ? (
-                    "ADMIN"
+                    "Administración"
                   ) : (
                     <Icon icon="mdi:dots-horizontal" className="w-6 h-6" />
                   )}
