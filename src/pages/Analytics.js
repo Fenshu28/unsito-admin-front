@@ -77,7 +77,7 @@ const Analytics = () => {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 font-sans dark:text-white/90">
-            Analytics Dashboard
+            Panel de estadísticas
           </h2>
           <p className="mt-1 text-sm text-gray-500 font-sans dark:text-gray-400">
             Estadísticas y métricas de tus publicaciones
