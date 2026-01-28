@@ -186,12 +186,16 @@ const EditarAutor = () => {
           <div className="rounded-2xl border border-gray-300 bg-white shadow-sm overflow-hidden">
             <div className="p-6 border-b border-gray-100 bg-gray-50/30">
               <div className="flex flex-col items-center gap-4">
-                <div className="w-32 h-32 rounded-full border border-gray-200 overflow-hidden shadow-sm bg-white relative group">
-                  <img
-                    src={formData.foto || "/images/user/default.png"}
-                    alt={formData.nombre}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-32 h-32 rounded-full border border-gray-200 flex items-center justify-center shadow-sm bg-gray-50 text-brand-600 relative overflow-hidden group">
+                  {formData.foto ? (
+                    <img
+                      src={formData.foto}
+                      alt={formData.nombre}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Icon icon="mdi:account" width="80" />
+                  )}
                 </div>
                 <div className="text-center">
                   <h3 className="font-bold text-gray-900 text-xl">

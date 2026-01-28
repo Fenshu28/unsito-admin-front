@@ -62,11 +62,17 @@ const ListaAutores = ({ autores, loading }) => {
                   className="hover:bg-gray-50 cursor-pointer transition-colors"
                 >
                   <td className="py-3 px-2">
-                    <img
-                      src={autor.foto || "/images/user/default.png"}
-                      alt={autor.nombre}
-                      className="h-10 w-10 rounded-full object-cover border border-gray-100 shadow-sm"
-                    />
+                    {autor.foto ? (
+                      <img
+                        src={autor.foto}
+                        alt={autor.nombre}
+                        className="h-10 w-10 rounded-full object-cover border border-gray-100 shadow-sm"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center shadow-sm bg-gray-50 text-brand-600">
+                        <Icon icon="mdi:account" width="24" />
+                      </div>
+                    )}
                   </td>
                   <td className="py-3 px-2">
                     <p className="font-bold text-gray-800 text-sm font-sans">
