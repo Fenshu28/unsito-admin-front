@@ -39,12 +39,8 @@ const UserFichaTecnica = ({ user, onClose }) => {
         {/* Perfil Header */}
         <div className="px-8 pb-8 -mt-12 relative">
           <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6">
-            <div className="w-24 h-24 rounded-2xl border-4 border-white overflow-hidden shadow-lg bg-white relative">
-              <img
-                src={user.photoURL || "/images/user/default.png"}
-                alt={user.displayName}
-                className="w-full h-full object-cover"
-              />
+            <div className="w-24 h-24 rounded-2xl border-4 border-white flex items-center justify-center shadow-lg bg-gray-50 text-brand-600 relative overflow-hidden">
+              <Icon icon="mdi:account" width="60" />
             </div>
             <div className="flex-1 text-center sm:text-left">
               <h3 className="text-2xl font-bold text-gray-900 leading-tight">
@@ -105,7 +101,7 @@ const UserFichaTecnica = ({ user, onClose }) => {
             <div className="space-y-6">
               <div>
                 <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 block">
-                  Última Conexión
+                  Último Inicio de Sesión
                 </label>
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   <Icon
@@ -113,15 +109,15 @@ const UserFichaTecnica = ({ user, onClose }) => {
                     className="text-gray-400"
                     width="18"
                   />
-                  {user.lastLoginAt
-                    ? new Date(user.lastLoginAt).toLocaleString("es-MX")
+                  {user.lastSignInTime
+                    ? new Date(user.lastSignInTime).toLocaleString("es-MX")
                     : "No registrada"}
                 </div>
               </div>
 
               <div>
                 <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 block">
-                  Fecha de Registro
+                  Fecha de Creación
                 </label>
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   <Icon
@@ -129,23 +125,23 @@ const UserFichaTecnica = ({ user, onClose }) => {
                     className="text-gray-400"
                     width="18"
                   />
-                  {user.createdAt
-                    ? new Date(user.createdAt).toLocaleDateString("es-MX")
+                  {user.creationTime
+                    ? new Date(user.creationTime).toLocaleDateString("es-MX")
                     : "No registrada"}
                 </div>
               </div>
 
               <div>
                 <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 block">
-                  Proveedor de Autenticación
+                  Método de Acceso
                 </label>
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   <Icon
-                    icon="mdi:firebase"
-                    className="text-orange-500"
+                    icon="mdi:shield-lock-outline"
+                    className="text-brand-600"
                     width="18"
                   />
-                  Firebase Auth
+                  Autenticación Local
                 </div>
               </div>
             </div>

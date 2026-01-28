@@ -79,12 +79,8 @@ const ListaUsuarios = ({ users, isLoading, onManageRoles, onViewDetails }) => {
                 >
                   <td className="py-3 px-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full border border-gray-100 overflow-hidden shadow-sm bg-white">
-                        <img
-                          src={user.photoURL || "/images/user/default.png"}
-                          alt={user.displayName}
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center shadow-sm bg-gray-50 text-brand-600">
+                        <Icon icon="mdi:account" width="24" />
                       </div>
                       <p className="font-bold text-gray-800 text-sm font-sans leading-tight">
                         {user.displayName || "Usuario Sin Nombre"}
