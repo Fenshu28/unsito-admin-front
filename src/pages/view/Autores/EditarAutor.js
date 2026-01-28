@@ -93,9 +93,12 @@ const EditarAutor = () => {
       await actualizarAutor(id, { status: newStatus });
       setFormData((prev) => ({ ...prev, status: newStatus }));
       setAutor((prev) => ({ ...prev, status: newStatus }));
-      toast.success(
-        `Estado cambiado a ${newStatus === "Active" ? "Activo" : "Borrador"}`,
-      );
+      const statusLabels = {
+        Active: "Activo",
+        Inactive: "Inactivo",
+        Trash: "Papelera",
+      };
+      toast.success(`Estado cambiado a ${statusLabels[newStatus]}`);
     } catch (err) {
       // Manejado globalmente por api.js
     } finally {
@@ -298,7 +301,9 @@ const EditarAutor = () => {
                   className={`w-full flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-bold transition-all shadow-sm ${
                     formData.status === "Active"
                       ? "bg-green-100 text-green-700 border border-green-200"
-                      : "bg-orange-100 text-orange-700 border border-orange-200"
+                      : formData.status === "Inactive"
+                        ? "bg-orange-100 text-orange-700 border border-orange-200"
+                        : "bg-red-100 text-red-700 border border-red-200"
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -306,11 +311,17 @@ const EditarAutor = () => {
                       icon={
                         formData.status === "Active"
                           ? "mdi:check-circle"
-                          : "mdi:pencil-circle"
+                          : formData.status === "Inactive"
+                            ? "mdi:pencil-circle"
+                            : "mdi:delete-circle"
                       }
                       width="18"
                     />
-                    {formData.status === "Active" ? "ACTIVO" : "BORRADOR"}
+                    {formData.status === "Active"
+                      ? "ACTIVO"
+                      : formData.status === "Inactive"
+                        ? "INACTIVO"
+                        : "PAPELERA"}
                   </div>
                   <Icon icon="mdi:chevron-down" width="16" />
                 </button>
@@ -331,7 +342,7 @@ const EditarAutor = () => {
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleStatusClick("Draft")}
+                      onClick={() => handleStatusClick("Inactive")}
                       className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm hover:bg-gray-50 border-t border-gray-100"
                     >
                       <Icon
@@ -339,7 +350,19 @@ const EditarAutor = () => {
                         className="text-orange-600"
                         width="18"
                       />
-                      <span className="font-bold text-gray-700">Borrador</span>
+                      <span className="font-bold text-gray-700">Inactivo</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleStatusClick("Trash")}
+                      className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm hover:bg-gray-50 border-t border-gray-100"
+                    >
+                      <Icon
+                        icon="mdi:delete-circle"
+                        className="text-red-600"
+                        width="18"
+                      />
+                      <span className="font-bold text-gray-700">Papelera</span>
                     </button>
                   </div>
                 )}
@@ -383,10 +406,22 @@ const EditarAutor = () => {
         }}
         onConfirm={() => handleStatusChange(pendingStatus)}
         title="Cambiar Estado"
-        message={`¿Está seguro de cambiar el estado a "${pendingStatus === "Active" ? "Activo" : "Borrador"}"?`}
+        message={`¿Está seguro de cambiar el estado a "${
+          pendingStatus === "Active"
+            ? "Activo"
+            : pendingStatus === "Inactive"
+              ? "Inactivo"
+              : "Papelera"
+        }"?`}
         confirmText="Confirmar"
         cancelText="Cancelar"
-        type={pendingStatus === "Active" ? "success" : "warning"}
+        type={
+          pendingStatus === "Active"
+            ? "success"
+            : pendingStatus === "Inactive"
+              ? "warning"
+              : "danger"
+        }
       />
 
       <ConfirmModal
