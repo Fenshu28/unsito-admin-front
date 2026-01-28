@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { obtenerTaxonomia } from "../services/tiposService";
 import { obtenerAutores } from "../services/autoresService";
 
@@ -23,7 +30,7 @@ export const TaxonomyProvider = ({ children }) => {
     loadTaxonomy();
   }, []);
 
-  const loadTaxonomy = async () => {
+  const loadTaxonomy = useCallback(async () => {
     try {
       setLoading(true);
       const [taxData, autoresData] = await Promise.all([
@@ -41,16 +48,19 @@ export const TaxonomyProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const value = {
-    categorias,
-    tipos,
-    autores,
-    loading,
-    error,
-    reload: loadTaxonomy,
-  };
+  const value = useMemo(
+    () => ({
+      categorias,
+      tipos,
+      autores,
+      loading,
+      error,
+      reload: loadTaxonomy,
+    }),
+    [categorias, tipos, autores, loading, error, loadTaxonomy],
+  );
 
   return (
     <TaxonomyContext.Provider value={value}>
