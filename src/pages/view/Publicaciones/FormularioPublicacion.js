@@ -10,6 +10,7 @@ import TextField from "../../../components/TextField";
 import SelectField from "../../../components/SelectField";
 import AuthorSelect from "../../../components/AuthorSelect";
 import MarkdownEditor from "../../../components/MarkdownEditor";
+import ShareModal from "../../../components/ShareModal";
 import {
   subirArchivo,
   eliminarArchivo,
@@ -43,6 +44,7 @@ const FormularioPublicacion = ({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [pendingStatus, setPendingStatus] = useState(null);
   const [activeAccordion, setActiveAccordion] = useState(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const toast = useToast();
 
@@ -316,7 +318,127 @@ const FormularioPublicacion = ({
             </h4>
           </div>
           <div className="p-4 space-y-5">
-            <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 space-y-3">
+            {/* Autor - Primero */}
+            <AuthorSelect
+              authors={autores}
+              value={formData.autor}
+              onChange={(val) =>
+                handleChange({ target: { name: "autor", value: val } })
+              }
+              label="Autor"
+              placeholder="Seleccione Autor"
+            />
+
+            {/* Categoría */}
+            <SelectField
+              id="categoria"
+              name="categoria"
+              label="Categoría"
+              value={formData.categoria}
+              onChange={handleChange}
+              options={categorias}
+              placeholder="Seleccione"
+              disabled={isPublished}
+            />
+
+            {/* Tipo */}
+            <SelectField
+              id="tipo"
+              name="tipo"
+              label="Tipo"
+              value={formData.tipo}
+              onChange={handleChange}
+              options={tipos}
+              placeholder="Seleccione"
+              disabled={isPublished}
+            />
+
+            {/* Fecha */}
+            <DatePicker
+              id="fecha"
+              label="Fecha de Publicación"
+              value={formData.fecha}
+              onChange={(e) =>
+                handleChange({
+                  target: { name: "fecha", value: e.target.value },
+                })
+              }
+              disabled={isPublished}
+              required
+            />
+
+            {/* Estado - Último */}
+            <div className="relative">
+              <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider">
+                Estado
+              </label>
+              <button
+                type="button"
+                onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                className={`w-full flex items-center justify-between rounded-xl px-4 py-2 text-sm font-bold transition-all shadow-sm ${
+                  isPublished
+                    ? "bg-green-100 text-green-700 border border-green-200"
+                    : "bg-orange-100 text-orange-700 border border-orange-200"
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`w-2 h-2 rounded-full ${isPublished ? "bg-green-500 animate-pulse" : "bg-orange-500"}`}
+                  ></span>
+                  {isPublished ? "PUBLICADO" : "BORRADOR"}
+                </div>
+                <Icon
+                  icon="mdi:chevron-down"
+                  className={`transition-transform duration-200 ${showStatusDropdown ? "rotate-180" : ""}`}
+                  width="18"
+                />
+              </button>
+
+              {showStatusDropdown && (
+                <div className="absolute left-0 right-0 mt-2 rounded-xl border border-gray-200 bg-white shadow-xl z-20 overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => handleStatusClick("Published")}
+                    className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm hover:bg-gray-50 transition-colors"
+                  >
+                    <Icon
+                      icon="mdi:check-circle"
+                      className="text-green-600"
+                      width="18"
+                    />
+                    <span className="font-bold text-gray-700">Publicar</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleStatusClick("Draft")}
+                    className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm hover:bg-gray-50 border-t border-gray-100 transition-colors"
+                  >
+                    <Icon
+                      icon="mdi:pencil-circle"
+                      className="text-orange-600"
+                      width="18"
+                    />
+                    <span className="font-bold text-gray-700">Borrador</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Botón de Compartir Condicional */}
+            {isPublished && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsShareModalOpen(true)}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-blue-50 px-4 py-3 text-sm font-bold text-blue-600 border border-blue-100 hover:bg-blue-100 transition-all active:scale-[0.98]"
+                >
+                  <Icon icon="mdi:share-variant" width="18" />
+                  Compartir
+                </button>
+              </div>
+            )}
+
+            <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 space-y-3 mt-2">
               <Switch
                 id="isFeatured"
                 checked={formData.isFeatured}
@@ -336,106 +458,6 @@ const FormularioPublicacion = ({
                 Aparecerá en las secciones más visibles de la plataforma.
               </p>
             </div>
-
-            <div className="relative">
-              <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                Estado
-              </label>
-              <button
-                type="button"
-                onClick={() => setShowStatusDropdown(!showStatusDropdown)}
-                className={`w-full flex items-center justify-between rounded-xl px-4 py-2 text-sm font-bold transition-all shadow-sm ${
-                  isPublished
-                    ? "bg-green-100 text-green-700 border border-green-200"
-                    : "bg-orange-100 text-orange-700 border border-orange-200"
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <Icon
-                    icon={
-                      isPublished ? "mdi:check-circle" : "mdi:pencil-circle"
-                    }
-                    width="18"
-                  />
-                  {isPublished ? "PUBLICADO" : "BORRADOR"}
-                </div>
-                <Icon icon="mdi:chevron-down" width="16" />
-              </button>
-
-              {showStatusDropdown && (
-                <div className="absolute left-0 right-0 mt-2 rounded-xl border border-gray-200 bg-white shadow-xl z-20 overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => handleStatusClick("Published")}
-                    className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm hover:bg-gray-50"
-                  >
-                    <Icon
-                      icon="mdi:check-circle"
-                      className="text-green-600"
-                      width="18"
-                    />
-                    <span className="font-bold text-gray-700">Publicar</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleStatusClick("Draft")}
-                    className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm hover:bg-gray-50 border-t border-gray-100"
-                  >
-                    <Icon
-                      icon="mdi:pencil-circle"
-                      className="text-orange-600"
-                      width="18"
-                    />
-                    <span className="font-bold text-gray-700">Borrador</span>
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <SelectField
-              id="categoria"
-              name="categoria"
-              label="Categoría"
-              value={formData.categoria}
-              onChange={handleChange}
-              options={categorias}
-              placeholder="Seleccione"
-              disabled={isPublished}
-            />
-
-            <SelectField
-              id="tipo"
-              name="tipo"
-              label="Tipo"
-              value={formData.tipo}
-              onChange={handleChange}
-              options={tipos}
-              placeholder="Seleccione"
-              disabled={isPublished}
-            />
-
-            <DatePicker
-              id="fecha"
-              label="Fecha de Publicación"
-              value={formData.fecha}
-              onChange={(e) =>
-                handleChange({
-                  target: { name: "fecha", value: e.target.value },
-                })
-              }
-              disabled={isPublished}
-              required
-            />
-
-            <AuthorSelect
-              authors={autores}
-              value={formData.autor}
-              onChange={(val) =>
-                handleChange({ target: { name: "autor", value: val } })
-              }
-              label="Autor"
-              placeholder="Seleccione Autor"
-            />
           </div>
         </div>
       </div>
@@ -474,6 +496,12 @@ const FormularioPublicacion = ({
         confirmText="Confirmar"
         cancelText="Cancelar"
         type={pendingStatus === "Published" ? "success" : "warning"}
+      />
+
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        publicacionId={publicacionActual?._id}
       />
     </div>
   );
