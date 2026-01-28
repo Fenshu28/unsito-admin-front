@@ -82,7 +82,7 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
         `Estado cambiado a ${pendingStatus === "Active" ? "Activo" : "Borrador"}`,
       );
     } catch (error) {
-      toast.error("Error al cambiar el estado");
+      // Manejado globalmente
     } finally {
       setShowConfirmModal(false);
     }
@@ -96,7 +96,7 @@ const FormularioCategoria = ({ categoriaActual, onSubmit }) => {
       setOriginalData({ ...formData, _id: categoriaActual?._id });
       toast.success("Categoría guardada correctamente");
     } catch {
-      toast.error("Error al guardar la categoría");
+      // Manejado globalmente
     }
   };
 

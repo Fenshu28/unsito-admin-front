@@ -90,13 +90,14 @@ const EditarAutor = () => {
   const handleStatusChange = async (newStatus) => {
     setLoading(true);
     try {
-      await actualizarAutor(id, { ...formData, status: newStatus });
+      await actualizarAutor(id, { status: newStatus });
+      setFormData((prev) => ({ ...prev, status: newStatus }));
+      setAutor((prev) => ({ ...prev, status: newStatus }));
       toast.success(
-        `Estado cambiado a ${newStatus === "Active" ? "Activo" : "Papelera"}`,
+        `Estado cambiado a ${newStatus === "Active" ? "Activo" : "Borrador"}`,
       );
-      await cargarDatos();
     } catch (err) {
-      toast.error("Error al cambiar el estado");
+      // Manejado globalmente por api.js
     } finally {
       setLoading(false);
       setShowConfirmModal(false);
@@ -107,13 +108,18 @@ const EditarAutor = () => {
     if (!selectedFile) return;
     setUploading(true);
     try {
-      await subirFotoAutor(id, selectedFile);
-      toast.success("Foto de perfil actualizada");
+      const data = await subirFotoAutor(id, selectedFile);
+      // Actualizamos solo la foto en el estado local para no perder otros cambios
+      const newPhotoUrl = data.foto || data.path || data.url;
+      if (newPhotoUrl) {
+        setFormData((prev) => ({ ...prev, foto: newPhotoUrl }));
+        setAutor((prev) => ({ ...prev, foto: newPhotoUrl }));
+        toast.success("Foto de perfil actualizada");
+      }
       setShowUploadModal(false);
       setSelectedFile(null);
-      await cargarDatos();
     } catch (err) {
-      toast.error("Error al subir la foto");
+      // Manejado globalmente
     } finally {
       setUploading(false);
     }
@@ -274,7 +280,7 @@ const EditarAutor = () => {
 
         {/* Sidebar Config */}
         <div className="lg:w-80 space-y-6">
-          <div className="rounded-2xl border border-gray-300 bg-white shadow-sm overflow-hidden sticky top-24">
+          <div className="rounded-2xl border border-gray-300 bg-white shadow-sm overflow-visible sticky top-24">
             <div className="p-4 bg-gray-50/50 border-b border-gray-100">
               <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                 Configuración
