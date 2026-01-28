@@ -5,14 +5,16 @@ import apiClient from "./api";
  * GET /autores
  * Devuelve un arreglo de autores
  */
-export const obtenerAutores = async () => {
+export const obtenerAutores = async (status = "all") => {
   try {
-    const response = await apiClient.get("/autores");
-    return response.data; // ← YA ES UN ARRAY
+    const url =
+      status && status !== "all" ? `/autores?status=${status}` : "/autores";
+    const response = await apiClient.get(url);
+    return response.data;
   } catch (error) {
     console.error(
       "Error al obtener los autores:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -36,7 +38,7 @@ export const crearAutor = async (autorData) => {
   } catch (error) {
     console.error(
       "Error al crear el autor:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -53,7 +55,7 @@ export const obtenerAutorPorId = async (id) => {
   } catch (error) {
     console.error(
       "Error al obtener el autor:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -76,7 +78,7 @@ export const actualizarAutor = async (id, autorData) => {
   } catch (error) {
     console.error(
       "Error al actualizar el autor:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -93,7 +95,7 @@ export const eliminarAutor = async (id) => {
   } catch (error) {
     console.error(
       "Error al eliminar el autor:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
