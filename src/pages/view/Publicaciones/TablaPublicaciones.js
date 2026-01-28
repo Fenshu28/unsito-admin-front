@@ -1,11 +1,13 @@
 import { Icon } from "@iconify/react";
 import React from "react";
+import UserAvatar from "../../../components/UserAvatar";
 
 const TablaPublicaciones = ({
   publicaciones,
   onVer,
   loading,
   initialLoading,
+  isAdmin,
 }) => {
   if (initialLoading) {
     return (
@@ -86,6 +88,11 @@ const TablaPublicaciones = ({
               <th className="py-3 px-2 font-bold text-gray-500 text-left text-xs font-sans">
                 Tipo
               </th>
+              {isAdmin && (
+                <th className="py-3 px-2 font-bold text-gray-500 text-center text-xs font-sans">
+                  Usuario
+                </th>
+              )}
               <th className="py-3 px-2 font-bold text-gray-500 text-center text-xs font-sans">
                 Actualizado
               </th>
@@ -131,6 +138,20 @@ const TablaPublicaciones = ({
                   <td className="py-3 px-2 text-gray-600 text-sm font-sans">
                     {pub.tipo?.nombre || "-"}
                   </td>
+                  {isAdmin && (
+                    <td className="py-3 px-2 text-center">
+                      <div
+                        className="flex justify-center"
+                        title={
+                          pub.usuario?.nombre ||
+                          pub.usuario?.email ||
+                          "Usuario Desconocido"
+                        }
+                      >
+                        <UserAvatar user={pub.usuario} size="8" />
+                      </div>
+                    </td>
+                  )}
                   <td className="py-3 px-2 text-center text-gray-500 text-sm font-sans">
                     {formatDate(pub.updatedAt)}
                   </td>

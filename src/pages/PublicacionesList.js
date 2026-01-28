@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react"; // Importar Iconify
+import useAuth from "../hooks/useAuth";
 import TablaPublicaciones from "./view/Publicaciones/TablaPublicaciones";
 import {
   obtenerPublicaciones,
@@ -12,6 +13,8 @@ const PublicacionesList = () => {
   const [publicaciones, setPublicaciones] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { hasRole } = useAuth();
+  const isAdmin = hasRole("admin");
   const [filtros, setFiltros] = useState({
     status: "",
     categoria: "",
@@ -204,6 +207,7 @@ const PublicacionesList = () => {
         onRecargar={cargarPublicaciones}
         loading={loading}
         initialLoading={initialLoading && publicaciones.length === 0}
+        isAdmin={isAdmin}
       />
     </div>
   );
