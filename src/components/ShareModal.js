@@ -1,18 +1,15 @@
 import React from "react";
 import Modal from "./Modal";
 import { Icon } from "@iconify/react";
+import { QRCodeCanvas } from "qrcode.react";
 
 const ShareModal = ({ isOpen, onClose, publicacionId }) => {
   const frontBaseUrl =
     process.env.REACT_APP_FRONT_CLIENT || "http://localhost:8082";
   const shareUrl = `${frontBaseUrl}/publicacion/${publicacionId}`;
 
-  // Google Charts QR API
-  const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=${encodeURIComponent(shareUrl)}`;
-
   const handleCopy = () => {
     navigator.clipboard.writeText(shareUrl);
-    // Podríamos añadir un mini toast interno aquí si quisiéramos, pero por ahora simplificamos
   };
 
   return (
@@ -24,11 +21,12 @@ const ShareModal = ({ isOpen, onClose, publicacionId }) => {
     >
       <div className="flex flex-col items-center text-center space-y-6 py-4">
         {/* QR Container */}
-        <div className="p-4 bg-white rounded-3xl border-2 border-dashed border-gray-100 shadow-inner">
-          <img
-            src={qrUrl}
-            alt="Código QR de la publicación"
-            className="w-64 h-64 object-contain"
+        <div className="p-6 bg-white rounded-3xl border-2 border-dashed border-gray-100 shadow-inner flex items-center justify-center">
+          <QRCodeCanvas
+            value={shareUrl}
+            size={256}
+            level={"H"}
+            includeMargin={true}
           />
         </div>
 
