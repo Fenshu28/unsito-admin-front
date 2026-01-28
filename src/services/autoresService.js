@@ -103,15 +103,15 @@ export const eliminarAutor = async (id) => {
 
 /**
  * Subir foto de perfil de un autor
- * POST /autores/:id/upload-photo
+ * POST /autores/:id/photo
  */
 export const subirFotoAutor = async (id, file) => {
   try {
     const formData = new FormData();
-    formData.append("foto", file);
+    formData.append("file", file);
 
     const response = await apiClient.post(
-      `/autores/${id}/upload-photo`,
+      `/autores/${id}/photo`,
       formData,
       {
         headers: {
