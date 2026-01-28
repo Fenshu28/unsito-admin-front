@@ -67,13 +67,7 @@ export const obtenerAutorPorId = async (id) => {
  */
 export const actualizarAutor = async (id, autorData) => {
   try {
-    const response = await apiClient.patch(`/autores/${id}`, {
-      nombre: autorData.nombre,
-      biografia: autorData.biografia,
-      email: autorData.email,
-      foto: autorData.foto, // string
-    });
-
+    const response = await apiClient.patch(`/autores/${id}`, autorData);
     return response.data;
   } catch (error) {
     console.error(
@@ -110,15 +104,11 @@ export const subirFotoAutor = async (id, file) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await apiClient.post(
-      `/autores/${id}/photo`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    const response = await apiClient.post(`/autores/${id}/photo`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
-    );
+    });
 
     return response.data;
   } catch (error) {
