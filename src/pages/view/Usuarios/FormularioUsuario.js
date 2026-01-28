@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import apiClient from "../../../services/api";
+import { Icon } from "@iconify/react";
+import TextField from "../../../components/TextField";
 
-const FormularioUsuario = ({ onUserCreated }) => {
+const FormularioUsuario = ({ onClose, onUserCreated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [roles, setRoles] = useState([]);
   const [availableRoles, setAvailableRoles] = useState([]);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Fetch available roles from the backend
     apiClient
       .get("/roles")
       .then((response) => {
@@ -20,44 +20,32 @@ const FormularioUsuario = ({ onUserCreated }) => {
       })
       .catch((error) => {
         console.error(error);
-        setError("No se pudieron cargar los roles para seleccionar.");
+        setError("No se pudieron cargar los roles.");
       });
   }, []);
 
-  const handleRolesChange = (e) => {
-    const selectedOptions = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value,
+  const handleRolesChange = (role) => {
+    setRoles((prev) =>
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role],
     );
-    setRoles(selectedOptions);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-    setSuccess(null);
 
     apiClient
       .post("/usuarios", { email, password, displayName, roles })
       .then((response) => {
-        setSuccess(
-          `Usuario "${response.data.displayName}" creado exitosamente.`,
-        );
-        // Clear form
-        setEmail("");
-        setPassword("");
-        setDisplayName("");
-        setRoles([]);
-        // Notify parent component
         if (onUserCreated) {
           onUserCreated();
         }
+        onClose();
       })
       .catch((error) => {
         const errorMessage = error.response?.data?.message || error.message;
         setError(errorMessage);
-        alert(`Error al crear usuario: ${errorMessage}`);
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -65,100 +53,104 @@ const FormularioUsuario = ({ onUserCreated }) => {
   };
 
   return (
-    <div className="w-full px-6 py-6">
-      <div className="mb-6 border-b border-stroke pb-4">
-        <h1 className="text-title-md font-semibold text-gray-800">Usuarios</h1>
-        <p className="text-sm text-gray-500">
-          Crear y administrar usuarios del sistema
-        </p>
-      </div>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl border border-gray-200 overflow-hidden transform transition-all animate-in zoom-in-95 duration-200">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <Icon
+              icon="mdi:account-plus"
+              className="text-brand-600"
+              width="22"
+            />
+            Nuevo Usuario
+          </h3>
+          <button
+            onClick={onClose}
+            className="p-1.5 hover:bg-gray-200 rounded-full text-gray-400 transition-colors"
+          >
+            <Icon icon="mdi:close" width="20" />
+          </button>
+        </div>
 
-      <div className="max-w-7xl">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                Nombre Completo
-              </label>
-              <input
-                type="text"
+        {/* Body */}
+        <div className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <TextField
+                id="displayName"
+                label="Nombre Completo"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="h-11 w-full rounded-md border border-stroke px-4 text-sm
-                    focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                placeholder="Ej: Ana García"
+                required
               />
-            </div>
-
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                Correo Electrónico
-              </label>
-              <input
+              <TextField
+                id="email"
                 type="email"
+                label="Correo Electrónico"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-11 w-full rounded-md border border-stroke px-4 text-sm
-                    focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                placeholder="ana@ejemplo.com"
+                required
               />
-            </div>
-
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                Contraseña
-              </label>
-              <input
+              <TextField
+                id="password"
                 type="password"
-                minLength={6}
+                label="Contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-11 w-full rounded-md border border-stroke px-4 text-sm
-                    focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                placeholder="Mínimo 6 caracteres"
+                required
               />
+
+              <div>
+                <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Asignar Roles
+                </label>
+                <div className="flex flex-wrap gap-2 py-2">
+                  {availableRoles.map((role) => (
+                    <button
+                      key={role}
+                      type="button"
+                      onClick={() => handleRolesChange(role)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${
+                        roles.includes(role)
+                          ? "bg-brand-600 border-brand-600 text-white shadow-sm"
+                          : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
+                      }`}
+                    >
+                      {role}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                Roles
-              </label>
-              <select
-                multiple
-                value={roles}
-                onChange={handleRolesChange}
-                className="h-32 w-full rounded-md border border-stroke px-4 py-2 text-sm
-                    focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+            {error && (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700 text-xs font-medium">
+                {error}
+              </div>
+            )}
+
+            <div className="pt-4 flex gap-3 border-t border-gray-100">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all shadow-sm active:scale-95"
               >
-                {availableRoles.map((role) => (
-                  <option key={role} value={role}>
-                    {role}
-                  </option>
-                ))}
-              </select>
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-brand-600 text-sm font-bold text-white hover:bg-brand-700 transition-all shadow-sm active:scale-95 disabled:opacity-50"
+              >
+                {isSubmitting ? "Creando..." : "Crear Usuario"}
+              </button>
             </div>
-          </div>
-
-          {error && (
-            <div className="rounded-md border border-error-200 bg-error-50 px-4 py-3 text-sm text-error-700">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="rounded-md border border-success-200 bg-success-50 px-4 py-3 text-sm text-success-700">
-              {success}
-            </div>
-          )}
-
-          <div className="flex justify-end gap-3 border-t border-stroke pt-4">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="rounded-md bg-brand-500 px-6 py-2.5 text-sm font-medium text-white
-                  hover:bg-brand-600 disabled:opacity-60"
-            >
-              {isSubmitting ? "Creando..." : "Crear Usuario"}
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );
