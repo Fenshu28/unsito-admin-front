@@ -25,11 +25,6 @@ export const TaxonomyProvider = ({ children }) => {
   const [autores, setAutores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    loadTaxonomy();
-  }, [loadTaxonomy]);
-
   const loadTaxonomy = useCallback(async () => {
     try {
       setLoading(true);
@@ -49,6 +44,10 @@ export const TaxonomyProvider = ({ children }) => {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    loadTaxonomy();
+  }, [loadTaxonomy]);
 
   const value = useMemo(
     () => ({
