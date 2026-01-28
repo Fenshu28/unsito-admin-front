@@ -1,10 +1,12 @@
 import React from "react";
+import { Icon } from "@iconify/react";
 
 const TablaCategorias = ({
   categorias,
   onVer,
   onEliminar,
   loading = false,
+  initialLoading = false,
 }) => {
   const getStatusColor = (status) => {
     switch (status) {
@@ -22,7 +24,7 @@ const TablaCategorias = ({
     Trash: "Papelera",
   };
 
-  if (loading) {
+  if (initialLoading) {
     return (
       <div className="overflow-hidden rounded-2xl border border-gray-300 bg-white px-4 pb-3 pt-4 sm:px-6 shadow-sm">
         <div className="animate-pulse">
@@ -38,7 +40,22 @@ const TablaCategorias = ({
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-300 bg-white px-4 pb-3 pt-4 sm:px-6 shadow-sm">
+    <div className="relative overflow-hidden rounded-2xl border border-gray-300 bg-white px-4 pb-3 pt-4 sm:px-6 shadow-sm">
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-[1px] transition-opacity duration-300">
+          <div className="flex flex-col items-center gap-2">
+            <Icon
+              icon="mdi:loading"
+              className="animate-spin text-brand-600"
+              width="40"
+            />
+            <span className="text-sm font-medium text-gray-600 font-sans">
+              Cargando...
+            </span>
+          </div>
+        </div>
+      )}
       <div className="max-w-full overflow-x-auto">
         <table className="w-full">
           <thead className="border-gray-100 border-y">
