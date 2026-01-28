@@ -41,14 +41,14 @@ const Sidebar = () => {
       path: "/App/categorias",
     },
     {
-      name: "Usuarios",
-      icon: "mdi:account-group-outline",
-      path: "/App/usuarios",
-    },
-    {
       name: "Autores",
       icon: "mdi:account-multiple-outline",
       path: "/App/autores",
+    },
+    {
+      name: "Usuarios",
+      icon: "mdi:account-group-outline",
+      path: "/App/usuarios",
     },
   ];
 
