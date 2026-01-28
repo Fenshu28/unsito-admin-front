@@ -100,12 +100,18 @@ const ListaAutores = ({ autores, loading, initialLoading }) => {
                   <td className="py-3 px-2 text-center">
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold font-sans ${
-                        autor.status === "Trash"
-                          ? "bg-red-50 text-red-600"
-                          : "bg-green-50 text-green-600"
+                        autor.status === "Active"
+                          ? "bg-green-50 text-green-600"
+                          : autor.status === "Inactive"
+                            ? "bg-orange-50 text-orange-600"
+                            : "bg-red-50 text-red-600"
                       }`}
                     >
-                      {autor.status === "Trash" ? "Papelera" : "Activo"}
+                      {autor.status === "Active"
+                        ? "Activo"
+                        : autor.status === "Inactive"
+                          ? "Inactivo"
+                          : "Papelera"}
                     </span>
                   </td>
                 </tr>

@@ -8,6 +8,7 @@ import Switch from "../../../components/Switch";
 import DatePicker from "../../../components/DatePicker";
 import TextField from "../../../components/TextField";
 import SelectField from "../../../components/SelectField";
+import AuthorSelect from "../../../components/AuthorSelect";
 import MarkdownEditor from "../../../components/MarkdownEditor";
 import {
   subirArchivo,
@@ -190,7 +191,14 @@ const FormularioPublicacion = ({
                 {formData.titulo || "Nueva Publicación"}
               </h3>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-50 px-2 py-0.5 rounded border border-brand-100">
+                <span className="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-50 px-2 py-0.5 rounded border border-brand-100 flex items-center gap-1">
+                  {publicacionActual?.autor?.foto && (
+                    <img
+                      src={publicacionActual.autor.foto}
+                      alt=""
+                      className="w-3 h-3 rounded-full object-cover"
+                    />
+                  )}
                   {publicacionActual?.autor?.nombre || "Autor Desconocido"}
                 </span>
                 <span className="text-gray-300">•</span>
@@ -301,7 +309,7 @@ const FormularioPublicacion = ({
 
       {/* Columna Lateral: Configuración */}
       <div className="lg:w-80 space-y-6">
-        <div className="rounded-2xl border border-gray-300 bg-white shadow-sm overflow-hidden sticky top-24">
+        <div className="rounded-2xl border border-gray-300 bg-white shadow-sm overflow-visible sticky top-24">
           <div className="p-4 bg-gray-50/50 border-b border-gray-100">
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">
               Configuración
@@ -419,15 +427,14 @@ const FormularioPublicacion = ({
               required
             />
 
-            <SelectField
-              id="autor"
-              name="autor"
-              label="Autor"
+            <AuthorSelect
+              authors={autores}
               value={formData.autor}
-              onChange={handleChange}
-              options={autores.map((a) => ({ value: a._id, label: a.nombre }))}
+              onChange={(val) =>
+                handleChange({ target: { name: "autor", value: val } })
+              }
+              label="Autor"
               placeholder="Seleccione Autor"
-              disabled={isPublished}
             />
           </div>
         </div>
