@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Icon } from "@iconify/react";
 import StatsCard from "../components/StatsCard";
 import TopPublicationsTable from "../components/TopPublicationsTable";
 import {
@@ -10,16 +11,22 @@ const Analytics = () => {
   const [stats, setStats] = useState(null);
   const [topPublications, setTopPublications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    loadDashboardData();
+    loadDashboardData(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = async (initial = false) => {
     try {
-      setLoading(true);
+      if (initial) {
+        setLoading(true);
+      } else {
+        setIsRefreshing(true);
+      }
+
       const data = await getDashboardStats();
       setStats(data);
       await loadTopPublications();
@@ -29,6 +36,7 @@ const Analytics = () => {
       console.error(err);
     } finally {
       setLoading(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -53,7 +61,7 @@ const Analytics = () => {
             {error}
           </p>
           <button
-            onClick={loadDashboardData}
+            onClick={() => loadDashboardData(true)}
             // Botón consistente: brand? No, es error, rojo standard está bien.
             className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-red-700 shadow-sm"
           >
@@ -66,13 +74,28 @@ const Analytics = () => {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 font-sans dark:text-white/90">
-          Analytics Dashboard
-        </h2>
-        <p className="mt-1 text-sm text-gray-500 font-sans dark:text-gray-400">
-          Estadísticas y métricas de tus publicaciones
-        </p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 font-sans dark:text-white/90">
+            Analytics Dashboard
+          </h2>
+          <p className="mt-1 text-sm text-gray-500 font-sans dark:text-gray-400">
+            Estadísticas y métricas de tus publicaciones
+          </p>
+        </div>
+        <button
+          onClick={() => loadDashboardData(false)}
+          disabled={loading || isRefreshing}
+          className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100 disabled:opacity-50"
+        >
+          <Icon
+            icon="mdi:refresh"
+            className={`${isRefreshing ? "animate-spin" : ""}`}
+            width="20"
+            height="20"
+          />
+          {isRefreshing ? "Actualizando..." : "Actualizar"}
+        </button>
       </div>
 
       <div className="grid grid-cols-12 gap-4 md:gap-6">
@@ -94,7 +117,9 @@ const Analytics = () => {
               ))}
             </div>
           ) : stats ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
+            <div
+              className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 transition-opacity duration-300 ${isRefreshing ? "opacity-60" : "opacity-100"}`}
+            >
               <StatsCard
                 title="Total Publicaciones"
                 value={stats.totalPublicaciones}
@@ -142,7 +167,7 @@ const Analytics = () => {
         <div className="col-span-12">
           <TopPublicationsTable
             publications={topPublications}
-            loading={loading}
+            loading={loading || isRefreshing}
           />
         </div>
       </div>
