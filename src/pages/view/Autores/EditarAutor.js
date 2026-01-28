@@ -3,12 +3,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   obtenerAutorPorId,
   actualizarAutor,
+  subirFotoAutor,
 } from "../../../services/autoresService";
 import { useToast } from "../../../context/ToastContext";
 import { Icon } from "@iconify/react";
 import ConfirmModal from "../../../components/ConfirmModal";
 import TextField from "../../../components/TextField";
 import TextAreaField from "../../../components/TextAreaField";
+import Modal from "../../../components/Modal";
+import DropZone from "../../../components/DropZone";
 
 const EditarAutor = () => {
   const { id } = useParams();
@@ -23,6 +26,9 @@ const EditarAutor = () => {
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [pendingStatus, setPendingStatus] = useState(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -94,6 +100,22 @@ const EditarAutor = () => {
     } finally {
       setLoading(false);
       setShowConfirmModal(false);
+    }
+  };
+
+  const handleUploadPhoto = async () => {
+    if (!selectedFile) return;
+    setUploading(true);
+    try {
+      await subirFotoAutor(id, selectedFile);
+      toast.success("Foto de perfil actualizada");
+      setShowUploadModal(false);
+      setSelectedFile(null);
+      await cargarDatos();
+    } catch (err) {
+      toast.error("Error al subir la foto");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -196,6 +218,14 @@ const EditarAutor = () => {
                   ) : (
                     <Icon icon="mdi:account" width="80" />
                   )}
+                  {/* Overlay upload button */}
+                  <button
+                    type="button"
+                    onClick={() => setShowUploadModal(true)}
+                    className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"
+                  >
+                    <Icon icon="mdi:camera" width="32" />
+                  </button>
                 </div>
                 <div className="text-center">
                   <h3 className="font-bold text-gray-900 text-xl">
@@ -228,15 +258,6 @@ const EditarAutor = () => {
                   placeholder="juan@ejemplo.com"
                 />
               </div>
-
-              <TextField
-                id="foto"
-                name="foto"
-                label="URL de Foto de Perfil"
-                value={formData.foto}
-                onChange={handleChange}
-                placeholder="https://images.com/perfil.jpg"
-              />
 
               <TextAreaField
                 id="biografia"
@@ -372,6 +393,51 @@ const EditarAutor = () => {
         cancelText="Cancelar"
         type="danger"
       />
+
+      <Modal
+        isOpen={showUploadModal}
+        onClose={() => {
+          setShowUploadModal(false);
+          setSelectedFile(null);
+        }}
+        title="Subir Foto de Perfil"
+        footer={
+          <div className="flex gap-3 justify-end">
+            <button
+              type="button"
+              onClick={() => {
+                setShowUploadModal(false);
+                setSelectedFile(null);
+              }}
+              className="rounded-lg border border-gray-300 px-6 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all active:scale-95"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              onClick={handleUploadPhoto}
+              disabled={!selectedFile || uploading}
+              className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-2 text-sm font-bold text-white hover:bg-brand-700 disabled:opacity-50 transition-all shadow-sm active:scale-95"
+            >
+              {uploading ? (
+                <Icon icon="mdi:loading" className="animate-spin" width="18" />
+              ) : (
+                <Icon icon="mdi:upload" width="18" />
+              )}
+              {uploading ? "Subiendo..." : "Subir Foto"}
+            </button>
+          </div>
+        }
+      >
+        <div className="p-1">
+          <DropZone
+            onFileSelect={(file) => setSelectedFile(file)}
+            maxSize={2}
+            accept="image/*"
+            fileType="image"
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
