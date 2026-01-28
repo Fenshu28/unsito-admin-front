@@ -2,6 +2,7 @@ import NavBar from "../components/NavBar";
 import Sidebar from "../components/SideBar";
 import PrivateRoutes from "../router/PrivateRoutes";
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
+import { TaxonomyProvider } from "../context/TaxonomyContext";
 
 const LayoutContent = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
@@ -33,9 +34,11 @@ const LayoutContent = () => {
 
 const MainComponent = () => {
   return (
-    <SidebarProvider>
-      <LayoutContent />
-    </SidebarProvider>
+    <TaxonomyProvider>
+      <SidebarProvider>
+        <LayoutContent />
+      </SidebarProvider>
+    </TaxonomyProvider>
   );
 };
 

@@ -1,32 +1,24 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PublicRouter from "./router/PublicRouter";
 import Maincomponent from "./pages/Maincomponent";
-import { TaxonomyProvider } from "./context/TaxonomyContext";
 import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   return (
     <ThemeProvider>
-
-
-    <ToastProvider>
-      <TaxonomyProvider>
+      <ToastProvider>
         <Router>
           <Routes>
             {/* Rutas públicas */}
             <Route path="/*" element={<PublicRouter />} />
 
             {/* Rutas privadas */}
-            <Route path="/App/*" element={<Maincomponent />}>
-              
-            </Route>
+            <Route path="/App/*" element={<Maincomponent />} />
           </Routes>
         </Router>
-      </TaxonomyProvider>
-    </ToastProvider>
+      </ToastProvider>
     </ThemeProvider>
-
   );
 }
 

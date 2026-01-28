@@ -46,7 +46,10 @@ export const TaxonomyProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    loadTaxonomy();
+    const token = localStorage.getItem("token");
+    if (token) {
+      loadTaxonomy();
+    }
   }, [loadTaxonomy]);
 
   const value = useMemo(
