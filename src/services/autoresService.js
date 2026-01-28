@@ -5,10 +5,10 @@ import apiClient from "./api";
  * GET /autores
  * Devuelve un arreglo de autores
  */
-export const obtenerAutores = async (status = "all") => {
+export const obtenerAutores = async (status = "") => {
   try {
     const url =
-      status && status !== "all" ? `/autores?status=${status}` : "/autores";
+      status && status !== "" ? `/autores?status=${status}` : "/autores";
     const response = await apiClient.get(url);
     return response.data;
   } catch (error) {

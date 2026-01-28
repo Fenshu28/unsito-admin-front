@@ -11,7 +11,7 @@ import { Icon } from "@iconify/react";
 
 const CategoriasList = () => {
   const [categorias, setCategorias] = useState([]);
-  const [filtroStatus, setFiltroStatus] = useState("all");
+  const [filtroStatus, setFiltroStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const toast = useToast();
@@ -106,7 +106,7 @@ const CategoriasList = () => {
                 onChange={(e) => setFiltroStatus(e.target.value)}
                 className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
               >
-                <option value="all">Todos</option>
+                <option value="">Todos</option>
                 <option value="Active">Activa</option>
                 <option value="Trash">Papelera</option>
               </select>

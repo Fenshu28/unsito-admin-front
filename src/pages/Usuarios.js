@@ -16,8 +16,8 @@ const Usuarios = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Filtros
-  const [filtroStatus, setFiltroStatus] = useState("all");
-  const [filtroRole, setFiltroRole] = useState("all");
+  const [filtroStatus, setFiltroStatus] = useState("");
+  const [filtroRole, setFiltroRole] = useState("");
   const [availableRoles, setAvailableRoles] = useState([]);
 
   const toast = useToast();
@@ -36,7 +36,7 @@ const Usuarios = () => {
     setError(null);
 
     let query = "/usuarios?";
-    if (filtroStatus !== "all") query += `status=${filtroStatus}&`;
+    if (filtroStatus !== "") query += `status=${filtroStatus}&`;
     if (filtroRole !== "all") query += `role=${filtroRole}&`;
 
     apiClient
@@ -102,7 +102,7 @@ const Usuarios = () => {
                 onChange={(e) => setFiltroStatus(e.target.value)}
                 className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 font-sans"
               >
-                <option value="all">Todos los estados</option>
+                <option value="">Todos los estados</option>
                 <option value="Active">Activo</option>
                 <option value="Inactive">Inactivo</option>
                 <option value="Banned">Baneado</option>
