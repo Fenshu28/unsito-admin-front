@@ -5,7 +5,6 @@ import TextField from "../../../components/TextField";
 
 const FormularioUsuario = ({ onClose, onUserCreated }) => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [roles, setRoles] = useState([]);
   const [availableRoles, setAvailableRoles] = useState([]);
@@ -36,7 +35,7 @@ const FormularioUsuario = ({ onClose, onUserCreated }) => {
     setError(null);
 
     apiClient
-      .post("/usuarios", { email, password, displayName, roles })
+      .post("/usuarios", { email, displayName, roles })
       .then((response) => {
         if (onUserCreated) {
           onUserCreated();
@@ -94,15 +93,6 @@ const FormularioUsuario = ({ onClose, onUserCreated }) => {
                 placeholder="ana@ejemplo.com"
                 required
               />
-              <TextField
-                id="password"
-                type="password"
-                label="Contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Mínimo 6 caracteres"
-                required
-              />
 
               <div>
                 <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider">
@@ -146,7 +136,9 @@ const FormularioUsuario = ({ onClose, onUserCreated }) => {
                 disabled={isSubmitting}
                 className="flex-1 px-4 py-2.5 rounded-xl bg-brand-600 text-sm font-bold text-white hover:bg-brand-700 transition-all shadow-sm active:scale-95 disabled:opacity-50"
               >
-                {isSubmitting ? "Creando..." : "Crear Usuario"}
+                {isSubmitting
+                  ? "Enviando Invitación..."
+                  : "Crear y Enviar Invitación"}
               </button>
             </div>
           </form>
