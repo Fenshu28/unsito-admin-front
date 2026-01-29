@@ -88,6 +88,9 @@ const TablaPublicaciones = ({
               <th className="py-3 px-2 font-bold text-gray-500 text-left text-xs font-sans">
                 Tipo
               </th>
+              <th className="py-3 px-2 font-bold text-gray-500 text-center text-xs font-sans">
+                Autor
+              </th>
               {isAdmin && (
                 <th className="py-3 px-2 font-bold text-gray-500 text-center text-xs font-sans">
                   Usuario
@@ -137,6 +140,14 @@ const TablaPublicaciones = ({
                   </td>
                   <td className="py-3 px-2 text-gray-600 text-sm font-sans">
                     {pub.tipo?.nombre || "-"}
+                  </td>
+                  <td className="py-3 px-2 text-center">
+                    <div
+                      className="flex justify-center"
+                      title={pub.autor?.nombre || "Sin Autor"}
+                    >
+                      <UserAvatar user={pub.autor} size="8" />
+                    </div>
                   </td>
                   {isAdmin && (
                     <td className="py-3 px-2 text-center">
