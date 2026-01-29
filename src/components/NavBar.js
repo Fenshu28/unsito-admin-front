@@ -1,6 +1,5 @@
 import { useSidebar } from "../context/SidebarContext";
 import useAuth from "../hooks/useAuth";
-import { Icon } from "@iconify/react";
 
 const NavBar = () => {
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
