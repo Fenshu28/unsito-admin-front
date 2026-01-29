@@ -7,6 +7,7 @@ const AuthorSelect = ({
   onChange,
   label,
   placeholder = "Seleccionar autor...",
+  disabled = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -26,15 +27,20 @@ const AuthorSelect = ({
   return (
     <div className="relative w-full" ref={dropdownRef}>
       {label && (
-        <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider font-sans">
+        <label className="mb-2 block text-sm font-medium text-gray-700 font-sans">
           {label}
         </label>
       )}
 
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 transition-all shadow-sm"
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className={`w-full flex items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 transition-all shadow-sm ${
+          disabled
+            ? "bg-gray-50 cursor-not-allowed opacity-80"
+            : "hover:bg-gray-50/50"
+        }`}
       >
         <div className="flex items-center gap-3 overflow-hidden">
           {selectedAuthor ? (
