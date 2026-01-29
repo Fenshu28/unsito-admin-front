@@ -1,8 +1,10 @@
-import React from "react";
 import { useSidebar } from "../context/SidebarContext";
+import useAuth from "../hooks/useAuth";
+import { Icon } from "@iconify/react";
 
 const NavBar = () => {
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
+  const { user } = useAuth();
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -13,9 +15,9 @@ const NavBar = () => {
   };
 
   return (
-    // NavBar con borde inferior y sombra visible
-    <nav className="sticky top-0 z-999 flex w-full bg-white border-b border-gray-300 shadow-theme-sm">
-      <div className="flex flex-grow items-center justify-between px-4 py-4 md:px-6 2xl:px-11">
+    // NavBar con z-index corregido, glassmorphism y borde inferior
+    <nav className="sticky top-0 z-[40] flex w-full bg-white/80 backdrop-blur-md border-b border-gray-300 shadow-theme-sm">
+      <div className="flex flex-grow items-center justify-between px-4 py-3 md:px-6 2xl:px-8">
         {/* Botón Toggle Sidebar - con sombra sutil */}
         <button
           className="flex items-center justify-center w-10 h-10 text-gray-600 bg-gray-50 border border-gray-200 rounded-lg shadow-theme-xs hover:bg-gray-100 hover:text-gray-800 transition-all lg:w-11 lg:h-11"
@@ -57,33 +59,34 @@ const NavBar = () => {
           )}
         </button>
 
-        {/* Logo + Texto - visible en móvil */}
-        <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
-          <img
-            src="https://assets-unsito.flaisgrafics.com/logo.png"
-            alt="Logo"
-            className="h-12 sm:h-14"
-          />
-          <span className="text-title-md font-bold text-gray-900 hidden sm:block">
-            Unsito Digital
-          </span>
+        {/* Información del Usuario y Bienvenida - Izquierda */}
+        <div className="hidden lg:flex flex-1 ml-6 items-center gap-4">
+          <div className="flex flex-col">
+            <h2 className="text-sm font-bold text-gray-900 leading-tight">
+              {user?.displayName
+                ? `¡Hola de vuelta, ${user.displayName.split(" ")[0]}!`
+                : "Bienvenido de vuelta"}
+            </h2>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-1.5 py-0.5 rounded border border-brand-100">
+                {user?.roles?.[0] || "Usuario"}
+              </span>
+              <span className="text-[10px] text-gray-400 font-medium">
+                {user?.email}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Ícono de usuario - con hover más visible */}
-        <div className="flex items-center gap-3 2xsm:gap-7">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-brand-50 transition-colors cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              className="text-gray-600 hover:text-brand-500"
-            >
-              <path
-                fill="currentColor"
-                d="M12 19.2c-2.5 0-4.71-1.28-6-3.2c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"
-              ></path>
-            </svg>
+        {/* Sección Derecha - Ajustada */}
+        <div className="flex items-center gap-3">
+          {/* Logo visible solo en móvil */}
+          <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+            <img
+              src="https://assets-unsito.flaisgrafics.com/logo.png"
+              alt="Logo"
+              className="h-10 sm:h-12"
+            />
           </div>
         </div>
       </div>

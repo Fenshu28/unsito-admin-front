@@ -29,11 +29,11 @@ const LoginBanner = () => {
             </div>
           </div>
           <h2 className="mb-4 text-3xl font-bold text-white drop-shadow-md">
-            Bienvenido a Unsito
+            Bienvenido a Unsito Digital
           </h2>
           <p className="text-lg text-white/90 drop-shadow-sm font-medium">
-            Tu plataforma digital universitaria para gestionar todo en un solo
-            lugar.
+            Tu plataforma digital universitaria para gestionar todas tus
+            noticias en un solo lugar.
           </p>
         </div>
       </div>

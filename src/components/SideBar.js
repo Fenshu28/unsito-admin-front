@@ -114,7 +114,7 @@ const Sidebar = () => {
                 alt="Logo"
                 className="h-10"
               />
-              <h2 className="text-xl font-bold text-gray-900">Unsito</h2>
+              <h2 className="text-xl font-bold text-gray-900">Unsito Digital</h2>
             </div>
           ) : (
             <img
