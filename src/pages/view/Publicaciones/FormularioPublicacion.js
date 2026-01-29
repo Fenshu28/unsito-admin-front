@@ -110,6 +110,13 @@ const FormularioPublicacion = ({
       setShowStatusDropdown(false);
       return;
     }
+
+    if (isDirty) {
+      toast.warning("Primero guarda los cambios antes de cambiar el estado.");
+      setShowStatusDropdown(false);
+      return;
+    }
+
     setPendingStatus(newStatus);
     setShowConfirmModal(true);
     setShowStatusDropdown(false);
@@ -331,6 +338,7 @@ const FormularioPublicacion = ({
               }
               label="Autor"
               placeholder="Seleccione Autor"
+              disabled={isPublished}
             />
 
             {/* Categoría */}
@@ -419,7 +427,7 @@ const FormularioPublicacion = ({
 
             {/* Estado - Último */}
             <div className="relative">
-              <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-wider">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Estado
               </label>
               <button
