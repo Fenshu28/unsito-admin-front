@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import apiClient from "../services/api";
+import Modal from "./Modal";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,12 +103,12 @@ const LoginForm = () => {
                 <span>Recordarme</span>
               </label>
 
-              <button
-                type="button"
-                className="text-sm font-medium text-brand-600 hover:text-brand-700 hover:underline bg-transparent border-none p-0 cursor-pointer"
+              <Link
+                to="/forgot-password"
+                className="text-sm font-medium text-brand-600 hover:text-brand-700 hover:underline transition-all"
               >
                 ¿Olvidaste tu contraseña?
-              </button>
+              </Link>
             </div>
 
             <button
@@ -122,7 +124,8 @@ const LoginForm = () => {
                 ¿No tienes cuenta?{" "}
                 <button
                   type="button"
-                  className="text-brand-600 hover:underline bg-transparent border-none p-0 cursor-pointer text-sm font-medium"
+                  onClick={() => setShowRequestModal(true)}
+                  className="text-brand-600 hover:underline bg-transparent border-none p-0 cursor-pointer text-sm font-medium transition-all"
                 >
                   Contacta al administrador
                 </button>
@@ -131,6 +134,52 @@ const LoginForm = () => {
           </div>
         </form>
       </div>
+
+      {/* Modal de Solicitud de Cuenta */}
+      <Modal
+        isOpen={showRequestModal}
+        onClose={() => setShowRequestModal(false)}
+        title="Solicitar una Cuenta"
+        className="max-w-md"
+      >
+        <div className="flex flex-col items-center text-center space-y-6 py-4">
+          <div className="w-20 h-20 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 shadow-sm border border-brand-100">
+            <Icon icon="mdi:account-question" width="40" />
+          </div>
+
+          <div className="space-y-2">
+            <h3 className="text-lg font-bold text-gray-900">
+              Acceso Restringido
+            </h3>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Para obtener acceso al panel administrativo de{" "}
+              <strong>UnSito Digital</strong>, debes ser parte del personal
+              autorizado.
+            </p>
+          </div>
+
+          <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 w-full">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+              Contacto de Soporte
+            </p>
+            <p className="text-sm font-bold text-gray-700">
+              soporte@unsis.edu.mx
+            </p>
+          </div>
+
+          <p className="text-[11px] text-gray-400 italic leading-tight">
+            Por favor, envía un correo desde tu cuenta institucional indicando
+            tu nombre y cargo para procesar tu solicitud.
+          </p>
+
+          <button
+            onClick={() => setShowRequestModal(false)}
+            className="w-full py-3 bg-gray-900 text-white rounded-2xl font-bold text-sm hover:bg-gray-800 transition-all active:scale-[0.98] shadow-lg shadow-gray-200"
+          >
+            Entendido
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
