@@ -7,6 +7,7 @@ const ListaUsuarios = ({
   initialLoading,
   onManageRoles,
   onViewDetails,
+  onResendInvitation,
 }) => {
   if (initialLoading) {
     return (
@@ -141,16 +142,31 @@ const ListaUsuarios = ({
                   </td>
 
                   <td className="py-3 px-2 text-right">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onManageRoles(user);
-                      }}
-                      className="inline-flex items-center gap-1 xl:gap-2 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-700 transition-all shadow-sm active:scale-95"
-                    >
-                      <Icon icon="mdi:shield-edit" width="14" />
-                      <span className="hidden xl:inline">Roles</span>
-                    </button>
+                    <div className="flex justify-end gap-2">
+                      {user.status === "Inactive" && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onResendInvitation(user);
+                          }}
+                          className="inline-flex items-center gap-1 xl:gap-2 rounded-lg bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-600 hover:bg-orange-100 transition-all shadow-sm border border-orange-200 active:scale-95"
+                          title="Reenviar invitación de activación"
+                        >
+                          <Icon icon="mdi:email-send" width="14" />
+                          <span className="hidden xl:inline">Invitar</span>
+                        </button>
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onManageRoles(user);
+                        }}
+                        className="inline-flex items-center gap-1 xl:gap-2 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-700 transition-all shadow-sm active:scale-95"
+                      >
+                        <Icon icon="mdi:shield-edit" width="14" />
+                        <span className="hidden xl:inline">Roles</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

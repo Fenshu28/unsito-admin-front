@@ -73,6 +73,16 @@ const Usuarios = () => {
     fetchUsers();
   };
 
+  const handleResendInvitation = async (user) => {
+    try {
+      await apiClient.post(`/usuarios/${user.uid}/resend-verification`);
+      toast.success(`Invitación reenviada a ${user.email}`);
+    } catch (err) {
+      console.error("Error al reenviar invitación:", err);
+      // El manejador global de errores ya muestra el toast de error
+    }
+  };
+
   return (
     <div className="font-sans">
       {/* Header */}
@@ -152,6 +162,7 @@ const Usuarios = () => {
         initialLoading={initialLoading && users.length === 0}
         onManageRoles={setEditingUser}
         onViewDetails={setViewingUser}
+        onResendInvitation={handleResendInvitation}
       />
 
       {/* Modals */}
