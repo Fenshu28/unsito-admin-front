@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Icon } from "@iconify/react";
 
 const DropZone = ({
@@ -78,6 +78,32 @@ const DropZone = ({
     },
     [processFile],
   );
+
+  const handlePaste = useCallback(
+    (e) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        if (
+          items[i].type.indexOf("image") !== -1 ||
+          items[i].type.indexOf("pdf") !== -1
+        ) {
+          const file = items[i].getAsFile();
+          if (file) {
+            processFile(file);
+            break; // Solo procesamos el primero
+          }
+        }
+      }
+    },
+    [processFile],
+  );
+
+  useEffect(() => {
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, [handlePaste]);
 
   const handleFileInput = (e) => {
     const files = e.target.files;
