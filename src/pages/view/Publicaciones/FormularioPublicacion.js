@@ -36,6 +36,7 @@ const FormularioPublicacion = ({
     status: "Draft",
     linksExternos: [],
     autor: "",
+    fechaExpiracion: null,
   });
 
   const [originalData, setOriginalData] = useState(null);
@@ -63,6 +64,9 @@ const FormularioPublicacion = ({
         status: publicacionActual.status || "Draft",
         linksExternos: publicacionActual.linksExternos || [],
         autor: publicacionActual.autor?._id || "",
+        fechaExpiracion: publicacionActual.fechaExpiracion
+          ? publicacionActual.fechaExpiracion.split("T")[0]
+          : null,
       };
 
       // Si el ID cambió o no hay datos cargados, reseteamos todo
@@ -356,7 +360,11 @@ const FormularioPublicacion = ({
             {/* Fecha */}
             <DatePicker
               id="fecha"
-              label="Fecha de Publicación"
+              label={
+                tipos.find((t) => t._id === formData.tipo)?.nombre === "Evento"
+                  ? "Fecha Inicio"
+                  : "Fecha de Publicación"
+              }
               value={formData.fecha}
               onChange={(e) =>
                 handleChange({
@@ -366,6 +374,48 @@ const FormularioPublicacion = ({
               disabled={isPublished}
               required
             />
+
+            {/* Lógica de Expiración para Eventos */}
+            {tipos.find((t) => t._id === formData.tipo)?.nombre ===
+              "Evento" && (
+              <div className="space-y-4">
+                <Switch
+                  id="hasExpiration"
+                  checked={formData.fechaExpiracion !== null}
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
+                    handleChange({
+                      target: {
+                        name: "fechaExpiracion",
+                        value: isChecked
+                          ? new Date().toISOString().split("T")[0]
+                          : null,
+                      },
+                    });
+                  }}
+                  label="¿Expira?"
+                  disabled={isPublished}
+                />
+
+                {formData.fechaExpiracion !== null && (
+                  <DatePicker
+                    id="fechaExpiracion"
+                    label="Fecha Fin / Expiración"
+                    value={formData.fechaExpiracion}
+                    onChange={(e) =>
+                      handleChange({
+                        target: {
+                          name: "fechaExpiracion",
+                          value: e.target.value,
+                        },
+                      })
+                    }
+                    disabled={isPublished}
+                    required
+                  />
+                )}
+              </div>
+            )}
 
             {/* Estado - Último */}
             <div className="relative">
